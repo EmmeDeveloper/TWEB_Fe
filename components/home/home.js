@@ -1,4 +1,4 @@
-Vue.component("header-home", {
+Vue.component("home", {
   template: `
     <header>
         <navbar></navbar>
