@@ -6,17 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="components/navbar/navbar.css" />
+    <link rel="stylesheet" href="components/footer/footer.css" />
+    <link rel="stylesheet" href="components/home/home.css" />
+    <link rel="stylesheet" href="components/lesson-card/lesson-card.css" />
     <title>Ripetizioni</title>
   </head>
   <body>
     <div id="app">
       <home></home>
+      <footer-component></footer-component>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="environment.js"></script>
     <!-- Qui ci vanno i componenti javascript, bisogna importarli correttamente  -->
+    <script src="components/lesson-card/lesson-card.js"></script>
     <script src="components/home/home.js"></script>
     <script src="components/navbar/navbar.js"></script>
-    <!--  Questa parte istanzia Vue, non toccare  -->
+    <script src="components/footer/footer.js"></script>
+    <!-- Questa parte istanzia Vue, non toccare  -->
     <script text="style/javascript">
       new Vue({
         el: "#app",
