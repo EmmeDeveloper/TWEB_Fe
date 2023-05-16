@@ -1,5 +1,9 @@
+* {
+  box-sizing: inherit;
+}
 body {
   margin: 0;
+  height: 100dvh;
 }
 
 .primary-button {
@@ -25,4 +29,16 @@ body {
 
 p {
   margin: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.gap-2 {
+  gap: 2rem;
 }
