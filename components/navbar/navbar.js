@@ -8,16 +8,17 @@ Vue.component("navbar", {
             <a href="#" class="primary-text">?</a>
         </div>
         <div>
-            <button class="primary-button" @click="showModalLogin = true">Accedi</button>
-            <button class="primary-button">Iscriviti</button>
+            <button class="primary-button cursor-pointer" @click="showModalLogin = true">Accedi</button>
+            <button class="primary-button cursor-pointer" @click="showModalSignUp = true">Iscriviti</button>
         </div>
-        <login-popup v-if="showModalLogin" @close="showModalLogin = false"></login-popup>
+        <login-modal v-if="showModalLogin" @close="showModalLogin = false"></login-modal>
     </nav>
   `,
 
   data() {
     return {
-      showModalLogin: false,
+      showModalLogin: true,
+      showModalSignUp: false,
     };
   },
 });
