@@ -1,4 +1,4 @@
-var Navbar = Vue.component("lesson-card", {
+Vue.component("lesson-card", {
   props: {
     title: String,
   },
