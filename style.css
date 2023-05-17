@@ -1,6 +1,10 @@
 * {
   box-sizing: inherit;
 }
+
+:root {
+  --PRIMARY-COLOR: rgba(4, 107, 153, 1);
+}
 body {
   margin: 0;
   height: 100dvh;
@@ -10,15 +14,15 @@ body {
   background-color: rgba(255, 255, 255, 0.6);
   padding: 0.5rem;
   border-radius: 10px;
-  border: 1px solid rgba(4, 107, 153, 1);
+  border: 1px solid var(--PRIMARY-COLOR);
   cursor: pointer;
-  color: rgba(4, 107, 153, 1);
+  color: var(--PRIMARY-COLOR);
   font-weight: 500;
   font-size: 16px;
 }
 
 .primary-button:hover {
-  box-shadow: 0px 0px 4px rgba(4, 107, 153, 1);
+  box-shadow: 0px 0px 4px var(--PRIMARY-COLOR);
 }
 
 .primary-text {
@@ -41,4 +45,20 @@ p {
 
 .gap-2 {
   gap: 2rem;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-space-evenly {
+  justify-content: space-evenly;
+}
+
+.justify-flex-end {
+  justify-content: flex-end;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
