@@ -3,14 +3,21 @@ Vue.component("input-text", {
     type: String,
     id: String,
     name: String,
+    modelValue: String,
   },
   template: `
     <div class="flex flex-column gap-1" style="margin-bottom: 15px;">
-        <label v-bind:for="id">{{name}}</label>
-        <input v-bind:type="type" v-bind:id="id" v-bind:name="name">
+        <label :for="id">{{name}}</label>
+        <input :value="modelValue" @input="handleInput" :type="type" :id="id" :name="name">
     </div>
   `,
   data() {
     return {};
+  },
+
+  methods: {
+    handleInput(e) {
+      this.$emit("input", e.target.value);
+    },
   },
 });

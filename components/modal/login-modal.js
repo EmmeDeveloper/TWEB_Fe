@@ -2,7 +2,7 @@ Vue.component("login-modal", {
   template: `
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <form class="modal-container" @submit.prevent="login(emailValue,passwordValue)">
           <div class="modal-header flex flex-row justify-center">
             <slot name="header">
               <p class="title-modal">Accedi</p>
@@ -10,20 +10,30 @@ Vue.component("login-modal", {
             </slot>
           </div>
           <div class="modal-body">
-            <input-text type="email" name="email" id="email" />
-            <input-text type="password" name="password" id="password" />
+            <input-text type="email" name="email" id="email" v-model="emailValue"/>
+            <input-text type="password" name="password" id="password" v-model="passwordValue" />
           </div>
           <div class="modal-footer flex justify-center">
-            <button class="secondary-button cursor-pointer" >
+            <button class="secondary-button cursor-pointer" type="submit">
               Login
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 `,
 
   data() {
-    return {};
+    return {
+      emailValue: "",
+      passwordValue: "",
+    };
+  },
+
+  methods: {
+    login: (email, passowrd) => {
+      console.log(email);
+      console.log(passowrd);
+    },
   },
 });
