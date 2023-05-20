@@ -26,6 +26,14 @@
   justify-content: space-evenly;
 }
 
+.justify-space-around {
+  justify-content: space-around;
+}
+
 .justify-flex-end {
   justify-content: flex-end;
+}
+
+.align-center {
+  align-items: center;
 }
