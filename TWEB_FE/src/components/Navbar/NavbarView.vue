@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import LoginModalView from '../Modals/LoginModalView.vue'
+import { ref } from 'vue'
 
-let showModalLogin = false
-let showModalSignUp = false
+const showModalLogin = ref(false)
+let showModalSignUp = ref(false)
 </script>
 
 <template>
@@ -19,7 +21,8 @@ let showModalSignUp = false
         Iscriviti
       </button>
     </div>
-    <login-modal v-if="showModalLogin" @close="showModalLogin = false"></login-modal>
+
+    <LoginModalView v-if="showModalLogin" @close="showModalLogin = false"></LoginModalView>
   </nav>
 </template>
 
