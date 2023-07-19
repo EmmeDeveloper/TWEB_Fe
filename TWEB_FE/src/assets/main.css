@@ -8,7 +8,9 @@
 :root {
   --PRIMARY-COLOR: rgba(4, 107, 153, 1);
   --WHITE-COLOR: rgba(255, 255, 255, 1);
+  --DELETE-COLOR: rgb(255, 49, 49, 1);
 }
+
 body {
   margin: 0;
   height: 100dvh;
@@ -29,6 +31,17 @@ body {
   padding: 0.5rem;
   border-radius: 10px;
   border: 1px solid var(--PRIMARY-COLOR);
+  cursor: pointer;
+  color: var(--WHITE-COLOR);
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.delete-button {
+  background-color: var(--DELETE-COLOR);
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--DELETE-COLOR);
   cursor: pointer;
   color: var(--WHITE-COLOR);
   font-weight: 500;

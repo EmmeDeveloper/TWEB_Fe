@@ -2,20 +2,35 @@
 import './LoginModal.css'
 import InputTextView from '@/components/InputText/InputTextView.vue'
 import { ref } from 'vue'
+import { BACKEND_LINK } from '../../environment'
+
 defineProps({
-  modelValue: {
-    userData: {
-      userIsLogged: Boolean,
-      userName: String
-    }
-  }
+  modelValue: Object
 })
+const emits = defineEmits(['update:modelValue', 'close'])
+
 let accountValue = ref('')
 let passwordValue = ref('')
 
-function login(accountValue, passwordValue) {
-  console.log(accountValue)
-  console.log(passwordValue)
+async function login(accountValue, passwordValue) {
+  try {
+    var raw = JSON.stringify({
+      account: accountValue,
+      password: passwordValue
+    })
+
+    var requestOptions = {
+      method: 'POST',
+      body: raw,
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/login`, requestOptions)
+    emits('update:modelValue', (await result.json()).user)
+    emits('close')
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>
 
