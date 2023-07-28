@@ -7,7 +7,7 @@ import { BACKEND_LINK } from '../../environment'
 defineProps({
   modelValue: Object
 })
-const emits = defineEmits(['update:modelValue', 'close'])
+const emits = defineEmits(['updateUser', 'close'])
 
 let accountValue = ref('')
 let passwordValue = ref('')
@@ -26,7 +26,7 @@ async function login(accountValue, passwordValue) {
     }
 
     const result = await fetch(`${BACKEND_LINK}/login`, requestOptions)
-    emits('update:modelValue', (await result.json()).user)
+    emits('updateUser', (await result.json()).user)
     emits('close')
   } catch (error) {
     console.log(error)
@@ -51,8 +51,8 @@ async function login(accountValue, passwordValue) {
           </slot>
         </div>
         <div class="modal-body">
-          <InputTextView type="text" name="account" id="account" v-model="accountValue" />
-          <InputTextView type="password" name="password" id="password" v-model="passwordValue" />
+          <InputTextView type="text" name="Account" id="account" v-model="accountValue" />
+          <InputTextView type="password" name="Password" id="password" v-model="passwordValue" />
         </div>
         <div class="modal-footer flex justify-center">
           <button class="secondary-button cursor-pointer" type="submit">Login</button>

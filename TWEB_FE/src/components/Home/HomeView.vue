@@ -2,7 +2,7 @@
 import { BACKEND_LINK } from '../../environment.js'
 import { onBeforeMount, ref } from 'vue'
 import './Home.css'
-import LessonCard from '../LessonCard/LessonCardView.vue'
+import LessonCard from '@/components/LessonCard/LessonCardView.vue'
 
 let courses = ref([])
 
