@@ -1,6 +1,6 @@
 .card {
   padding: 1rem;
-  background-color: #a5a5a5;
+  background-color: #cdcdcd;
   width: fit-content;
   border-radius: 10px;
 }
@@ -9,4 +9,25 @@
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+.label-status {
+  padding: 0.1rem;
+  border-radius: 5px;
+}
+
+.deleted {
+  background-color: #ff9999;
+}
+
+.done {
+  background-color: #99ff99;
+}
+
+.pending {
+  background-color: #ffcc99;
+}
+
+.default {
+  background-color: #9999ff;
 }
