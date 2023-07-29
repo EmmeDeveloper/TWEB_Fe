@@ -9,10 +9,16 @@ import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from './constants';
 let page = ref(PAGE_HOME)
 
 const userData = ref({
-  id: '1',
+  birthDate: '',
+  phone: '',
+  memberSince: '',
+  address: '',
   role: 'User',
+  id: '1',
   email: 'giovanni@example.com',
-  account: 'giovanni'
+  surname: 'Bianchi',
+  account: 'giovanni',
+  name: 'Giovanni'
 })
 
 const updatePage = (p) => {

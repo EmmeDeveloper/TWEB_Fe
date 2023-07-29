@@ -43,7 +43,7 @@ const changePage = (p) => {
           class="flex gap-1 pointer primary-button"
           @click="changePage(PAGE_USER_PROFILE)"
         >
-          <p>Ciao {{ user.account }}</p>
+          <p>Ciao {{ user.name }}</p>
           <img src="@/assets/person-circle.svg" alt="profilo utente" />
         </button>
       </div>
