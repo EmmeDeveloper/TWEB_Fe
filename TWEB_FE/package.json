@@ -10,6 +10,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mdi/font": "^7.2.96",
+    "milligram": "^1.4.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
