@@ -1,0 +1,12 @@
+.card {
+  padding: 1rem;
+  background-color: #a5a5a5;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+.card > .title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}

@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar/NavbarView.vue'
 import { ref } from 'vue'
 import UserProfileView from './components/UserProfile/UserProfileView.vue'
 
-let page = ref('USERPROFILE')
+let page = ref('HOME')
 
 const userData = ref({
   id: '1',
@@ -18,6 +18,7 @@ const updatePage = (p) => {
 }
 
 const updateUser = (p) => {
+  console.log(p)
   userData.value = p
 }
 </script>
@@ -27,7 +28,12 @@ const updateUser = (p) => {
     <Navbar :page="page" @changePage="updatePage" :userData="userData" @updateUser="updateUser" />
   </header>
   <HomeViewVue v-if="page === 'HOME'" />
-  <UserProfileView v-else-if="page === 'USERPROFILE'" :userData="userData"></UserProfileView>
+  <UserProfileView
+    v-else-if="page === 'USERPROFILE'"
+    :userData="userData"
+    @updateUser="updateUser"
+    @changePage="updatePage"
+  ></UserProfileView>
 </template>
 
 <style scoped></style>
