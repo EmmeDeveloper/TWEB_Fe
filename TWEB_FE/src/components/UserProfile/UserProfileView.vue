@@ -161,7 +161,7 @@ onBeforeMount(async () => {
 
     if (result.status == 200) {
       // let allRepetitions = (await result.json()).repetitions
-      //togliere .value e scommentare la parte di sopra, togliere const allRepetitions da su
+      //togliere allRepetitions.value e scommentare la parte di sopra, togliere const allRepetitions da su
       nextRepetitions.value = allRepetitions.value.filter(
         (repetition) => new Date(repetition.date).setHours(repetition.time) >= new Date()
       )

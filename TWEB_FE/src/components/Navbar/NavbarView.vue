@@ -35,7 +35,7 @@ const updateNavbarUser = (u) => {
           class="flex gap-1 pointer primary-button"
           @click="emits('changePage', 'USERPROFILE')"
         >
-          <p>Ciao {{ user.account }}</p>
+          <p>Ciao {{ user.name }}</p>
           <img src="@/assets/person-circle.svg" alt="profilo utente" />
         </button>
       </div>
