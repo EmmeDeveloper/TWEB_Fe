@@ -1,11 +1,11 @@
 <script setup>
 import { BACKEND_LINK } from '../../environment'
 import { ref } from 'vue'
-import LessonCardView from '../LessonCard/LessonCardView.vue'
+import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
-const repetitions = ref([
+const allRepetitions = ref([
   {
     date: '2023-03-26',
     time: 13,
@@ -67,6 +67,8 @@ const repetitions = ref([
     idcourse: '1'
   }
 ])
+const nextRepetitions = ref([])
+const pastRepetitions = ref([])
 
 async function logout() {
   try {
@@ -99,7 +101,15 @@ async function getUserRepetitions() {
     )
 
     if (result.status == 200) {
-      repetitions.value = (await result.json()).repetitions
+      let repetitions = (await result.json()).repetitions
+
+      nextRepetitions.value = repetitions.map(
+        (repetition) =>
+          new Date(repetition.date) >= new Date() && repetition.time > new Date().getHours()
+      )
+      pastRepetitions.value = repetitions.map(
+        (repetition) => new Date(repetition.date) < new Date()
+      )
     } else console.log('error')
   } catch (error) {
     console.log(error)
@@ -110,9 +120,9 @@ async function getUserRepetitions() {
 <template>
   <button @click="getUserRepetitions()">ripe</button>
   <button class="delete-button cursor-pointer" @click="logout()">Logout</button>
-  <div class="flex gap-2 padding-1" v-if="repetitions.length > 0">
+  <div class="flex gap-2 padding-1" v-if="allRepetitions.length > 0">
     <LessonCardView
-      v-for="repetition in repetitions"
+      v-for="repetition in allRepetitions"
       :repetition="repetition"
       :key="repetition.id"
     ></LessonCardView>
