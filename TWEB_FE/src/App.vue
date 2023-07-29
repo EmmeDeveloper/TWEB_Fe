@@ -5,6 +5,7 @@ import { ref } from 'vue'
 import UserProfileView from './components/UserProfile/UserProfileView.vue'
 
 let page = ref('USERPROFILE')
+
 const userData = ref({
   id: '1',
   role: 'User',
@@ -23,7 +24,7 @@ const updateUser = (p) => {
 
 <template>
   <header>
-    <Navbar :page="page" @changePage="updatePage" v-model="updateUser" />
+    <Navbar :page="page" @changePage="updatePage" :userData="userData" @updateUser="updateUser" />
   </header>
   <HomeViewVue v-if="page === 'HOME'" />
   <UserProfileView v-else-if="page === 'USERPROFILE'" :userData="userData"></UserProfileView>

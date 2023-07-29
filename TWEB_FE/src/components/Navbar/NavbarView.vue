@@ -3,12 +3,13 @@ import LoginModalView from '@/components/Modals/LoginModalView.vue'
 import { ref } from 'vue'
 import './Navbar.css'
 
-defineProps({ page: String, userData: Object })
+const props = defineProps({ page: String, userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
 
 const showModalLogin = ref(false)
-const user = ref(null)
-const porcodio = (u) => {
+const user = ref(props.userData)
+
+const updateNavbarUser = (u) => {
   user.value = u
   emits('updateUser', u)
 }
@@ -43,7 +44,7 @@ const porcodio = (u) => {
       v-if="showModalLogin"
       @close="showModalLogin = false"
       :user="user"
-      @updateUser="porcodio"
+      @updateUser="updateNavbarUser"
     ></LoginModalView>
   </nav>
 </template>
