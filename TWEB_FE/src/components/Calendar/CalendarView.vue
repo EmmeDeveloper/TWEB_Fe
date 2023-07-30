@@ -1,6 +1,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import FutureLessonReservationView from '../LessonReservation/FutureLessonReservationView.vue';
 
 const currentDate = ref(new Date());
 
@@ -23,6 +24,40 @@ function isToday(day) {
   return day.isCurrentMonth && day.date === today.getDate();
 }
 
+
+const rep = {
+    date: '2023-03-26',
+    time: 13,
+    status: 'deleted',
+    note: 'Ripetizione annullata per cancellazione professore',
+    professor: null,
+    user: {
+      birthDate: '',
+      phone: '',
+      memberSince: '',
+      address: '',
+      role: 'User',
+      id: '1',
+      email: 'giovanni@example.com',
+      surname: 'Bianchi',
+      account: 'giovanni',
+      name: 'Giovanni'
+    },
+    course: {
+      title: 'Programmazione 1',
+      id: '1'
+    },
+    id: 'ff439e73-f69a-47b9-8713-37c02c17d4b5'
+  };
+
+const time = 13;
+const date = new Date('2023-03-26');
+
+const prof = {
+  '1': [{id: '1', name: 'Giovanni', surname: 'Bianchi'}, {id: '2', name: 'Mario', surname: 'Rossi'}],
+  '2': [{id: '3', name: 'Luca', surname: 'Verdi'}, {id: '4', name: 'Giuseppe', surname: 'Neri'}],
+  '3': [{id: '5', name: 'Giacomo', surname: 'Gialli'}]
+};
 
 const weeks = computed(() => {
   const year = currentDate.value.getFullYear();
@@ -75,5 +110,10 @@ const weeks = computed(() => {
         </td>
       </tr>
     </table>
+
+
+    <div>
+      <FutureLessonReservationView :reservation="rep" :time="time" :date="date" :courseProfMap="prof" />
+    </div>
   </div>
 </template>

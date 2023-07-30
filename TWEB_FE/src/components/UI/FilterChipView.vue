@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+
 import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
@@ -22,6 +23,8 @@ const toggleSelection = () => {
   emit('click');
 };
 </script>
+
+
 
 <style>
 .filter-chip {

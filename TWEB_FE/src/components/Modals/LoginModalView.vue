@@ -2,7 +2,7 @@
 import './LoginModal.css'
 import InputTextView from '@/components/InputText/InputTextView.vue'
 import { ref } from 'vue'
-import { BACKEND_LINK } from '../../environment'
+import { login } from '../../StateService.vue'
 
 defineProps({
   modelValue: Object
@@ -12,32 +12,19 @@ const emits = defineEmits(['updateUser', 'close'])
 let accountValue = ref('')
 let passwordValue = ref('')
 
-async function login(accountValue, passwordValue) {
-  try {
-    var raw = JSON.stringify({
-      account: accountValue,
-      password: passwordValue
-    })
-
-    var requestOptions = {
-      method: 'POST',
-      body: raw,
-      redirect: 'follow'
-    }
-
-    const result = await fetch(`${BACKEND_LINK}/login`, requestOptions)
-    emits('updateUser', (await result.json()).user)
+function _login(accountValue, passwordValue) {
+  login(accountValue, passwordValue).then(() => {
+    emits('updateUser', accountValue)
     emits('close')
-  } catch (error) {
-    console.log(error)
-  }
+  })
 }
+
 </script>
 
 <template>
   <div class="modal-mask">
     <div class="modal-wrapper">
-      <form class="modal-container" @submit.prevent="login(accountValue, passwordValue)">
+      <form class="modal-container" @submit.prevent="_login(accountValue, passwordValue)">
         <div class="modal-header flex flex-row justify-center">
           <slot name="header">
             <p class="title-modal">Accedi</p>

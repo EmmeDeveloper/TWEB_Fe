@@ -5,14 +5,14 @@
     </h2>
 
     <div style="display: flex; align-items: center; padding-top: 8px;">
-      <i class="mdi mdi-calendar-today" style="padding-right: 8px;"></i>
+      <i class="mdi mdi-calendar-blank" style="padding-right: 8px;"></i>
       <span style="font-size: 16px;">
         {{ formatDate(props.date) }}
       </span>
     </div>
 
     <div style="display: flex; align-items: center; padding-top: 8px;">
-      <i class="mdi mdi-access-time" style="padding-right: 8px;"></i>
+      <i class="mdi mdi-clock-time-five-outline" style="padding-right: 8px;"></i>
       <span style="font-size: 16px;">
         {{ formatTime(props.time) }}
       </span>

@@ -3,6 +3,7 @@ import { BACKEND_LINK } from '../../environment'
 import { ref, onBeforeMount } from 'vue'
 import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 import './UserProfile.css'
+import { PAGE_HOME } from '../../constants'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -141,7 +142,7 @@ async function logout() {
     const result = await fetch(`${BACKEND_LINK}/logout`, requestOptions)
     if (result.status == 200) {
       emits('updateUser', null)
-      emits('changePage', 'HOME')
+      emits('changePage', PAGE_HOME)
     } else console.log('error')
   } catch (error) {
     console.log(error)

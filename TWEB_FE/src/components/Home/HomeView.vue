@@ -1,25 +1,13 @@
 <script setup>
-import { BACKEND_LINK } from '../../environment.js'
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount } from 'vue'
 import './Home.css'
 import LessonCard from '@/components/LessonCard/LessonCardView.vue'
+import { useStore, getAllCourses } from '../../StateService.vue'
 
-let courses = ref([])
-
-async function getAllCoursesService() {
-  try {
-    return (await fetch(`${BACKEND_LINK}/courses`)).json()
-  } catch (error) {
-    console.log(error)
-  }
-}
+const state = useStore();
 
 onBeforeMount(async () => {
-  try {
-    courses.value = (await getAllCoursesService()).courses
-  } catch (error) {
-    console.log(error)
-  }
+  await getAllCourses();
 })
 </script>
 
@@ -34,7 +22,8 @@ onBeforeMount(async () => {
   <article class="article-courses">
     <p stile="margin-bottom:30px;">Un professore per ogni materia</p>
     <div class="flex flex-row gap-2">
-      <LessonCard v-for="course in courses" :title="course.title" :key="course.id"></LessonCard>
+      <LessonCard v-for="course in state.courses" :title="course.title" :key="course.id"></LessonCard>
     </div>
+    {{ state.courses }}
   </article>
 </template>

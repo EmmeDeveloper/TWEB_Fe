@@ -1,46 +1,29 @@
 <script setup>
 import HomeViewVue from '@/components/Home/HomeView.vue'
 import Navbar from '@/components/Navbar/NavbarView.vue'
-import { ref } from 'vue'
 import UserProfileView from './components/UserProfile/UserProfileView.vue'
 import CalendarView from './components/Calendar/CalendarView.vue';
 import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from './constants';
+import { initStore, login, updatePage, updateUser } from './StateService.vue';
 
-let page = ref(PAGE_HOME)
+const state = initStore();
 
-const userData = ref({
-  birthDate: '',
-  phone: '',
-  memberSince: '',
-  address: '',
-  role: 'User',
-  id: '1',
-  email: 'giovanni@example.com',
-  surname: 'Bianchi',
-  account: 'giovanni',
-  name: 'Giovanni'
-})
+// TODO: Login automatico, da rimuovere
+login('giovanni','pass');
 
-const updatePage = (p) => {
-  page.value = p
-}
 
-const updateUser = (p) => {
-  console.log(p)
-  userData.value = p
-}
 </script>
 
 <template>
   <header>
-    <Navbar :page="page" @changePage="updatePage" :userData="userData" @updateUser="updateUser" />
+    <Navbar :page="state.currentPage" @changePage="updatePage" :userData="state.userData" @updateUser="updateUser" />
   </header>
-  <HomeViewVue v-if="page === PAGE_HOME" />
-  <UserProfileView v-else-if="page === PAGE_USER_PROFILE"
-    :userData="userData"
+  <HomeViewVue v-if="state.currentPage === PAGE_HOME" />
+  <UserProfileView v-else-if="state.currentPage === PAGE_USER_PROFILE"
+    :userData="state.userData"
     @updateUser="updateUser"
     @changePage="updatePage" />
-  <CalendarView v-else-if="page === PAGE_CALENDAR" />
+  <CalendarView v-else-if="state.currentPage === PAGE_CALENDAR" />
   
 </template>
 
