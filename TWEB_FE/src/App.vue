@@ -4,11 +4,12 @@ import Navbar from '@/components/Navbar/NavbarView.vue'
 import UserProfileView from './components/UserProfile/UserProfileView.vue'
 import CalendarView from './components/Calendar/CalendarView.vue'
 import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from './constants'
-import { initStore, login, updatePage, updateUser } from './StateService.js'
+import { initStore, login, updatePage, updateUser, logout } from './StateService.js'
 
 const state = initStore()
 
 // TODO: Login automatico, da rimuovere
+logout();
 login('giovanni', 'pass').then((u) => {
   updateUser(u)
 })
