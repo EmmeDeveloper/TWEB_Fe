@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-import LessonReservationDetails from './LessonReservationDetails.vue';
-import FilterChip from '../UI/FilterChipView.vue';
-import { useStore } from '../../StateService.vue';
+import { ref } from 'vue'
+import LessonReservationDetails from './LessonReservationDetails.vue'
+import FilterChip from '../UI/FilterChipView.vue'
+import { useStore } from '../../StateService.js'
 
 const props = defineProps({
   repetition: Object,
@@ -10,43 +10,42 @@ const props = defineProps({
   date: Date,
   courseProfMap: {
     type: Object,
-    required: true,
+    required: true
   },
   isLogged: Boolean
 })
 
-const globalState = useStore();
+const globalState = useStore()
 
 const emits = defineEmits(['reservedLesson', 'loginClicked'])
 
 const state = ref({
   isLogged: globalState.userData != null,
   isLoading: false,
-  reserveSuccess: false,
+  reserveSuccess: false
 })
 
 const selectedSubjectProf = ref({
   subject: '',
-  prof: '',
+  prof: ''
 })
 
 function selectProfessor(subject, prof) {
-  selectedSubjectProf.value.subject = subject;
-  selectedSubjectProf.value.prof = prof;
+  selectedSubjectProf.value.subject = subject
+  selectedSubjectProf.value.prof = prof
 }
 
-function reserve(subject, prof) {
-  state.value.isLoading = true;
-  setTimeout(() => {
-    state.value.isLoading = false;
-    state.value.reserveSuccess = true;
-  }, 1000);
-}
+// function reserve(subject, prof) {
+//   state.value.isLoading = true
+//   setTimeout(() => {
+//     state.value.isLoading = false
+//     state.value.reserveSuccess = true
+//   }, 1000)
+// }
 
 function loginClicked() {
   emits('loginClicked')
 }
-
 </script>
 
 <template>
@@ -74,23 +73,36 @@ function loginClicked() {
 
         <div class="professor-row">
           <div class="flow-row">
-            <FilterChip v-for="professor in profs" :key="professor.id"
-              :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id"
-              @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
-              :enabled="!state.isLoading && !state.reserveSuccess" />
+            <FilterChip
+              v-for="professor in profs"
+              :key="professor.id"
+              :selected="
+                selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
+              "
+              @click="selectProfessor(subject, professor.id)"
+              :label="`${professor.name} ${professor.surname}`"
+              :enabled="!state.isLoading && !state.reserveSuccess"
+            />
           </div>
         </div>
       </div>
-
     </div>
 
     <div v-if="state.reserveSuccess" class="success-message">
       Prenotazione effettuata con successo!
     </div>
 
-    <button class="button"
-      :enabled="selectedSubjectProf.subject !== '' && selectedSubjectProf.prof !== ''" :loading="state.isLoading">
-      <div v-if="props.isLogged" @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">Prenota</div>
+    <button
+      class="button"
+      :enabled="selectedSubjectProf.subject !== '' && selectedSubjectProf.prof !== ''"
+      :loading="state.isLoading"
+    >
+      <div
+        v-if="props.isLogged"
+        @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)"
+      >
+        Prenota
+      </div>
       <div v-else @click="loginClicked()">Accedi e prenota</div>
     </button>
   </div>

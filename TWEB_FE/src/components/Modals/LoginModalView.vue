@@ -2,7 +2,7 @@
 import './LoginModal.css'
 import InputTextView from '@/components/InputText/InputTextView.vue'
 import { ref } from 'vue'
-import { login } from '../../StateService.vue'
+import { login } from '../../StateService.js'
 
 defineProps({
   modelValue: Object
@@ -18,7 +18,6 @@ function _login(accountValue, passwordValue) {
     emits('close')
   })
 }
-
 </script>
 
 <template>

@@ -4,7 +4,6 @@ import { ref, onBeforeMount } from 'vue'
 import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 import './UserProfile.css'
 import { PAGE_HOME } from '../../constants'
-// import { addSessionID } from '../../StateService.vue'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -133,7 +132,6 @@ const allRepetitions = ref([
 const nextRepetitions = ref([])
 const pastRepetitions = ref([])
 
-
 onBeforeMount(async () => {
   try {
     var requestOptions = {
@@ -164,10 +162,9 @@ onBeforeMount(async () => {
 })
 
 function _logout() {
-  emits('changePage', PAGE_HOME);
-  emits('updateUser', null);
+  emits('changePage', PAGE_HOME)
+  emits('updateUser', null)
 }
-
 </script>
 
 <template>
