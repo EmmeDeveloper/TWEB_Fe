@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import LessonReservationDetails from './LessonReservationDetails.vue'
 import FilterChip from '../UI/FilterChipView.vue'
-import { useStore } from '../../StateService.js'
+import { useStore, addRepetition } from '../../StateService.js'
 
 const props = defineProps({
   repetition: Object,
@@ -15,12 +15,12 @@ const props = defineProps({
   isLogged: Boolean
 })
 
-const globalState = useStore()
+const globalState = ref(useStore());
 
-const emits = defineEmits(['reservedLesson', 'loginClicked'])
+const emits = defineEmits(['reservedLesson', 'loginClicked']);
 
 const state = ref({
-  isLogged: globalState.userData != null,
+  isLogged: globalState.value.userData != null,
   isLoading: false,
   reserveSuccess: false
 })
@@ -35,37 +35,26 @@ function selectProfessor(subject, prof) {
   selectedSubjectProf.value.prof = prof
 }
 
-// function reserve(subject, prof) {
-//   state.value.isLoading = true
-//   setTimeout(() => {
-//     state.value.isLoading = false
-//     state.value.reserveSuccess = true
-//   }, 1000)
-// }
-
 function loginClicked() {
   emits('loginClicked')
 }
+
+async function reserve(subject, prof) {
+  console.log('reserve')
+  state.value.isLoading = false
+  await addRepetition(subject, prof, props.date, props.time).then(() => {
+    state.value.reserveSuccess = true
+    emits('reservedLesson')
+  }).finally(() => {
+    state.value.isLoading = false
+  })
+}
+
 </script>
 
 <template>
   <div>
-    <div v-for="(values, key) in prova2" :key="key">
-      <h3>{{ key }}</h3>
-      <ul>
-        <li v-for="value in values" :key="value">
-          {{ value }}
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div>
     <LessonReservationDetails :time="props.time" :date="props.date" />
-
-    {{ props.courseProfMap }}
-    {{ globalState.courses }}
-
     <div class="sticky-header" v-for="(profs, subject) in props.courseProfMap" :key="subject">
       <div v-if="profs.length != 0" class="course-title">
         {{ subject }}
@@ -73,16 +62,9 @@ function loginClicked() {
 
         <div class="professor-row">
           <div class="flow-row">
-            <FilterChip
-              v-for="professor in profs"
-              :key="professor.id"
-              :selected="
-                selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
-              "
-              @click="selectProfessor(subject, professor.id)"
-              :label="`${professor.name} ${professor.surname}`"
-              :enabled="!state.isLoading && !state.reserveSuccess"
-            />
+            <FilterChip v-for="professor in profs" :key="professor.id" :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
+              " @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
+              :enabled="!state.isLoading && !state.reserveSuccess" />
           </div>
         </div>
       </div>
@@ -91,16 +73,9 @@ function loginClicked() {
     <div v-if="state.reserveSuccess" class="success-message">
       Prenotazione effettuata con successo!
     </div>
-
-    <button
-      class="button"
-      :enabled="selectedSubjectProf.subject !== '' && selectedSubjectProf.prof !== ''"
-      :loading="state.isLoading"
-    >
-      <div
-        v-if="props.isLogged"
-        @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)"
-      >
+    <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
+      :loading="state.isLoading">
+      <div v-if="state.isLogged" @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">
         Prenota
       </div>
       <div v-else @click="loginClicked()">Accedi e prenota</div>

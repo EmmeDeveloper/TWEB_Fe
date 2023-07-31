@@ -2,38 +2,13 @@ import { provide, ref, inject } from 'vue'
 import { PAGE_HOME } from './constants'
 import { BACKEND_LINK } from './environment'
 
-// const userData = {
-//   birthDate: '',
-//   phone: '',
-//   memberSince: '',
-//   address: '',
-//   role: 'User',
-//   id: '1',
-//   email: 'giovanni@example.com',
-//   surname: 'Bianchi',
-//   account: 'giovanni',
-//   name: 'Giovanni'
-// }
-
-const courses = [
-  {
-    title: 'Programmazione 1',
-    id: '1'
-  },
-  {
-    title: 'Algoritmi',
-    id: '2'
-  },
-  {
-    title: 'Database',
-    id: '3'
-  }
-]
 
 const state = ref({
   userData: null,
   currentPage: PAGE_HOME,
-  courses: courses
+  courses: [], 
+  allRepetitions: [],
+  userRepetitions: [],
 })
 
 export function initStore() {
@@ -100,8 +75,74 @@ export async function getAllCourses() {
   }
 }
 
-export async function addSessionID(options) {
-  if (!options.headers) options.headers = {}
-  options.headers['JSESSIONID'] = document.cookie
-  console.log(options.headers)
+
+export async function addRepetition(course, professor, date, time, note) {
+  try {
+    var raw = JSON.stringify({
+      idcourse: course,
+      idprofessor: professor,
+      date: date,
+      note: note,
+      time: time
+    })
+
+    var requestOptions = {
+      method: 'POST',
+      body: raw,
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/repetitions`, requestOptions)
+    if (result.status != 200) console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getUserRepetitions(userID) {
+  if (userID == null) userID = state.value.userData.id;
+  try {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(
+      `${BACKEND_LINK}/users/repetitions?userID=${userID}&startDate=2022-01-01&endDate=2024-12-31`,
+      requestOptions
+    )
+
+    if (result.status == 200) {
+      const userRepetitions = (await result.json()).repetitions;
+      state.value.userRepetitions = userRepetitions;
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getCoursesRepetitions(courseIds = []) {
+
+  if (courseIds.length == 0) courseIds = state.value.courses.map(c => c.id);
+  
+  try {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    }
+
+    var ids = courseIds.map(id => `courseIDs=${id}`).join('&');
+
+    const result = await fetch(
+      `${BACKEND_LINK}/repetitions?${ids}&startDate=2022-01-01&endDate=2024-12-31`,
+      requestOptions
+    )
+
+    if (result.status == 200) {
+      const allRepetitions = (await result.json()).repetitions
+      state.value.allRepetitions = allRepetitions;
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
 }
