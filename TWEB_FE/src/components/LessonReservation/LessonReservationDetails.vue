@@ -1,4 +1,7 @@
 <template>
+  {{ props }}
+
+
   <div :style="{ width: '100%', padding: '0 16px' }">
     <h2 v-if="props.title" style="font-weight: bold; font-size: 20px; padding: 16px 0;">
       {{ props.title }}

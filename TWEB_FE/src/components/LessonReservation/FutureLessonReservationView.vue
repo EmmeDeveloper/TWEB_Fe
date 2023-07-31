@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import LessonReservationDetails from './LessonReservationDetails.vue'
 import FilterChip from '../UI/FilterChipView.vue'
 import { useStore, addRepetition } from '../../StateService.js'
@@ -12,12 +12,11 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  isLogged: Boolean
 })
 
 const globalState = ref(useStore());
 
-const emits = defineEmits(['reservedLesson', 'loginClicked']);
+const emits = defineEmits(['reservedLesson', 'loginClicked', 'deletedLesson']);
 
 const state = ref({
   isLogged: globalState.value.userData != null,
@@ -50,36 +49,69 @@ async function reserve(subject, prof) {
   })
 }
 
+const uiData = computed(() => {
+  return {
+    title: props.repetition != null ? 'La tua lezione' : null,
+    time: props.repetition != null ? props.repetition.time : props.time,
+    date: props.repetition != null ? new Date(props.repetition.date) : props.date,
+    course: props.repetition != null ? props.repetition.course : null,
+    professor: props.repetition != null ? props.repetition.professor : null
+  }
+});
+
 </script>
 
 <template>
   <div>
-    <LessonReservationDetails :time="props.time" :date="props.date" />
-    <div class="sticky-header" v-for="(profs, subject) in props.courseProfMap" :key="subject">
-      <div v-if="profs.length != 0" class="course-title">
-        {{ subject }}
-        {{ globalState.courses.find((course) => course.id === subject)?.title }}
+    {{ uiData }}
+    <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course" :professor="uiData.professor" />
 
-        <div class="professor-row">
-          <div class="flow-row">
-            <FilterChip v-for="professor in profs" :key="professor.id" :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
-              " @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
-              :enabled="!state.isLoading && !state.reserveSuccess" />
+    <!-- NEW LESSON -->
+    <div v-if="!props.repetition">
+      <div class="sticky-header" v-for="(profs, subject) in props.courseProfMap" :key="subject">
+        <div v-if="profs.length != 0" class="course-title">
+          {{ subject }}
+          {{ globalState.courses.find((course) => course.id === subject)?.title }}
+
+          <div class="professor-row">
+            <div class="flow-row">
+              <FilterChip v-for="professor in profs" :key="professor.id" :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
+                " @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
+                :enabled="!state.isLoading && !state.reserveSuccess" />
+            </div>
           </div>
         </div>
       </div>
+
+      <div v-if="state.reserveSuccess" class="success-message">
+        Prenotazione effettuata con successo!
+      </div>
+      <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
+        :loading="state.isLoading">
+        <div v-if="state.isLogged" @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">
+          Prenota
+        </div>
+        <div v-else @click="loginClicked()">Accedi e prenota</div>
+      </button>
     </div>
 
-    <div v-if="state.reserveSuccess" class="success-message">
-      Prenotazione effettuata con successo!
-    </div>
-    <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
-      :loading="state.isLoading">
-      <div v-if="state.isLogged" @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">
-        Prenota
+    <!-- RESERVED LESSON -->
+    <div v-else>
+      <div class="error-box">
+        <i class="mdi mdi-alert" style="padding-right: 8px;"></i>
+        Cancellando la prenotazione non sarà più possibile ripristinarla, e il professore potrebbe non essere disponibile
+        in futuro.
       </div>
-      <div v-else @click="loginClicked()">Accedi e prenota</div>
-    </button>
+
+      <div v-if="state.reserveSuccess" class="success-message">
+        Prenotazione cancellata con successo!
+      </div>
+      <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
+        :loading="state.isLoading">
+        <i class="mdi mdi-delete" style="padding-right: 8px;"></i>
+        Cancella prenotazione
+      </button>
+    </div>
   </div>
 </template>
 
@@ -114,4 +146,6 @@ async function reserve(subject, prof) {
   font-weight: bold;
   padding: 24px 16px;
 }
+
+.error-box {}
 </style>

@@ -28,7 +28,7 @@ function isToday(day) {
 
 const state = ref(useStore());
 
-const selectedDay = ref(null);
+const selectedItem = ref(null);
 
 const rep = {
   date: '2023-03-26',
@@ -55,7 +55,7 @@ const rep = {
   id: 'ff439e73-f69a-47b9-8713-37c02c17d4b5'
 };
 
-const time = 15;
+const _time = 15;
 const date = new Date('2023-03-26');
 
 const prof = {
@@ -64,14 +64,21 @@ const prof = {
   '3': [{ id: '5', name: 'Giacomo', surname: 'Gialli' }]
 };
 
-function selectRepetition(day) {
-  selectedDay.value = day;
+function selectFreeItem(day, time = _time) {
+  selectedItem.value = {
+    date: day.date,
+    time: time,
+  };
 }
 
 function repetitionUpdated() {
-  selectedDay.value = null;
+  selectedItem.value = null;
   getCoursesRepetitions();
   getUserRepetitions();
+}
+
+function selectRepetition(repetition) {
+  selectedItem.value =  { repetition };
 }
 
 const weeks = computed(() => {
@@ -114,6 +121,8 @@ const weeks = computed(() => {
   VAMOOOOOOOOOOOOOOOOS
   <div>{{ state.userRepetitions }}</div>
 
+  <button @click="selectRepetition(rep)">Select</button>
+
   <div class="calendar">
     <div class="header">
       <button @click="prevMonth">&lt;</button>
@@ -126,15 +135,15 @@ const weeks = computed(() => {
         <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
       </tr>
       <tr v-for="week in weeks" :key="week">
-        <td v-for="day in week" :key="day" @click="selectRepetition(day.date)">
+        <td v-for="day in week" :key="day" @click="selectFreeItem(day.date)">
           {{ day.day }}
         </td>
       </tr>
     </table>
 
     <div>
-      Giorno selezionato: {{ selectedDay }}
-      <FutureLessonReservationView v-if="!!selectedDay" :reservation="rep" :time="time" :date="selectedDay"
+      Selezionato: {{ selectedItem }}
+      <FutureLessonReservationView v-if="!!selectedItem" :repetition="selectedItem.repetition" :time="selectedItem.time" :date="selectedItem.date"
         :courseProfMap="prof" @reservedLesson="repetitionUpdated" />
     </div>
   </div>
