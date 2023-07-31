@@ -1,19 +1,16 @@
 <script setup>
 import LoginModalView from '@/components/Modals/LoginModalView.vue'
-import { ref } from 'vue'
+import { ref, computed  } from 'vue'
 import './Navbar.css'
 import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from '../../constants';
-
-
 
 const props = defineProps({ page: String, userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
 
 const showModalLogin = ref(false)
-const user = ref(props.userData)
+const user = computed(() => props.userData) // Use computed to make it reactive to props.userData changes
 
 const updateNavbarUser = (u) => {
-  user.value = u
   emits('updateUser', u)
 }
 

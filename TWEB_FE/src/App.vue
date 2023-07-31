@@ -5,16 +5,23 @@ import UserProfileView from './components/UserProfile/UserProfileView.vue'
 import CalendarView from './components/Calendar/CalendarView.vue';
 import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from './constants';
 import { initStore, login, updatePage, updateUser } from './StateService.vue';
+import { useCookies } from "vue3-cookies";
+
 
 const state = initStore();
 
 // TODO: Login automatico, da rimuovere
-login('giovanni','pass');
+login('giovanni','pass').then(u => {
+  updateUser(u);
+});
+const { cookies } = useCookies();
 
 
 </script>
 
 <template>
+  {{ cookies.keys() || "ciao" }}
+  {{ state.userData }}
   <header>
     <Navbar :page="state.currentPage" @changePage="updatePage" :userData="state.userData" @updateUser="updateUser" />
   </header>

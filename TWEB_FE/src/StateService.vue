@@ -70,16 +70,42 @@ export async function login(accountValue, passwordValue) {
     var requestOptions = {
       method: 'POST',
       body: raw,
-      redirect: 'follow'
+      redirect: 'follow',
     }
 
     const result = await fetch(`${BACKEND_LINK}/login`, requestOptions);
+
+  // Step 1: Extract JSESSIONID value from the given string
+    // const inputString = result.headers.get('session');
+    // const match = inputString.match(/JSESSIONID=([^;]+)/);
+    // const JSESSIONID = match ? match[1] : null;
+    // console.log(JSESSIONID);
+
+    // // Step 2: Set the vue3 cookie
+    // document.cookie = `JSESSIONID=${JSESSIONID}`;
+
     const data = await result.json();
-    state.value.userData = data;
+    console.log(result);
+    return data.user;
   } catch (error) {
     console.log(error)
   }
 }
+
+export async function logout() {
+  try {
+    var requestOptions = {
+      method: 'POST',
+      body: new URLSearchParams(),
+      redirect: 'follow'
+    }
+    const result = await fetch(`${BACKEND_LINK}/logout`, requestOptions)
+    if (result.status != 200) console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export async function getAllCourses() {
   try {
@@ -89,6 +115,13 @@ export async function getAllCourses() {
   } catch (error) {
     console.log(error);
   }
+}
+
+
+export async function addSessionID(options) {
+  if (!options.headers) options.headers = {};
+  options.headers['JSESSIONID'] = document.cookie;
+  console.log(options.headers);
 }
 
 

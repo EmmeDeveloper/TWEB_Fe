@@ -13,8 +13,8 @@ let accountValue = ref('')
 let passwordValue = ref('')
 
 function _login(accountValue, passwordValue) {
-  login(accountValue, passwordValue).then(() => {
-    emits('updateUser', accountValue)
+  login(accountValue, passwordValue).then((u) => {
+    emits('updateUser', u)
     emits('close')
   })
 }

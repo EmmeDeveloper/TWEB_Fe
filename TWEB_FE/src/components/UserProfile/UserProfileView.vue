@@ -4,6 +4,7 @@ import { ref, onBeforeMount } from 'vue'
 import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 import './UserProfile.css'
 import { PAGE_HOME } from '../../constants'
+// import { addSessionID } from '../../StateService.vue'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -132,22 +133,6 @@ const allRepetitions = ref([
 const nextRepetitions = ref([])
 const pastRepetitions = ref([])
 
-async function logout() {
-  try {
-    var requestOptions = {
-      method: 'POST',
-      body: new URLSearchParams(),
-      redirect: 'follow'
-    }
-    const result = await fetch(`${BACKEND_LINK}/logout`, requestOptions)
-    if (result.status == 200) {
-      emits('updateUser', null)
-      emits('changePage', PAGE_HOME)
-    } else console.log('error')
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 onBeforeMount(async () => {
   try {
@@ -155,6 +140,9 @@ onBeforeMount(async () => {
       method: 'GET',
       redirect: 'follow'
     }
+
+    // addSessionID(requestOptions)
+
     const result = await fetch(
       `${BACKEND_LINK}/users/repetitions?userID=${props.userData.id}&startDate=2020-01-01&endDate=2023-12-31`,
       requestOptions
@@ -174,10 +162,16 @@ onBeforeMount(async () => {
     console.log(error)
   }
 })
+
+function _logout() {
+  emits('changePage', PAGE_HOME);
+  emits('updateUser', null);
+}
+
 </script>
 
 <template>
-  <button class="delete-button cursor-pointer" @click="logout()">Logout</button>
+  <button class="delete-button cursor-pointer" @click="_logout()">Logout</button>
   <div class="flex flex-column padding-1">
     <span class="section">Le tue prossime lezioni</span>
     <div class="flex gap-2 padding-1" v-if="nextRepetitions.length > 0">
