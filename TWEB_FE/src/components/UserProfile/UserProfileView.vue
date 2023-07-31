@@ -210,7 +210,7 @@ function _logout() {
   </div>
   <div class="flex flex-row justify-space-evenly">
     <div class="flex flex-column align-center">
-      <span class="section">Prossime lezioni</span>
+      <span class="section">Prossima lezione</span>
       <div class="flex gap-2 padding-1" v-if="nextRepetitions.length > 0">
         <LessonCardView
           v-for="repetition in nextRepetitions"
@@ -220,7 +220,7 @@ function _logout() {
       </div>
     </div>
     <div class="flex flex-column align-center">
-      <span class="section">Lezioni precedenti</span>
+      <span class="section">Lezione precedente</span>
       <div class="flex gap-2 padding-1" v-if="pastRepetitions.length > 0">
         <LessonCardView
           :repetition="pastRepetitions[0]"
