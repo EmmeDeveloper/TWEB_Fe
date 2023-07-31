@@ -139,8 +139,6 @@ onBeforeMount(async () => {
       redirect: 'follow'
     }
 
-    // addSessionID(requestOptions)
-
     const result = await fetch(
       `${BACKEND_LINK}/users/repetitions?userID=${props.userData.id}&startDate=2020-01-01&endDate=2023-12-31`,
       requestOptions
@@ -168,23 +166,64 @@ function _logout() {
 </script>
 
 <template>
-  <button class="delete-button cursor-pointer" @click="_logout()">Logout</button>
-  <div class="flex flex-column padding-1">
-    <span class="section">Le tue prossime lezioni</span>
-    <div class="flex gap-2 padding-1" v-if="nextRepetitions.length > 0">
-      <LessonCardView
-        v-for="repetition in nextRepetitions"
-        :repetition="repetition"
-        :key="repetition.id"
-      ></LessonCardView>
+  <div class="user-info">
+    <div class="user-info-card">
+      <div class="user-info-section">
+        <div class="user-info-data">
+          <div class="title">Nome:</div>
+          <div class="dato">{{ userData.name }}</div>
+        </div>
+        <div class="user-info-data">
+          <div class="title">Cognome:</div>
+          <div class="dato">{{ userData.surname }}</div>
+        </div>
+        <div class="user-info-data" v-if="userData.birthDate">
+          <div class="title">Data di nascita:</div>
+          <div class="dato">{{ userData.birthDate }}</div>
+        </div>
+      </div>
+      <div class="user-info-section">
+        <div class="user-info-data" v-if="userData.email">
+          <div class="title">Email:</div>
+          <div class="dato">{{ userData.email }}</div>
+        </div>
+        <div class="user-info-data" v-if="userData.phone">
+          <div class="title">Numero di telefono:</div>
+          <div class="dato">{{ userData.phone }}</div>
+        </div>
+        <div class="user-info-data" v-if="userData.address">
+          <div class="title">Indirizzo:</div>
+          <div class="dato">{{ userData.address }}</div>
+        </div>
+        <div class="user-info-data" v-if="userData.memberSince">
+          <div class="title">Iscritto dal:</div>
+          <div class="dato">{{ userData.memberSince }}</div>
+        </div>
+      </div>
+      <div class="flex align-center">
+        <span class="cursor-pointer logout-text" @click="_logout()">Logout</span>
+      </div>
     </div>
-    <span class="section">Le tue lezioni passate</span>
-    <div class="flex gap-2 padding-1" v-if="pastRepetitions.length > 0">
-      <LessonCardView
-        v-for="pastRepetition in pastRepetitions"
-        :repetition="pastRepetition"
-        :key="pastRepetition.id"
-      ></LessonCardView>
+  </div>
+  <div class="flex flex-row justify-space-evenly">
+    <div class="flex flex-column align-center">
+      <span class="section">Prossime lezioni</span>
+      <div class="flex gap-2 padding-1" v-if="nextRepetitions.length > 0">
+        <LessonCardView
+          v-for="repetition in nextRepetitions"
+          :repetition="repetition"
+          :key="repetition.id"
+        ></LessonCardView>
+      </div>
+    </div>
+    <div class="flex flex-column align-center">
+      <span class="section">Lezioni precedenti</span>
+      <div class="flex gap-2 padding-1" v-if="pastRepetitions.length > 0">
+        <LessonCardView
+          :repetition="pastRepetitions[0]"
+          :key="pastRepetitions[0].id"
+        ></LessonCardView>
+      </div>
     </div>
   </div>
 </template>
