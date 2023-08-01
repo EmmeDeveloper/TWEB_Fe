@@ -21,15 +21,15 @@
       </span>
     </div>
 
-    <div v-if="props.subject" style="display: flex; align-items: center; padding-top: 8px;">
-      <i class="mdi mdi-subject" style="padding-right: 8px;"></i>
+    <div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px;">
+      <i class="mdi mdi-clipboard-list" style="padding-right: 8px;"></i>
       <span style="font-size: 16px;">
-        {{ props.subject }}
+        {{ props.course.title }}
       </span>
     </div>
 
     <div v-if="props.professor" style="display: flex; align-items: center; padding-top: 8px;">
-      <i class="mdi mdi-people" style="padding-right: 8px;"></i>
+      <i class="mdi mdi-account-multiple" style="padding-right: 8px;"></i>
       <span style="font-size: 16px;">
         {{ props.professor.name }} {{ props.professor.surname }}
       </span>
@@ -42,7 +42,7 @@ const props = defineProps({
   title: String,
   time: Number,
   date: Date,
-  subject: String,
+  course: String,
   professor: Object,
 });
 

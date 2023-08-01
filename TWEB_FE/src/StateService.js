@@ -6,7 +6,7 @@ import { BACKEND_LINK } from './environment'
 const state = ref({
   userData: null,
   currentPage: PAGE_HOME,
-  courses: [], 
+  courses: [],
   allRepetitions: [],
   userRepetitions: [],
 })
@@ -75,30 +75,6 @@ export async function getAllCourses() {
   }
 }
 
-
-export async function addRepetition(course, professor, date, time, note) {
-  try {
-    var raw = JSON.stringify({
-      idcourse: course,
-      idprofessor: professor,
-      date: date,
-      note: note,
-      time: time
-    })
-
-    var requestOptions = {
-      method: 'POST',
-      body: raw,
-      redirect: 'follow'
-    }
-
-    const result = await fetch(`${BACKEND_LINK}/repetitions`, requestOptions)
-    if (result.status != 200) console.log('error')
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export async function getUserRepetitions(userID) {
   if (userID == null) userID = state.value.userData.id;
   try {
@@ -124,7 +100,7 @@ export async function getUserRepetitions(userID) {
 export async function getCoursesRepetitions(courseIds = []) {
 
   if (courseIds.length == 0) courseIds = state.value.courses.map(c => c.id);
-  
+
   try {
     var requestOptions = {
       method: 'GET',
@@ -145,4 +121,33 @@ export async function getCoursesRepetitions(courseIds = []) {
   } catch (error) {
     console.log(error)
   }
+}
+
+export async function updateRepetitionStatus(id, status, note) {
+
+  var raw = JSON.stringify({
+    id, note
+  })
+
+  try {
+    var requestOptions = {
+      method: 'PUT',
+      redirect: 'follow',
+      body: raw
+    }
+
+    const result = await fetch(
+      `${BACKEND_LINK}/repetitions?status=${status}`,
+      requestOptions
+    )
+
+    if (result.status != 200) {
+      console.log("error", result)
+      throw new Error('error');
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error(error);
+  }
+
 }

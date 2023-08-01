@@ -2,7 +2,8 @@
 import { ref, computed } from 'vue'
 import LessonReservationDetails from './LessonReservationDetails.vue'
 import FilterChip from '../UI/FilterChipView.vue'
-import { useStore, addRepetition } from '../../StateService.js'
+import { useStore } from '../../StateService.js'
+import { BACKEND_LINK } from '../../environment.js'
 
 const props = defineProps({
   repetition: Object,
@@ -38,6 +39,60 @@ function loginClicked() {
   emits('loginClicked')
 }
 
+async function deleteRepetition(id) {
+  try {
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/repetitions?id=${id}`, requestOptions)
+    if (result.status != 200) { console.log('error'); throw new Error('error') }
+  } catch (error) {
+    console.log(error)
+    throw new Error('error');
+  }
+}
+
+async function deleteLesson(id) {
+  console.log('delete')
+  state.value.isLoading = false
+  await deleteRepetition(id).then(() => {
+    state.value.reserveSuccess = true
+    emits('deletedLesson')
+  }).finally(() => {
+    state.value.isLoading = false
+  })
+}
+
+async function addRepetition(course, professor, date, time, note) {
+  try {
+    var raw = JSON.stringify({
+      idcourse: course,
+      idprofessor: professor,
+      date: date,
+      note: note,
+      time: time
+    })
+
+    var requestOptions = {
+      method: 'POST',
+      body: raw,
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/repetitions`, requestOptions)
+    if (result.status != 200) {
+      console.log('error');
+      throw new Error('error')
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error('error');
+  }
+}
+
+
 async function reserve(subject, prof) {
   console.log('reserve')
   state.value.isLoading = false
@@ -64,7 +119,8 @@ const uiData = computed(() => {
 <template>
   <div>
     {{ uiData }}
-    <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course" :professor="uiData.professor" />
+    <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
+      :professor="uiData.professor" />
 
     <!-- NEW LESSON -->
     <div v-if="!props.repetition">
@@ -75,8 +131,9 @@ const uiData = computed(() => {
 
           <div class="professor-row">
             <div class="flow-row">
-              <FilterChip v-for="professor in profs" :key="professor.id" :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id
-                " @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
+              <FilterChip v-for="professor in profs" :key="professor.id"
+                :selected="selectedSubjectProf.subject === subject && selectedSubjectProf.prof === professor.id"
+                @click="selectProfessor(subject, professor.id)" :label="`${professor.name} ${professor.surname}`"
                 :enabled="!state.isLoading && !state.reserveSuccess" />
             </div>
           </div>
@@ -106,8 +163,7 @@ const uiData = computed(() => {
       <div v-if="state.reserveSuccess" class="success-message">
         Prenotazione cancellata con successo!
       </div>
-      <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
-        :loading="state.isLoading">
+      <button v-else class="button" :loading="state.isLoading" @click="deleteLesson(props.repetition.id)">
         <i class="mdi mdi-delete" style="padding-right: 8px;"></i>
         Cancella prenotazione
       </button>

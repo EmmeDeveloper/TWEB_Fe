@@ -25,7 +25,7 @@ const changePage = (p) => {
     <div>
       <a class="primary-text pointer" @click="changePage(PAGE_HOME)">Home</a>
       <a class="primary-text pointer">?</a>
-      <a class="primary-text pointer" @click="changePage(PAGE_CALENDAR)">Caledario</a>
+      <a class="primary-text pointer" @click="changePage(PAGE_CALENDAR)">Calendario</a>
     </div>
     <div>
       <button

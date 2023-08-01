@@ -2,6 +2,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import FutureLessonReservationView from '../LessonReservation/FutureLessonReservationView.vue';
+import PastLessonReservationView from '../LessonReservation/PastLessonReservationView.vue';
 import { getCoursesRepetitions, getUserRepetitions, useStore } from '../../StateService.js';
 
 const currentDate = ref(new Date());
@@ -25,38 +26,12 @@ function isToday(day) {
   return day.isCurrentMonth && day.date === today.getDate();
 }
 
-
 const state = ref(useStore());
 
 const selectedItem = ref(null);
 
-const rep = {
-  date: '2023-03-26',
-  time: 13,
-  status: 'deleted',
-  note: 'Ripetizione annullata per cancellazione professore',
-  professor: null,
-  user: {
-    birthDate: '',
-    phone: '',
-    memberSince: '',
-    address: '',
-    role: 'User',
-    id: '1',
-    email: 'giovanni@example.com',
-    surname: 'Bianchi',
-    account: 'giovanni',
-    name: 'Giovanni'
-  },
-  course: {
-    title: 'Programmazione 1',
-    id: '1'
-  },
-  id: 'ff439e73-f69a-47b9-8713-37c02c17d4b5'
-};
-
 const _time = 15;
-const date = new Date('2023-03-26');
+const date = new Date();
 
 const prof = {
   '1': [{ id: '1', name: 'Giovanni', surname: 'Bianchi' }, { id: '2', name: 'Mario', surname: 'Rossi' }],
@@ -64,10 +39,11 @@ const prof = {
   '3': [{ id: '5', name: 'Giacomo', surname: 'Gialli' }]
 };
 
-function selectFreeItem(day, time = _time) {
+function selectFreeItem(date, time = _time) {
   selectedItem.value = {
-    date: day.date,
+    date: date,
     time: time,
+    showFuture: true
   };
 }
 
@@ -78,7 +54,11 @@ function repetitionUpdated() {
 }
 
 function selectRepetition(repetition) {
-  selectedItem.value =  { repetition };
+  selectedItem.value = {
+    repetition: repetition,
+    showFuture: new Date(repetition.date).setHours(repetition.time) >= new Date(),
+    showPast: new Date(repetition.date).setHours(repetition.time) < new Date(),
+  };
 }
 
 const weeks = computed(() => {
@@ -117,11 +97,19 @@ const weeks = computed(() => {
 </script>
 
 <template>
-  <div>{{ state.allRepetitions }}</div>
-  VAMOOOOOOOOOOOOOOOOS
-  <div>{{ state.userRepetitions }}</div>
-
-  <button @click="selectRepetition(rep)">Select</button>
+  <div>
+    <div v-for="repetition in state.userRepetitions" :key="repetition.id" @click="selectRepetition(repetition)">
+      ----------------------------------
+      <div>{{ repetition.date }}</div>
+      <div>{{ repetition.time }}</div>
+      <div>{{ repetition.status }}</div>
+      <div>{{ repetition.note }}</div>
+      <div>{{ repetition.professor }}</div>
+      <div>{{ repetition.user }}</div>
+      <div>{{ repetition.course }}</div>
+      <div>{{ repetition.id }}</div>
+    </div>
+  </div>
 
   <div class="calendar">
     <div class="header">
@@ -143,8 +131,13 @@ const weeks = computed(() => {
 
     <div>
       Selezionato: {{ selectedItem }}
-      <FutureLessonReservationView v-if="!!selectedItem" :repetition="selectedItem.repetition" :time="selectedItem.time" :date="selectedItem.date"
-        :courseProfMap="prof" @reservedLesson="repetitionUpdated" />
+
+      <FutureLessonReservationView v-if="selectedItem?.showFuture"
+        :repetition="selectedItem.repetition" :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof"
+        @reservedLesson="repetitionUpdated" @deletedLesson="repetitionUpdated" />
+
+      <PastLessonReservationView v-else-if="selectedItem?.showPast"
+        :repetition="selectedItem.repetition" @updatedLesson="repetitionUpdated" />
     </div>
   </div>
 </template>
