@@ -118,7 +118,6 @@ const uiData = computed(() => {
 
 <template>
   <div>
-    {{ uiData }}
     <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
       :professor="uiData.professor" />
 

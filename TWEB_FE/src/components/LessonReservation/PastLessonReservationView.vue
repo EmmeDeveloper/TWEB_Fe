@@ -50,9 +50,6 @@ async function updateLesson(status, note) {
 
 <template>
   <div>
-
-    {{ uiData }}
-
     <template v-if="!state.showIssue">
       <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
         :professor="uiData.professor" />
