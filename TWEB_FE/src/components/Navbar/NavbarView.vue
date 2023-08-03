@@ -1,8 +1,8 @@
 <script setup>
 import LoginModalView from '@/components/Modals/LoginModalView.vue'
-import { ref, computed  } from 'vue'
+import { ref, computed } from 'vue'
 import './Navbar.css'
-import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_PROFILE } from '../../constants';
+import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_ADMIN, PAGE_USER_PROFILE } from '../../constants'
 
 const props = defineProps({ page: String, userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -17,7 +17,6 @@ const updateNavbarUser = (u) => {
 const changePage = (p) => {
   emits('changePage', p)
 }
-
 </script>
 
 <template>
@@ -38,7 +37,7 @@ const changePage = (p) => {
       <div v-else class="flex gap-1 align-center">
         <button
           class="flex gap-1 pointer primary-button"
-          @click="changePage(PAGE_USER_PROFILE)"
+          @click="changePage(user.role == 'Admin' ? PAGE_USER_ADMIN : PAGE_USER_PROFILE)"
         >
           <p>Ciao {{ user.name }}</p>
           <img src="@/assets/person-circle.svg" alt="profilo utente" />

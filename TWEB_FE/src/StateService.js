@@ -2,13 +2,13 @@ import { provide, ref, inject } from 'vue'
 import { PAGE_HOME } from './constants'
 import { BACKEND_LINK } from './environment'
 
-
 const state = ref({
   userData: null,
   currentPage: PAGE_HOME,
   courses: [],
   allRepetitions: [],
   userRepetitions: [],
+  allProfessors: []
 })
 
 export function initStore() {
@@ -76,7 +76,7 @@ export async function getAllCourses() {
 }
 
 export async function getUserRepetitions(userID) {
-  if (userID == null) userID = state.value.userData.id;
+  if (userID == null) userID = state.value.userData.id
   try {
     var requestOptions = {
       method: 'GET',
@@ -89,8 +89,8 @@ export async function getUserRepetitions(userID) {
     )
 
     if (result.status == 200) {
-      const userRepetitions = (await result.json()).repetitions;
-      state.value.userRepetitions = userRepetitions;
+      const userRepetitions = (await result.json()).repetitions
+      state.value.userRepetitions = userRepetitions
     } else console.log('error')
   } catch (error) {
     console.log(error)
@@ -98,8 +98,7 @@ export async function getUserRepetitions(userID) {
 }
 
 export async function getCoursesRepetitions(courseIds = []) {
-
-  if (courseIds.length == 0) courseIds = state.value.courses.map(c => c.id);
+  if (courseIds.length == 0) courseIds = state.value.courses.map((c) => c.id)
 
   try {
     var requestOptions = {
@@ -107,7 +106,7 @@ export async function getCoursesRepetitions(courseIds = []) {
       redirect: 'follow'
     }
 
-    var ids = courseIds.map(id => `courseIDs=${id}`).join('&');
+    var ids = courseIds.map((id) => `courseIDs=${id}`).join('&')
 
     const result = await fetch(
       `${BACKEND_LINK}/repetitions?${ids}&startDate=2022-01-01&endDate=2024-12-31`,
@@ -116,7 +115,7 @@ export async function getCoursesRepetitions(courseIds = []) {
 
     if (result.status == 200) {
       const allRepetitions = (await result.json()).repetitions
-      state.value.allRepetitions = allRepetitions;
+      state.value.allRepetitions = allRepetitions
     } else console.log('error')
   } catch (error) {
     console.log(error)
@@ -124,9 +123,9 @@ export async function getCoursesRepetitions(courseIds = []) {
 }
 
 export async function updateRepetitionStatus(id, status, note) {
-
   var raw = JSON.stringify({
-    id, note
+    id,
+    note
   })
 
   try {
@@ -136,18 +135,34 @@ export async function updateRepetitionStatus(id, status, note) {
       body: raw
     }
 
-    const result = await fetch(
-      `${BACKEND_LINK}/repetitions?status=${status}`,
-      requestOptions
-    )
+    const result = await fetch(`${BACKEND_LINK}/repetitions?status=${status}`, requestOptions)
 
     if (result.status != 200) {
-      console.log("error", result)
-      throw new Error('error');
+      console.log('error', result)
+      throw new Error('error')
     }
   } catch (error) {
     console.log(error)
-    throw new Error(error);
+    throw new Error(error)
   }
+}
 
+export async function getAllProfessors() {
+  try {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/professors`, requestOptions)
+
+    if (result.status != 200) {
+      console.log('error', result)
+      throw new Error('error')
+    }
+
+    state.value.allProfessors = (await result.json()).professors
+  } catch (error) {
+    throw new Error(error)
+  }
 }
