@@ -4,7 +4,7 @@ import { ref, onBeforeMount } from 'vue'
 import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 import './UserProfile.css'
 import { PAGE_HOME } from '../../constants'
-import { logout } from '../../StateService.js'
+import { logout, getCoursesRepetitions } from '../../StateService.js'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -162,6 +162,7 @@ onBeforeMount(async () => {
 
 function _logout() {
   logout().then(() => {
+    getCoursesRepetitions()
     emits('changePage', PAGE_HOME)
     emits('updateUser', null)
   })

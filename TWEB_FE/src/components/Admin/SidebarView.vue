@@ -1,10 +1,24 @@
 <script setup>
 import { ref } from 'vue'
+import { getCoursesRepetitions, logout } from '../../StateService.js'
+import { PAGE_HOME } from '../../constants'
+
 let adminPage = ref(null)
+
+const emits = defineEmits(['changePage', 'updateUser'])
 
 function showAdminPage(page) {
   adminPage.value = page
 }
+
+function _logout() {
+  logout().then(() => {
+    getCoursesRepetitions()
+    emits('changePage', PAGE_HOME)
+    emits('updateUser', null)
+  })
+}
+
 </script>
 <template>
   <div id="app-sidebar" class="app-sidebar">
@@ -32,7 +46,7 @@ function showAdminPage(page) {
       </div>
     </div>
     <div class="divider"></div>
-    <div class="padding-button">
+    <div class="padding-button" @click="_logout">
       <div>Logout</div>
     </div>
   </div>

@@ -2,7 +2,7 @@
 import LoginModalView from '@/components/Modals/LoginModalView.vue'
 import { ref, computed } from 'vue'
 import './Navbar.css'
-import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_ADMIN, PAGE_USER_PROFILE } from '../../constants'
+import { PAGE_CALENDAR, PAGE_HOME, PAGE_MYLESSONS, PAGE_USER_ADMIN, PAGE_USER_PROFILE } from '../../constants'
 
 const props = defineProps({ page: String, userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
@@ -23,7 +23,7 @@ const changePage = (p) => {
   <nav>
     <div>
       <a class="primary-text pointer" @click="changePage(PAGE_HOME)">Home</a>
-      <a class="primary-text pointer">?</a>
+      <a class="primary-text pointer" @click="changePage(PAGE_MYLESSONS)">Le mie lezioni</a>
       <a class="primary-text pointer" @click="changePage(PAGE_CALENDAR)">Calendario</a>
     </div>
     <div>

@@ -4,6 +4,16 @@ import Sidebar from './SidebarView.vue'
 import { useStore, getAllProfessors, getAllCourses } from '../../StateService'
 import { onBeforeMount } from 'vue'
 
+const emits = defineEmits(['changePage', 'updateUser'])
+
+function updatePage(page) {
+  emits('changePage', page)
+}
+
+function updateUser(u) {
+  emits('updateUser', u)
+}
+
 onBeforeMount(async () => {
   await getAllProfessors()
   await getAllCourses()
@@ -14,7 +24,7 @@ const state = useStore()
 
 <template>
   <div class="flex gap-2" style="height: 100%">
-    <Sidebar></Sidebar>
+    <Sidebar @updateUser="updateUser" @changePage="updatePage" />
     <div>
       <table style="width: 100%">
         <tr>

@@ -60,6 +60,8 @@ export async function logout() {
     }
     const result = await fetch(`${BACKEND_LINK}/logout`, requestOptions)
     if (result.status != 200) console.log('error')
+    state.value.userRepetitions = []
+    state.value.allRepetitions = []
   } catch (error) {
     console.log(error)
   }

@@ -4,7 +4,8 @@ import Navbar from '@/components/Navbar/NavbarView.vue'
 import UserProfileView from '@/components/UserProfile/UserProfileView.vue'
 import CalendarView from '@/components/Calendar/CalendarView.vue'
 import AdminProfileView from '@/components/Admin/AdminProfileView.vue'
-import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_ADMIN, PAGE_USER_PROFILE } from './constants'
+import MyLessonsView from '@/components/MyLessons/MyLessonsView.vue'
+import { PAGE_CALENDAR, PAGE_HOME, PAGE_USER_ADMIN, PAGE_USER_PROFILE, PAGE_MYLESSONS } from './constants'
 import {
   initStore,
   login,
@@ -17,7 +18,6 @@ import {
 
 const state = initStore()
 
-// TODO: Login automatico, da rimuovere
 logout().then(
   setTimeout(() => {
     login('emme', 'pass').then((u) => {
@@ -27,6 +27,19 @@ logout().then(
     })
   }, 500)
 )
+
+// TODOS: 
+// Login automatico, da rimuovere
+// L'admin nel calendario non vede i disponibili, ma vede le lezioni di tutti gli utenti
+// L'admin non può prenotare lezioni
+// L'admin non ha le sezioni le mie lezioni
+// Fare filtro materie
+// Nel calendario devo mostrare solo le mie lezioni, delle altre non devo mostrare i professori prenotati
+
+
+
+
+
 </script>
 
 <template>
@@ -52,6 +65,7 @@ logout().then(
     @changePage="updatePage"
   />
   <CalendarView v-else-if="state.currentPage === PAGE_CALENDAR" />
+  <MyLessonsView v-else-if="state.currentPage === PAGE_MYLESSONS" />
 </template>
 
 <style scoped></style>

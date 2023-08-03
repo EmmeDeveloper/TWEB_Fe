@@ -40,11 +40,20 @@ function selectFreeItem(date, time = _time) {
 }
 
 function selectRepetition(repetition) {
- emits('selectItem', {
+  emits('selectItem', {
     repetition: repetition,
     showFuture: new Date(repetition.date).setHours(repetition.time) >= new Date(),
     showPast: new Date(repetition.date).setHours(repetition.time) < new Date(),
   });
+}
+
+const today = new Date();
+
+
+function isToday(date) {
+  return date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
 }
 
 const weeks = computed(() => {
@@ -62,6 +71,7 @@ const weeks = computed(() => {
   const endDate = new Date(lastDayOfMonth);
   endDate.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
 
+
   // Create map for lessons in the month
   const weeks = [];
   let currentDay = new Date(startDate);
@@ -76,6 +86,7 @@ const weeks = computed(() => {
         day: currentDay.getDate(),
         isCurrentMonth: currentDay.getMonth() === month,
         lessons: defaultLessons,
+        showFreeItems: (currentDay > new Date() || isToday(currentDay)) && currentDay.getDay() !== 0 && currentDay.getDay() !== 6 && props.selectableDates == null 
       };
       dayItem.date.setHours(8);
 
@@ -110,7 +121,8 @@ const weeks = computed(() => {
 
   <div class="calendar">
     <div class="header">
-      <button @click="prevMonth">&lt;</button>
+      <button @click="prevMonth"
+        :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth()">&lt;</button>
       <h2>{{ displayMonth }}</h2>
       <h2>{{ firstDayOfMonth }}</h2>
       <button @click="nextMonth">&gt;</button>
@@ -124,13 +136,15 @@ const weeks = computed(() => {
           {{ day.day }}
 
           <div v-for="lesson in day.lessons" :key="lesson.time">
-            <template v-if="lesson.repetition != null">
-              <div @click="selectRepetition(lesson.repetition)">
-                {{ lesson.repetition.course.title }}
-              </div>
-            </template>
-            <template v-else>
-              <div @click="selectFreeItem(day.date, lesson.time)">{{ lesson.time }} Disponibile</div>
+            <template v-if="day.isCurrentMonth">
+              <template v-if="lesson.repetition != null">
+                <div @click="selectRepetition(lesson.repetition)">
+                  {{ lesson.repetition.course.title }}
+                </div>
+              </template>
+              <template v-else-if="day.showFreeItems">
+                <div @click="selectFreeItem(day.date, lesson.time)">{{ lesson.time }} Disponibile</div>
+              </template>
             </template>
           </div>
         </td>

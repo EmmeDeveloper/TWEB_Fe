@@ -2,25 +2,15 @@
 import { ref, computed } from 'vue'
 import { getCoursesRepetitions, getUserRepetitions, useStore } from '../../StateService.js'
 import LessonCalendarView from '@/components/LessonCalendar/LessonCalendarView.vue'
-import FutureLessonReservationView from '@/components/LessonReservation/FutureLessonReservationView.vue'
 import PastLessonReservationView from '@/components/LessonReservation/PastLessonReservationView.vue'
 
-const prof = {
-  1: [
-    { id: '1', name: 'Giovanni', surname: 'Bianchi' },
-    { id: '2', name: 'Mario', surname: 'Rossi' }
-  ],
-  2: [
-    { id: '3', name: 'Luca', surname: 'Verdi' },
-    { id: '4', name: 'Giuseppe', surname: 'Neri' }
-  ],
-  3: [{ id: '5', name: 'Giacomo', surname: 'Gialli' }]
-}
 const state = ref(useStore())
+
+
 
 const lessonsMap = computed(() => {
   const map = {}
-  state.value.allRepetitions.forEach((repetition) => {
+  state.value.userRepetitions.forEach((repetition) => {
     const date = new Date(repetition.date)
     const key = date.toISOString().slice(0, 10) // Using toISOString() to get "YYYY-MM-DD" format
     if (!map[key]) {
@@ -30,6 +20,12 @@ const lessonsMap = computed(() => {
   })
   return map
 })
+
+const selectableDates = computed(() => {
+  return lessonsMap.value
+    ? Object.keys(lessonsMap.value)
+    : []
+});
 
 function repetitionUpdated() {
   selectedItem.value = null
@@ -47,7 +43,7 @@ function selectItem(item) {
 <template>
   <div>
     <div>
-      <div v-for="repetition in state.allRepetitions" :key="repetition.id">
+      <div v-for="repetition in state.userRepetitions" :key="repetition.id">
         ----------------------------------
         <div>{{ repetition.date }}</div>
         <div>{{ repetition.time }}</div>
@@ -62,23 +58,14 @@ function selectItem(item) {
 
     <LessonCalendarView
       :lessonsMap="lessonsMap"
+      :selectableDates="selectableDates"
       @repetitionUpdated="repetitionUpdated"
       @selectItem="selectItem"
     />
 
     <div>
-      <FutureLessonReservationView
-        v-if="selectedItem?.showFuture"
-        :repetition="selectedItem.repetition"
-        :time="selectedItem.time"
-        :date="selectedItem.date"
-        :courseProfMap="prof"
-        @reservedLesson="repetitionUpdated"
-        @deletedLesson="repetitionUpdated"
-      />
-
       <PastLessonReservationView
-        v-else-if="selectedItem?.showPast"
+        v-if="selectedItem?.showPast"
         :repetition="selectedItem.repetition"
         @updatedLesson="repetitionUpdated"
       />

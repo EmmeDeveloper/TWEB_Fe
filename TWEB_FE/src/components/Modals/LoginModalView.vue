@@ -2,7 +2,7 @@
 import './LoginModal.css'
 import InputTextView from '@/components/InputText/InputTextView.vue'
 import { ref } from 'vue'
-import { login } from '../../StateService.js'
+import { login, getCoursesRepetitions, getUserRepetitions } from '../../StateService.js'
 
 defineProps({
   modelValue: Object
@@ -14,6 +14,8 @@ let passwordValue = ref('')
 
 function _login(accountValue, passwordValue) {
   login(accountValue, passwordValue).then((u) => {
+    getCoursesRepetitions()
+    getUserRepetitions(u.id)
     emits('updateUser', u)
     emits('close')
   })
@@ -27,13 +29,8 @@ function _login(accountValue, passwordValue) {
         <div class="modal-header flex flex-row justify-center">
           <slot name="header">
             <p class="title-modal">Accedi</p>
-            <img
-              class="cursor-pointer image-position"
-              style="width: 25px"
-              src="../../assets/x-circle.svg"
-              @click="$emit('close')"
-              alt="chiudi modale"
-            />
+            <img class="cursor-pointer image-position" style="width: 25px" src="../../assets/x-circle.svg"
+              @click="$emit('close')" alt="chiudi modale" />
           </slot>
         </div>
         <div class="modal-body">
