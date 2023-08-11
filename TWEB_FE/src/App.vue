@@ -13,14 +13,14 @@ import {
   updateUser,
   logout,
   getCoursesRepetitions,
-  getUserRepetitions
+  getUserRepetitions,
 } from './StateService.js'
 
 const state = initStore()
 
 logout().then(
   setTimeout(() => {
-    login('emme', 'pass').then((u) => {
+    login('giovanni', 'pass').then((u) => {
       updateUser(u)
       getCoursesRepetitions()
       getUserRepetitions()
@@ -35,9 +35,6 @@ logout().then(
 // L'admin non ha le sezioni le mie lezioni
 // Fare filtro materie
 // Nel calendario devo mostrare solo le mie lezioni, delle altre non devo mostrare i professori prenotati
-
-
-
 
 
 </script>

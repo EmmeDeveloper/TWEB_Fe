@@ -8,7 +8,12 @@ const state = ref({
   courses: [],
   allRepetitions: [],
   userRepetitions: [],
-  allProfessors: []
+  allProfessors: [],
+  isAdmin : false,
+  teachings: {},
+  filteredTeachings: {},
+  filteredProfessors: [],
+  filteredCourses: [],
 })
 
 export function initStore() {
@@ -26,6 +31,7 @@ export function updatePage(p) {
 
 export function updateUser(p) {
   state.value.userData = p
+  state.value.isAdmin = p.role?.toLowerCase() == 'admin'
 }
 
 // ****** API CALLS ******
@@ -70,8 +76,13 @@ export async function logout() {
 export async function getAllCourses() {
   try {
     const response = await fetch(`${BACKEND_LINK}/courses`)
+    if (response.status != 200) {
+      console.log('error', response)
+      throw new Error('error')
+    }
     const data = await response.json()
     state.value.courses = data.courses
+    if (state.value.filteredCourses.length == 0) state.value.filteredCourses = data.courses
   } catch (error) {
     console.log(error)
   }
@@ -164,7 +175,36 @@ export async function getAllProfessors() {
     }
 
     state.value.allProfessors = (await result.json()).professors
+    if (state.value.filteredProfessors.length == 0) state.value.filteredProfessors = state.value.allProfessors
   } catch (error) {
     throw new Error(error)
   }
+}
+
+export async function getTeachings(courseIds = []) {
+
+  if (courseIds.length == 0) courseIds = state.value.courses.map((c) => c.id)
+
+  try {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    }
+
+    var ids = courseIds.map((id) => `ids=${id}`).join('&')
+
+    const result = await fetch(
+      `${BACKEND_LINK}/courses/professors?${ids}`,
+      requestOptions
+    )
+
+    if (result.status == 200) {
+      const teachings = (await result.json()).professors
+      state.value.teachings = teachings
+      if (Object.keys(state.value.filteredTeachings).length == 0) state.value.filteredTeachings = teachings
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+
 }

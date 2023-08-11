@@ -1,14 +1,21 @@
 <script setup>
 
 import { ref, computed } from 'vue';
+import TimeCardView from '@/components/LessonCalendar/TimeCardView.vue'
 
 const props = defineProps({
-  lessonsMap: Object,
+  lessonsMap: Object, // All lessons from all users
   selectableDates: Array,
+  myLessonsMap: Object,
+  adminView: Boolean
 })
 
 const lessonsMap = computed(() => {
   return props.lessonsMap;
+});
+
+const myLessonsMap = computed(() => {
+  return props.myLessonsMap;
 });
 
 const emits = defineEmits(['repetitionUpdated', 'selectItem']);
@@ -85,28 +92,62 @@ const weeks = computed(() => {
         date: new Date(currentDay),
         day: currentDay.getDate(),
         isCurrentMonth: currentDay.getMonth() === month,
-        lessons: defaultLessons,
-        showFreeItems: (currentDay > new Date() || isToday(currentDay)) && currentDay.getDay() !== 0 && currentDay.getDay() !== 6 && props.selectableDates == null 
+        showFreeItems: (currentDay > new Date() || isToday(currentDay)) && currentDay.getDay() !== 0 && currentDay.getDay() !== 6 && props.selectableDates == null
       };
       dayItem.date.setHours(8);
 
       const key = dayItem.date.toISOString().slice(0, 10);
 
-      if (lessonsMap.value[key]) {
-        dayItem.lessons = lessonsMap.value[key].reduce((acc, repetition) => {
+      // Add user lessons to the map
+      var myLessons = defaultLessons;
+      var allLessons = defaultLessons;
+
+      if (myLessonsMap.value[key]) {
+        myLessons = myLessonsMap.value[key].reduce((acc, repetition) => {
           acc[repetition.time] = repetition;
           return acc;
         }, defaultLessons);
       }
 
-      // Convert lessons object to array for easier rendering
-      dayItem.lessons = Object.entries(dayItem.lessons).map(([time, repetition]) => {
-        return {
-          time: time,
-          repetition: repetition,
-        };
+      // Add lessons from other users to the map (used for free items and admin)
+      if (lessonsMap.value[key]) {
+        allLessons = lessonsMap.value[key].reduce((acc, repetition) => {
+          if (!Array.isArray(acc[repetition.time])) {
+            acc[repetition.time] = [];
+          }
+          acc[repetition.time] = [repetition, ...acc[repetition.time]];
+          return acc;
+        }, defaultLessons);
+      }
+
+      // // Convert lessons object to array for easier rendering
+      // dayItem.myLessons = Object.entries(dayItem.lessons).map(([time, repetition]) => {
+      //   return {
+      //     time: time,
+      //     repetition: repetition,
+      //   };
+      // });
+
+      const mergedLessons = [];
+      Object.keys(defaultLessons).forEach((time) => {
+        const myRepetition = myLessons[time];
+        const allRepetitions = allLessons[time];
+
+        if (myRepetition) {
+          mergedLessons.push({
+            time: time,
+            repetition: myRepetition,
+          })
+        }
+        else {
+          mergedLessons.push({
+            time: time,
+            repetitions: allRepetitions,
+          })
+        }
       });
 
+      dayItem.lessons = mergedLessons;
       week.push(dayItem)
       currentDay.setDate(currentDay.getDate() + 1);
     }
@@ -136,7 +177,11 @@ const weeks = computed(() => {
           {{ day.day }}
 
           <div v-for="lesson in day.lessons" :key="lesson.time">
-            <template v-if="day.isCurrentMonth">
+            <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
+              :repetitions="lesson.repetitions" @selectFreeItem="selectFreeItem" @selectRepetition="selectRepetition">
+            </TimeCardView>
+
+            <!-- <template v-if="day.isCurrentMonth">
               <template v-if="lesson.repetition != null">
                 <div @click="selectRepetition(lesson.repetition)">
                   {{ lesson.repetition.course.title }}
@@ -145,7 +190,7 @@ const weeks = computed(() => {
               <template v-else-if="day.showFreeItems">
                 <div @click="selectFreeItem(day.date, lesson.time)">{{ lesson.time }} Disponibile</div>
               </template>
-            </template>
+            </template> -->
           </div>
         </td>
       </tr>

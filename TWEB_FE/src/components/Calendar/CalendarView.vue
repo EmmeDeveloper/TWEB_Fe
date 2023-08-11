@@ -29,7 +29,20 @@ const lessonsMap = computed(() => {
     map[key].push(repetition)
   })
   return map
-})
+});
+
+const myLessonsMap = computed(() => {
+  const mymap = {}
+  state.value.userRepetitions.forEach((repetition) => {
+    const date = new Date(repetition.date)
+    const key = date.toISOString().slice(0, 10) // Using toISOString() to get "YYYY-MM-DD" format
+    if (!mymap[key]) {
+      mymap[key] = []
+    }
+    mymap[key].push(repetition)
+  })
+  return mymap
+});
 
 function repetitionUpdated() {
   selectedItem.value = null
@@ -62,6 +75,8 @@ function selectItem(item) {
 
     <LessonCalendarView
       :lessonsMap="lessonsMap"
+      :myLessonsMap="myLessonsMap"
+      :adminView="state.isAdmin"
       @repetitionUpdated="repetitionUpdated"
       @selectItem="selectItem"
     />

@@ -2,12 +2,15 @@
 import { onBeforeMount } from 'vue'
 import './Home.css'
 import LessonCard from '@/components/LessonCard/LessonCardView.vue'
-import { useStore, getAllCourses } from '../../StateService.js'
+import { useStore, getAllCourses, getTeachings, getAllProfessors } from '../../StateService.js'
 
 const state = useStore()
 
 onBeforeMount(async () => {
-  await getAllCourses()
+  await getAllCourses();
+  await getAllProfessors();
+  await getTeachings();
+
 })
 </script>
 
