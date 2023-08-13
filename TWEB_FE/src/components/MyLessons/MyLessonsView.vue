@@ -56,19 +56,14 @@ function selectItem(item) {
       </div>
     </div>
 
-    <LessonCalendarView
-      :lessonsMap="lessonsMap"
-      :selectableDates="selectableDates"
-      @repetitionUpdated="repetitionUpdated"
-      @selectItem="selectItem"
-    />
+    <div class="row">
+      <LessonCalendarView :myLessonsMap="lessonsMap" :lessonsMap="{}" :selectableDates="selectableDates"
+        @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
 
-    <div>
-      <PastLessonReservationView
-        v-if="selectedItem?.showPast"
-        :repetition="selectedItem.repetition"
-        @updatedLesson="repetitionUpdated"
-      />
+      <div>
+        <PastLessonReservationView v-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
+          @updatedLesson="repetitionUpdated" />
+      </div>
     </div>
   </div>
 </template>

@@ -58,45 +58,22 @@ function selectItem(item) {
 </script>
 
 <template>
-  <div>
-    <div>
-      <div v-for="repetition in state.allRepetitions" :key="repetition.id">
-        ----------------------------------
-        <div>{{ repetition.date }}</div>
-        <div>{{ repetition.time }}</div>
-        <div>{{ repetition.status }}</div>
-        <div>{{ repetition.note }}</div>
-        <div>{{ repetition.professor }}</div>
-        <div>{{ repetition.user }}</div>
-        <div>{{ repetition.course }}</div>
-        <div>{{ repetition.id }}</div>
+  <div class="w100">
+
+    <div class="row p24">
+      <div class="column column-70">
+        <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
+          @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
-    </div>
 
-    <LessonCalendarView
-      :lessonsMap="lessonsMap"
-      :myLessonsMap="myLessonsMap"
-      :adminView="state.isAdmin"
-      @repetitionUpdated="repetitionUpdated"
-      @selectItem="selectItem"
-    />
+      <div>
+        <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
+          :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
+          @deletedLesson="repetitionUpdated" />
 
-    <div>
-      <FutureLessonReservationView
-        v-if="selectedItem?.showFuture"
-        :repetition="selectedItem.repetition"
-        :time="selectedItem.time"
-        :date="selectedItem.date"
-        :courseProfMap="prof"
-        @reservedLesson="repetitionUpdated"
-        @deletedLesson="repetitionUpdated"
-      />
-
-      <PastLessonReservationView
-        v-else-if="selectedItem?.showPast"
-        :repetition="selectedItem.repetition"
-        @updatedLesson="repetitionUpdated"
-      />
+        <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
+          @updatedLesson="repetitionUpdated" />
+      </div>
     </div>
   </div>
 </template>

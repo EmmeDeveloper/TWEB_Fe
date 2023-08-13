@@ -31,7 +31,7 @@ export function updatePage(p) {
 
 export function updateUser(p) {
   state.value.userData = p
-  state.value.isAdmin = p.role?.toLowerCase() == 'admin'
+  state.value.isAdmin = p?.role?.toLowerCase() == 'admin'
 }
 
 // ****** API CALLS ******

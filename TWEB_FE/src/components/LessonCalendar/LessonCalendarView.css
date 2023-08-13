@@ -1,0 +1,16 @@
+.calendar {
+  border: 1px solid gray; 
+  padding: 0 0.5em;
+}
+
+/* .calendar > div {
+  border: 0 1px solid gray;
+} */
+
+.calendar > div > div {
+ border: 1px solid gray;
+}
+
+.day {
+  padding: 0;
+}

@@ -7,6 +7,7 @@ const props = defineProps({
   time: String,
   repetition: Object,
   repetitions: Array,
+  showFreeItems: Boolean,
 })
 
 const emits = defineEmits(['selectRepetition', 'selectFreeItem', 'selectMultipleRepetitions']);
@@ -32,6 +33,45 @@ const freeItems = computed(() => {
   return freeItems;
 });
 
+const freeSubjects = computed(() => {
+  if (props.adminView)  {
+    return null;
+  };
+
+
+  const courseMap = state.value.filteredCourses.reduce((acc, course) => {
+    acc[course.id] = course.title;
+    return acc;
+  }, {});
+  return Object.keys(freeItems.value).map((courseId) => {
+    return courseMap[courseId];
+  }).join(', ');
+});
+
+const freeProfessors = computed(() => {
+  if (props.adminView)  {
+    return null;
+  };
+
+  return Object
+  .values(freeItems.value)
+  .flat()
+  .map(prof => prof.name + ' ' + prof.surname)
+  .join(', ');
+});
+
+
+function selectFreeItem() {
+  emits('selectFreeItem');
+}
+
+function selectRepetition() {
+  emits('selectRepetition');
+}
+
+function selectMultipleRepetitions() {
+  emits('selectMultipleRepetitions');
+}
 
 
 </script>
@@ -39,12 +79,10 @@ const freeItems = computed(() => {
 <template>
   <div>
     {{ props.time }}
-            {{ props.repetition }}
-            {{ props.repetitions }}
-
             <template v-if="props.adminView">
 
               ADDDDDDMIIIIIN
+              DA FARE
 
             </template>
 
@@ -52,14 +90,14 @@ const freeItems = computed(() => {
 
               <template v-if="props.repetition != null">
                 <div @click="selectRepetition()">
-                  {{ props.repetition.course }}
+                  {{ props.repetition }}
                 </div>
               </template>
 
-              <template v-else>
+              <template v-else-if="props.showFreeItems">
                 <div @click="selectFreeItem()">
-                  Disponibile
-                  {{ freeItems }}
+                  {{ freeSubjects }}
+                  {{ freeProfessors }}
                 </div>
               </template>
             </template>

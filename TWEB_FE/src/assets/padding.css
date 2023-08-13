@@ -1,0 +1,35 @@
+.p8 {
+  padding: 8px;
+}
+
+.p16 {
+  padding: 16px;
+}
+
+.p24 {
+  padding: 24px;
+}
+
+.pw8 {
+  padding: 0 8px;
+}
+
+.pw16 {
+  padding: 0 16px;
+}
+
+.pw24 {
+  padding: 0 24px;
+}
+
+.ph8 {
+  padding: 8px 0;
+}
+
+.ph16 {
+  padding: 16px 0;
+}
+
+.ph24 {
+  padding: 24px 0;
+}

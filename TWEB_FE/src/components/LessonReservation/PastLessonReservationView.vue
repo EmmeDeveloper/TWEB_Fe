@@ -20,7 +20,7 @@ const state = ref({
 const note = ref('');
 
 const uiData = ref({
-  title: 'Cosa è andato storto?',
+  title: 'Hai effettuato la lezione?',
   time: props.repetition.time,
   date: new Date(props.repetition.date),
   course: props.repetition.course,
@@ -45,6 +45,11 @@ async function updateLesson(status, note) {
   })
 }
 
+function toggleIssue() {
+  state.value.showIssue = !state.value.showIssue;
+  uiData.value.title = state.value.showIssue ? 'Cosa è andato storto?' : 'Hai effettuato la lezione?';
+  note.value = '';
+}
 
 </script>
 
@@ -67,7 +72,7 @@ async function updateLesson(status, note) {
           Conferma
         </button>
 
-        Qualcosa è andato storto? <a @click="state.showIssue = true; note = ''">Segnalalo</a>
+        Qualcosa è andato storto? <a @click="toggleIssue()">Segnalalo</a>
       </template>
 
       <div v-else class="success-message">
@@ -78,7 +83,7 @@ async function updateLesson(status, note) {
     <template v-if="state.showIssue">
 
       <div>
-        <i class="mdi mdi-chevron-left" style="padding-right: 8px;" @click="state.showIssue = false"></i>
+        <i class="mdi mdi-chevron-left" style="padding-right: 8px;" @click="toggleIssue()"></i>
         <span>Cosa è andato storto?</span>
       </div>
 

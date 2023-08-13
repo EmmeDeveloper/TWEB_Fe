@@ -1,5 +1,5 @@
 <script setup>
-
+import './LessonCalendarView.css'
 import { ref, computed } from 'vue';
 import TimeCardView from '@/components/LessonCalendar/TimeCardView.vue'
 
@@ -99,34 +99,26 @@ const weeks = computed(() => {
       const key = dayItem.date.toISOString().slice(0, 10);
 
       // Add user lessons to the map
-      var myLessons = defaultLessons;
-      var allLessons = defaultLessons;
+      var myLessons = { ...defaultLessons };
+      var allLessons = { ...defaultLessons };
 
       if (myLessonsMap.value[key]) {
         myLessons = myLessonsMap.value[key].reduce((acc, repetition) => {
           acc[repetition.time] = repetition;
           return acc;
-        }, defaultLessons);
+        }, { ...defaultLessons });
       }
 
       // Add lessons from other users to the map (used for free items and admin)
       if (lessonsMap.value[key]) {
-        allLessons = lessonsMap.value[key].reduce((acc, repetition) => {
-          if (!Array.isArray(acc[repetition.time])) {
-            acc[repetition.time] = [];
+        allLessons = lessonsMap.value[key].reduce((allAcc, repetition) => {
+          if (!Array.isArray(allAcc[repetition.time])) {
+            allAcc[repetition.time] = [];
           }
-          acc[repetition.time] = [repetition, ...acc[repetition.time]];
-          return acc;
-        }, defaultLessons);
+          allAcc[repetition.time] = [repetition, ...allAcc[repetition.time]];
+          return allAcc;
+        }, { ...defaultLessons });
       }
-
-      // // Convert lessons object to array for easier rendering
-      // dayItem.myLessons = Object.entries(dayItem.lessons).map(([time, repetition]) => {
-      //   return {
-      //     time: time,
-      //     repetition: repetition,
-      //   };
-      // });
 
       const mergedLessons = [];
       Object.keys(defaultLessons).forEach((time) => {
@@ -158,42 +150,41 @@ const weeks = computed(() => {
 </script>
 
 <template>
-  {{ lessonsMap }}
-
-  <div class="calendar">
-    <div class="header">
+  <div>
+    <div class="row justify-center">
       <button @click="prevMonth"
         :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth()">&lt;</button>
-      <h2>{{ displayMonth }}</h2>
-      <h2>{{ firstDayOfMonth }}</h2>
+      <h3 class="mw24">{{ displayMonth }}</h3>
       <button @click="nextMonth">&gt;</button>
     </div>
-    <table>
-      <tr>
-        <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
-      </tr>
-      <tr v-for="week in weeks" :key="week">
-        <td v-for="day in week" :key="day">
-          {{ day.day }}
 
-          <div v-for="lesson in day.lessons" :key="lesson.time">
-            <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
-              :repetitions="lesson.repetitions" @selectFreeItem="selectFreeItem" @selectRepetition="selectRepetition">
-            </TimeCardView>
-
-            <!-- <template v-if="day.isCurrentMonth">
-              <template v-if="lesson.repetition != null">
-                <div @click="selectRepetition(lesson.repetition)">
-                  {{ lesson.repetition.course.title }}
+    <div class="calendar">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="week in weeks" :key="week">
+            <td v-for="day in week" :key="day.date"
+              :class="{ 'current-month': day.isCurrentMonth, 'today': isToday(day.date) }">
+              <div class="day">
+                <span class="float-right">{{ day.day }}</span>
+                <div class="lessons">
+                  <div v-for="lesson in day.lessons" :key="lesson.time" class="lesson">
+                    <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
+                      :showFreeItems="day.showFreeItems" :repetitions="lesson.repetitions"
+                      @selectFreeItem="selectFreeItem(day.date, lesson.time)"
+                      @selectRepetition="selectRepetition(lesson.repetition)">
+                    </TimeCardView>
+                  </div>
                 </div>
-              </template>
-              <template v-else-if="day.showFreeItems">
-                <div @click="selectFreeItem(day.date, lesson.time)">{{ lesson.time }} Disponibile</div>
-              </template>
-            </template> -->
-          </div>
-        </td>
-      </tr>
-    </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>

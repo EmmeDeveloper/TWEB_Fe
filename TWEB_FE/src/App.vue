@@ -34,7 +34,6 @@ logout().then(
 // L'admin non può prenotare lezioni
 // L'admin non ha le sezioni le mie lezioni
 // Fare filtro materie
-// Nel calendario devo mostrare solo le mie lezioni, delle altre non devo mostrare i professori prenotati
 
 
 </script>
