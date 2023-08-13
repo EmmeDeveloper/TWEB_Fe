@@ -4,6 +4,7 @@ import { getCoursesRepetitions, getUserRepetitions, useStore } from '../../State
 import LessonCalendarView from '@/components/LessonCalendar/LessonCalendarView.vue'
 import FutureLessonReservationView from '@/components/LessonReservation/FutureLessonReservationView.vue'
 import PastLessonReservationView from '@/components/LessonReservation/PastLessonReservationView.vue'
+import './CalendarView.css'
 
 const prof = {
   1: [
@@ -58,21 +59,23 @@ function selectItem(item) {
 </script>
 
 <template>
-  <div class="w100">
-
+  <div class="container-fluid">
     <div class="row p24">
-      <div class="column column-70">
+      <div
+          class="col-9"
+          :class="[ selectedItem ? 'col-9' : 'col-12']">
         <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
-          @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
+                            @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
 
-      <div>
+      <div
+          :class="{'col-3' : selectedItem}">
         <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
-          :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
-          @deletedLesson="repetitionUpdated" />
+                                     :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
+                                     @deletedLesson="repetitionUpdated" />
 
         <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
-          @updatedLesson="repetitionUpdated" />
+                                   @updatedLesson="repetitionUpdated" />
       </div>
     </div>
   </div>

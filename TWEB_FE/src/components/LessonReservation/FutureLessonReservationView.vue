@@ -117,7 +117,7 @@ const uiData = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="sticky">
     <LessonReservationDetails :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
       :professor="uiData.professor" />
 
@@ -125,7 +125,6 @@ const uiData = computed(() => {
     <div v-if="!props.repetition">
       <div class="sticky-header" v-for="(profs, subject) in props.courseProfMap" :key="subject">
         <div v-if="profs.length != 0" class="course-title">
-          {{ subject }}
           {{ globalState.courses.find((course) => course.id === subject)?.title }}
 
           <div class="professor-row">
@@ -142,13 +141,24 @@ const uiData = computed(() => {
       <div v-if="state.reserveSuccess" class="success-message">
         Prenotazione effettuata con successo!
       </div>
-      <button v-else class="button" :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
-        :loading="state.isLoading">
-        <div v-if="state.isLogged" @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">
-          Prenota
-        </div>
-        <div v-else @click="loginClicked()">Accedi e prenota</div>
-      </button>
+      <div v-else>
+        <button type="button"
+                v-if="state.isLogged"
+                class="btn btn-primary w-100"
+                :disabled="selectedSubjectProf.subject == '' || selectedSubjectProf.prof == ''"
+                :loading="state.isLoading"
+                @click="reserve(selectedSubjectProf.subject, selectedSubjectProf.prof)">
+            Prenota
+        </button>
+        <button type="button"
+                v-else
+                class="button"
+                :loading="state.isLoading"
+                @click="loginClicked()">
+          Accedi e prenota
+        </button>
+      </div>
+
     </div>
 
     <!-- RESERVED LESSON -->
@@ -173,8 +183,6 @@ const uiData = computed(() => {
 <style>
 /* Add your styles here */
 .sticky-header {
-  position: sticky;
-  top: 0;
   background-color: #ffffff;
   font-weight: bold;
   font-size: 16px;
@@ -203,4 +211,9 @@ const uiData = computed(() => {
 }
 
 .error-box {}
+
+.sticky{
+  position:sticky;
+  top:40px;
+ }
 </style>

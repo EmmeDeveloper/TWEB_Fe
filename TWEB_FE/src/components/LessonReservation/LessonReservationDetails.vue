@@ -1,5 +1,5 @@
 <template>
-  {{ props }}
+  <!--{{ props }}-->
 
   <div :style="{ width: '100%', padding: '0 16px' }">
     <h2 v-if="props.title" style="font-weight: bold; font-size: 20px; padding: 16px 0">
@@ -18,12 +18,17 @@
       <span style="font-size: 16px"> {{ props.time }}:00 - {{ parseInt(time) + 1 }}:00 </span>
     </div>
 
-    <div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px">
-      <i class="mdi mdi-clipboard-list" style="padding-right: 8px"></i>
-      <span style="font-size: 16px">
-        {{ props.course.title }}
-      </span>
-    </div>
+    <!--<div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px">-->
+    <!--  <i class="mdi mdi-sort-variant" style="padding-right: 8px"></i>-->
+    <!--  <span style="font-size: 16px"> {{ props.course.title }} </span>-->
+    <!--</div>-->
+
+    <!--<div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px">-->
+    <!--  <i class="mdi mdi-clipboard-list" style="padding-right: 8px"></i>-->
+    <!--  <span style="font-size: 16px">-->
+    <!--    {{ props.course.title }}-->
+    <!--  </span>-->
+    <!--</div>-->
 
     <div v-if="props.professor" style="display: flex; align-items: center; padding-top: 8px">
       <i class="mdi mdi-account-multiple" style="padding-right: 8px"></i>
