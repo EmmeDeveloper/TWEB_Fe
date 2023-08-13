@@ -20,6 +20,31 @@ const changePage = (p) => {
 </script>
 
 <template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link pointer text-primary text-decoration-underline" @click="changePage(PAGE_HOME)">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pointer text-primary text-decoration-underline" @click="changePage(PAGE_MYLESSONS)">Le mie lezioni</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pointer text-primary text-decoration-underline" @click="changePage(PAGE_CALENDAR)">Calendario</a>
+          </li>
+        </ul>
+        <button
+            v-if="user == null"
+            class="btn btn-primary"
+            @click="showModalLogin = true"
+        >
+          Accedi
+        </button>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+      </div>
+    </div>
+  </nav>
   <nav>
     <div>
       <a class="primary-text pointer" @click="changePage(PAGE_HOME)">Home</a>

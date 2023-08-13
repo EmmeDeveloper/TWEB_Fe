@@ -1,6 +1,6 @@
 <template>
   <div
-    class="filter-chip"
+    class="filter-chip m-2"
     :class="{ selected: props.selected }"
     @click="toggleSelection"
   >
@@ -33,8 +33,6 @@ const toggleSelection = () => {
   border: 1px solid #ccc;
   border-radius: 16px;
   cursor: pointer;
-  margin-left:5px;
-  margin-right:5px;
 }
 
 .filter-chip.selected {
