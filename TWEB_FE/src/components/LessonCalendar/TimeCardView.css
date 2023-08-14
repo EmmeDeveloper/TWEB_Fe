@@ -1,0 +1,35 @@
+.item span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item span:last-child {
+  color: var(--TEXT-COLOR-DISABLED) !important;
+  padding-left: 0.16rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem; 
+  border-radius: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.deleted {
+  background-color: var(--REP-STATUS-DEL);
+}
+
+.done {
+  background-color: var(--REP-STATUS-DONE);
+}
+
+.pending {
+  background-color: var(--REP-STATUS-PEND);
+}
+
+.default {
+  background-color: var(--REP-STATUS-DEF);
+}
