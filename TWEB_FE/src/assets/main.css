@@ -14,6 +14,11 @@
   --TEXT-COLOR: rgb(17 24 39);
   --TEXT-COLOR-DISABLED: rgb(17 24 39 / var(--DISABLED-OPACITY));
 
+  --REP-STATUS-DEL: #ff9999;
+  --REP-STATUS-DONE: #99ff99;
+  --REP-STATUS-PEND: #ffcc99;
+  --REP-STATUS-DEF: #9999ff;
+
   --svw: calc(1svw - var(--scrollbarWidth) / 100);
   --lvw: calc(1lvw - var(--scrollbarWidth) / 100);
   --dvw: calc(1dvw - var(--scrollbarWidth) / 100);
@@ -27,6 +32,7 @@
   --dvmin: calc(min(1dvh, var(--dvw)));
   --dvmax: calc(max(1dvh, var(--dvw)));
 }
+
 /* 
 body {
   margin: 0;

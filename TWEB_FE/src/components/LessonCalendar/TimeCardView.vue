@@ -1,6 +1,7 @@
 <script setup>
 import { useStore } from '../../StateService.js'
 import { ref, computed } from 'vue';
+import './TimeCardView.css'
 
 const props = defineProps({
   adminView: Boolean,
@@ -60,6 +61,13 @@ const freeProfessors = computed(() => {
     .join(', ');
 });
 
+const freeCoursesCount = computed(() => {
+  if (props.adminView) {
+    return null;
+  };
+
+  return Object.keys(freeItems.value).length;
+});
 
 function selectFreeItem() {
   emits('selectFreeItem');
@@ -88,15 +96,20 @@ function selectMultipleRepetitions() {
     <template v-else>
 
       <template v-if="props.repetition != null">
-        <div @click="selectRepetition()">
-          {{ props.repetition }}
+        <div @click="selectRepetition()" class="item" :class="{
+          'deleted': props.repetition?.status == 'deleted', 
+          'done': props.repetition?.status == 'done',
+          'pending': props.repetition?.status == 'pending',
+          }">
+          <span>{{props.repetition.course.title}}</span>
+          <span>{{props.time}}:00</span>
         </div>
       </template>
 
       <template v-else-if="props.showFreeItems">
-        <div @click="selectFreeItem()">
-          {{ freeSubjects }}
-          {{ freeProfessors }}
+        <div @click="selectFreeItem()" class="item default">
+          <span>Disponibile ({{ freeCoursesCount }}/{{ state.filteredCourses.length }})</span>
+          <span>{{props.time}}:00</span>
         </div>
       </template>
     </template>

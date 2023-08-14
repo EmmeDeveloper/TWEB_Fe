@@ -150,41 +150,54 @@ const weeks = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <div class="row justify-center">
-      <button @click="prevMonth"
-        :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth()">&lt;</button>
-      <h3 class="mw24">{{ displayMonth }}</h3>
-      <button @click="nextMonth">&gt;</button>
-    </div>
-
-    <div class="calendar">
-      <table>
-        <thead>
-          <tr>
-            <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="week in weeks" :key="week">
-            <td v-for="day in week" :key="day.date"
-              :class="{ 'current-month': day.isCurrentMonth, 'today': isToday(day.date)}">
-              <div class="day">
-                <span>{{ day.day }}</span>
-                <div class="lessons">
-                  <div v-for="lesson in day.lessons" :key="lesson.time" class="lesson">
-                    <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
-                      :showFreeItems="day.showFreeItems" :repetitions="lesson.repetitions"
-                      @selectFreeItem="selectFreeItem(day.date, lesson.time)"
-                      @selectRepetition="selectRepetition(lesson.repetition)">
-                    </TimeCardView>
+      <div class="col-12">
+        <div class="container text-center mt-5">
+          <div class="row justify-content-center align-items-center mb-3">
+            <div class="col-1">
+              <button class="btn btn-primary" @click="prevMonth"
+                :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth()">
+                &lt;
+              </button>
+            </div>
+            <div class="col-3">
+              <h3 class="mw-100">{{ displayMonth }}</h3>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-primary" @click="nextMonth">&gt;</button>
+            </div>
+          </div>
+        </div>
+        <div class="calendar">
+          <table class="table align-top table-bordered">
+            <thead>
+              <tr>
+                <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="week in weeks" :key="week">
+                <td v-for="day in week" :key="day.date"
+                  :class="{ 'current-month': day.isCurrentMonth, 'today': isToday(day.date) }">
+                  <div class="day">
+                    <span>{{ day.day }}</span>
+                    <div v-if="day.isCurrentMonth">
+                      <div v-for="lesson in day.lessons" :key="lesson.time" class="lesson">
+                        <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
+                          :showFreeItems="day.showFreeItems" :repetitions="lesson.repetitions"
+                          @selectFreeItem="selectFreeItem(day.date, lesson.time)"
+                          @selectRepetition="selectRepetition(lesson.repetition)">
+                        </TimeCardView>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
