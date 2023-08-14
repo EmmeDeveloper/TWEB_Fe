@@ -50,19 +50,20 @@
   box-shadow: 0 0 3px var(--PRIMARY-COLOR);
 }
 
-table {
+
+.profile table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-td,
+.profile td,
 th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
 
-tr:nth-child(even) {
+.profile tr:nth-child(even) {
   background-color: #dddddd;
 }

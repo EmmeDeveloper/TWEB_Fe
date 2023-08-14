@@ -1,16 +1,32 @@
-.calendar {
-  border: 1px solid gray; 
-  padding: 0 0.5em;
+.calendar td, th {
+  border: 0.1rem solid #e1e1e1;
 }
 
-/* .calendar > div {
-  border: 0 1px solid gray;
+.calendar td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background-color: #f9fafb;
+  color: var(--TEXT-COLOR-DISABLED);
+}
+
+.calendar td span {
+  /* font-size: 1.2rem;
+  font-weight: 600; */
+  color: #6b7280;
+}
+
+
+.calendar .current-month {
+  background-color: #fff;
+  color: var(--TEXT-COLOR);
+
+}
+
+.current-month span {
+  color: #111827;
+}
+/* .calendar tr:last-child(even) {
+  background-color: #dddddd;
 } */
-
-.calendar > div > div {
- border: 1px solid gray;
-}
-
-.day {
-  padding: 0;
-}

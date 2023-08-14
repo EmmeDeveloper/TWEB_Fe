@@ -15,7 +15,7 @@ const emits = defineEmits(['selectRepetition', 'selectFreeItem', 'selectMultiple
 const state = ref(useStore());
 
 const freeItems = computed(() => {
-  if (props.adminView)  {
+  if (props.adminView) {
     return null;
   };
 
@@ -34,7 +34,7 @@ const freeItems = computed(() => {
 });
 
 const freeSubjects = computed(() => {
-  if (props.adminView)  {
+  if (props.adminView) {
     return null;
   };
 
@@ -49,15 +49,15 @@ const freeSubjects = computed(() => {
 });
 
 const freeProfessors = computed(() => {
-  if (props.adminView)  {
+  if (props.adminView) {
     return null;
   };
 
   return Object
-  .values(freeItems.value)
-  .flat()
-  .map(prof => prof.name + ' ' + prof.surname)
-  .join(', ');
+    .values(freeItems.value)
+    .flat()
+    .map(prof => prof.name + ' ' + prof.surname)
+    .join(', ');
 });
 
 
@@ -78,28 +78,27 @@ function selectMultipleRepetitions() {
 
 <template>
   <div>
-    {{ props.time }}
-            <template v-if="props.adminView">
+    <template v-if="props.adminView">
 
-              ADDDDDDMIIIIIN
-              DA FARE
+      ADDDDDDMIIIIIN
+      DA FARE
 
-            </template>
+    </template>
 
-            <template v-else> 
+    <template v-else>
 
-              <template v-if="props.repetition != null">
-                <div @click="selectRepetition()">
-                  {{ props.repetition }}
-                </div>
-              </template>
+      <template v-if="props.repetition != null">
+        <div @click="selectRepetition()">
+          {{ props.repetition }}
+        </div>
+      </template>
 
-              <template v-else-if="props.showFreeItems">
-                <div @click="selectFreeItem()">
-                  {{ freeSubjects }}
-                  {{ freeProfessors }}
-                </div>
-              </template>
-            </template>
+      <template v-else-if="props.showFreeItems">
+        <div @click="selectFreeItem()">
+          {{ freeSubjects }}
+          {{ freeProfessors }}
+        </div>
+      </template>
+    </template>
   </div>
 </template>

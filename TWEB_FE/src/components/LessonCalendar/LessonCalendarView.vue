@@ -168,9 +168,9 @@ const weeks = computed(() => {
         <tbody>
           <tr v-for="week in weeks" :key="week">
             <td v-for="day in week" :key="day.date"
-              :class="{ 'current-month': day.isCurrentMonth, 'today': isToday(day.date) }">
+              :class="{ 'current-month': day.isCurrentMonth, 'today': isToday(day.date)}">
               <div class="day">
-                <span class="float-right">{{ day.day }}</span>
+                <span>{{ day.day }}</span>
                 <div class="lessons">
                   <div v-for="lesson in day.lessons" :key="lesson.time" class="lesson">
                     <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"

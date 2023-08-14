@@ -60,16 +60,13 @@ function selectItem(item) {
 
 <template>
   <div class="container-fluid">
-    <div class="row p24">
-      <div
-          class="col-9"
-          :class="[ selectedItem ? 'col-9' : 'col-12']">
+    <div class="row">
+      <div :class="[ selectedItem ? 'col-9' : 'col-12']">
         <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
                             @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
 
-      <div
-          :class="{'col-3' : selectedItem}">
+      <div :class="{'col-3' : selectedItem}">
         <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
                                      :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
                                      @deletedLesson="repetitionUpdated" />
