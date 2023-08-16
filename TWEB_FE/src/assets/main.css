@@ -33,6 +33,15 @@
   --dvmax: calc(max(1dvh, var(--dvw)));
 }
 
+.c-primary {
+  color: var(--PRIMARY-COLOR);
+}
+
+a {
+  color: var(--PRIMARY-COLOR);
+  cursor: pointer;
+}
+
 /* 
 body {
   margin: 0;

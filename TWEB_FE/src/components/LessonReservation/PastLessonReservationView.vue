@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import LessonReservationDetails from './LessonReservationDetails.vue'
 import { updateRepetitionStatus } from '../../StateService.js'
 import { REPETITION_STATUS_DONE, REPETITION_STATUS_DELETED } from '../../constants.js'
+import './PastLessonReservationView.css'
 
 const props = defineProps({
   repetition: Object
@@ -19,12 +20,14 @@ const state = ref({
 
 const note = ref('');
 
-const uiData = ref({
-  title: getTitle(),
-  time: props.repetition.time,
-  date: new Date(props.repetition.date),
-  course: props.repetition.course,
-  professor: props.repetition.professor,
+const uiData = computed(() => {
+  return {
+    title: getTitle(),
+    time: props.repetition.time,
+    date: new Date(props.repetition.date),
+    course: props.repetition.course,
+    professor: props.repetition.professor,
+  }
 });
 
 const issues = [
@@ -59,26 +62,26 @@ function getTitle() {
 </script>
 
 <template>
-  <div>
+  <div class="container d-flex flex-column">
     <LessonReservationDetails v-if="!state.showIssue" :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
           :professor="uiData.professor" :note="props.repetition.note" />
 
     <template v-if="repetition.status == 'pending'">
       <template v-if="!state.showIssue">
-        <input v-model="note">
+        <textarea type="text" class="form-control mt-4" placeholder="Aggiungi una nota" aria-label="Note" v-model="note" rows="5"></textarea>
 
         <div class="warning-box">
-          <i class="mdi mdi-alert" style="padding-right: 8px;"></i>
-          Confermando la lezione come effettuata, non sarà più possibile modificarla.
+          <i class="mdi mdi-alert"></i>
+          <span>Confermando la lezione come effettuata, non sarà più possibile modificarla.</span>
         </div>
 
         <template v-if="!state.updateSuccess">
-          <button class="button" :disabled="state.isLoading" :loading="state.isLoading"
+          <button type="button" class="btn btn-primary w-100" :disabled="state.isLoading" :loading="state.isLoading"
             @click="updateLesson(REPETITION_STATUS_DONE, note)">
             Conferma
           </button>
 
-          Qualcosa è andato storto? <a @click="toggleIssue()">Segnalalo</a>
+          <span class="p-1">Qualcosa è andato storto? <a @click="toggleIssue()" class="text-primary">Segnalalo</a></span>
         </template>
 
         <div v-else class="success-message">
@@ -103,7 +106,7 @@ function getTitle() {
         <input :disabled="state.selectedIssue != issues[3]" v-model="note">
 
         <div class="warning-box">
-          <i class="mdi mdi-alert" style="padding-right: 8px;"></i>
+          <i class="mdi mdi-alert"></i>
           Segnalando un problema, la lezione verrà considerata come non effettuata, e non sarà più possibile
           modificarla.
         </div>

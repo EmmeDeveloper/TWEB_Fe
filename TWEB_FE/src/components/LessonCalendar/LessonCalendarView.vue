@@ -41,7 +41,7 @@ function nextMonth() {
 function selectFreeItem(date, time = _time) {
   emits('selectItem', {
     date: date,
-    time: time,
+    time: parseInt(time),
     showFuture: true
   });
 }

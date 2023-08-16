@@ -152,7 +152,7 @@ const uiData = computed(() => {
         </button>
         <button type="button"
                 v-else
-                class="button"
+                class="btn btn-primary w-100"
                 :loading="state.isLoading"
                 @click="loginClicked()">
           Accedi e prenota

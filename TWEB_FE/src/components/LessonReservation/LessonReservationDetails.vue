@@ -1,52 +1,64 @@
 <template>
   <!--{{ props }}-->
 
-  <div :style="{ width: '100%', padding: '0 16px' }">
-    <h2 v-if="props.title" style="font-weight: bold; font-size: 20px; padding: 16px 0">
-      {{ props.title }}
-    </h2>
+  <div class="container d-flex flex-column">
+    <h3 v-if="uiData.title" class="mt-4">
+      {{ uiData.title }}
+    </h3>
 
-    <div style="display: flex; align-items: center; padding-top: 8px">
-      <i class="mdi mdi-calendar-blank" style="padding-right: 8px"></i>
-      <span style="font-size: 16px">
-        {{ formatDate(props.date) }}
+    <div class="d-inline-flex align-center">
+      <i class="mdi mdi-calendar-blank fs-4 px-1"></i>
+      <span class="fs-5"> {{ formatDate(uiData.date) }} </span>
+    </div>
+
+    <div class="d-inline-flex align-center">
+      <i class="mdi mdi-clock-time-five-outline fs-4 px-1"></i>
+      <span class="fs-5"> {{ uiData.time }}:00 - {{ parseInt(uiData.time) + 1 }}:00 </span>
+    </div>
+
+    <div v-if="uiData.course" class="d-inline-flex align-center">
+      <i class="mdi mdi-sort-variant fs-4  px-1"></i>
+      <span class="fs-5"> {{ uiData.course.title }} </span>
+    </div>
+
+    <div v-if="uiData.professor" class="d-inline-flex align-center">
+      <i class="mdi mdi-account-multiple fs-4 px-1"></i>
+      <span class="fs-5">
+        {{ uiData.professor.name }} {{ uiData.professor.surname }}
       </span>
     </div>
 
-    <div style="display: flex; align-items: center; padding-top: 8px">
-      <i class="mdi mdi-clock-time-five-outline" style="padding-right: 8px"></i>
-      <span style="font-size: 16px"> {{ props.time }}:00 - {{ parseInt(time) + 1 }}:00 </span>
-    </div>
-
-    <!--<div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px">-->
-    <!--  <i class="mdi mdi-sort-variant" style="padding-right: 8px"></i>-->
-    <!--  <span style="font-size: 16px"> {{ props.course.title }} </span>-->
-    <!--</div>-->
-
-    <!--<div v-if="props.course" style="display: flex; align-items: center; padding-top: 8px">-->
-    <!--  <i class="mdi mdi-clipboard-list" style="padding-right: 8px"></i>-->
-    <!--  <span style="font-size: 16px">-->
-    <!--    {{ props.course.title }}-->
-    <!--  </span>-->
-    <!--</div>-->
-
-    <div v-if="props.professor" style="display: flex; align-items: center; padding-top: 8px">
-      <i class="mdi mdi-account-multiple" style="padding-right: 8px"></i>
-      <span style="font-size: 16px">
-        {{ props.professor.name }} {{ props.professor.surname }}
+    <div v-if="uiData.note" class="d-inline-flex align-center">
+      <i class="mdi mdi-file-document fs-4 px-1"></i>
+      <span class="fs-5">
+        {{ uiData.note }}
       </span>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue"
+
 const props = defineProps({
   title: String,
   time: Number,
   date: Date,
-  course: String,
-  professor: Object
+  course: Object,
+  professor: Object,
+  note: String,
 })
+
+const uiData = computed(() => {
+  return {
+    title: props.title,
+    time: props.time,
+    date: props.date,
+    course: props.course,
+    professor: props.professor,
+    note: props.note,
+  }
+});
 
 function formatDate(date) {
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
