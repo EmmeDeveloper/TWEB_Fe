@@ -3,10 +3,9 @@ import { ref, computed } from 'vue'
 import { getCoursesRepetitions, getUserRepetitions, useStore } from '../../StateService.js'
 import LessonCalendarView from '@/components/LessonCalendar/LessonCalendarView.vue'
 import PastLessonReservationView from '@/components/LessonReservation/PastLessonReservationView.vue'
+import FutureLessonReservationView from '@/components/LessonReservation/FutureLessonReservationView.vue'
 
 const state = ref(useStore())
-
-
 
 const lessonsMap = computed(() => {
   const map = {}
@@ -28,7 +27,6 @@ const selectableDates = computed(() => {
 });
 
 function repetitionUpdated() {
-  selectedItem.value = null
   getCoursesRepetitions()
   getUserRepetitions()
 }
@@ -38,30 +36,26 @@ const selectedItem = ref(null)
 function selectItem(item) {
   selectedItem.value = item
 }
+
+function closeSidebar() {
+  selectedItem.value = null
+}
+
 </script>
 
 <template>
-  <div>
-    <div>
-      <div v-for="repetition in state.userRepetitions" :key="repetition.id">
-        ----------------------------------
-        <div>{{ repetition.date }}</div>
-        <div>{{ repetition.time }}</div>
-        <div>{{ repetition.status }}</div>
-        <div>{{ repetition.note }}</div>
-        <div>{{ repetition.professor }}</div>
-        <div>{{ repetition.user }}</div>
-        <div>{{ repetition.course }}</div>
-        <div>{{ repetition.id }}</div>
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div :class="[selectedItem ? 'col-9' : 'col-12']">
+        <LessonCalendarView :myLessonsMap="lessonsMap" :lessonsMap="{}" :selectableDates="selectableDates"
+          @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
-    </div>
+      <div :class="{'col-3 border-start border-1' : selectedItem}">
+        <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
+                                     :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
+                                     @deletedLesson="repetitionUpdated" @close="closeSidebar()" />
 
-    <div class="row">
-      <LessonCalendarView :myLessonsMap="lessonsMap" :lessonsMap="{}" :selectableDates="selectableDates"
-        @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
-
-      <div>
-        <PastLessonReservationView v-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
+        <PastLessonReservationView v-if="selectedItem?.showPast" :repetition="selectedItem.repetition" @close="closeSidebar()" 
           @updatedLesson="repetitionUpdated" />
       </div>
     </div>

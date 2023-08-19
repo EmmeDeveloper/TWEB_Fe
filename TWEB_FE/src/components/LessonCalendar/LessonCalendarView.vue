@@ -150,14 +150,14 @@ const weeks = computed(() => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="row justify-center">
-      <div class="col-12">
+  <div class="container h-100">
+    <div class="row justify-center h-100">
+      <div class="col-12 h-100">
         <div class="container text-center mt-5">
           <div class="row justify-content-center align-items-center mb-3">
             <div class="col-1">
               <button class="btn btn-primary" @click="prevMonth"
-                :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth()">
+                :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth() && currentDate.getFullYear() <= today.getFullYear()">
                 &lt;
               </button>
             </div>
