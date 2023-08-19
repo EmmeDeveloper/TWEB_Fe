@@ -161,18 +161,12 @@ const weeks = computed(() => {
       <div class="col-12 h-100">
         <div class="container text-center mt-5">
           <div class="row justify-content-center align-items-center mb-3">
-            <div class="col-1">
-              <button class="btn btn-primary" @click="prevMonth"
-                :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth() && currentDate.getFullYear() <= today.getFullYear()">
-                &lt;
-              </button>
-            </div>
-            <div class="col-3">
-              <h3 class="mw-100 text-capitalize">{{ displayMonth }}</h3>
-            </div>
-            <div class="col-1">
-              <button class="btn btn-primary" @click="nextMonth">&gt;</button>
-            </div>
+            <button class="btn btn-primary" @click="prevMonth"
+              :disabled="props.selectableDates == null && currentDate.getMonth() <= today.getMonth() && currentDate.getFullYear() <= today.getFullYear()">
+              &lt;
+            </button>
+            <h3 class="mb-0 mt-0 mx-5 text-capitalize">{{ displayMonth }}</h3>
+            <button class="btn btn-primary" @click="nextMonth">&gt;</button>
           </div>
         </div>
         <div class="calendar">
