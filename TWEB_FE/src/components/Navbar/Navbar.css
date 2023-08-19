@@ -1,18 +1,9 @@
-nav {
-  display: flex;
-  justify-content: space-between;
-  text-decoration: none;
-  border-bottom: 3px solid var(--PRIMARY-COLOR);
-  padding: 1rem 0.8rem;
-  align-items: center;
+.current-page {
+  border-bottom: 0.2rem solid var(--PRIMARY-COLOR);
 }
 
-nav > div {
-  position: relative;
-  display: flex;
-  gap: 3rem;
+.current-page * {
+  color: var(--PRIMARY-COLOR);
+  font-weight: bold;
 }
 
-nav > img {
-  width: 20px;
-}

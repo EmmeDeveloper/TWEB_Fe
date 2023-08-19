@@ -108,7 +108,7 @@ function getTitle() {
       <template v-if="state.showIssue">
 
         <div class="d-flex">
-          <i class="mdi mdi-chevron-left fs-3 px-1 pointer" @click="toggleIssue()"></i>
+          <i class="mdi mdi-chevron-left fs-3 px-1 pointer" style="line-height: 1.2;" @click="toggleIssue()"></i>
           <h3>Cosa è andato storto?</h3>
         </div>
 

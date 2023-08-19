@@ -52,7 +52,7 @@ function closeSidebar() {
       </div>
       <div :class="{'col-3 border-start border-1' : selectedItem}">
         <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
-                                     :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
+                                     :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="{}" @reservedLesson="repetitionUpdated"
                                      @deletedLesson="repetitionUpdated" @close="closeSidebar()" />
 
         <PastLessonReservationView v-if="selectedItem?.showPast" :repetition="selectedItem.repetition" @close="closeSidebar()" 

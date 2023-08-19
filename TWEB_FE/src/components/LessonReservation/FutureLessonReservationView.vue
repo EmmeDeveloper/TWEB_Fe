@@ -26,17 +26,24 @@ const state = ref({
   reserveSuccess: false
 })
 
-watch([() => props.time, () => props.date, () => props.repetition], ([newTime, newDate, newRep], [oldTime, oldDate, oldRep]) => {
-  if (newTime != oldTime || newDate != oldDate || newRep?.id != oldRep?.id) {
-    state.value.reserveSuccess = false
-  }
-});
-
-
 const selectedSubjectProf = ref({
   subject: '',
   prof: ''
 })
+
+watch([() => props.time, () => props.date, () => props.repetition], ([newTime, newDate, newRep], [oldTime, oldDate, oldRep]) => {
+  if (newTime != oldTime || newDate != oldDate || newRep?.id != oldRep?.id) {
+    state.value.reserveSuccess = false
+    selectedSubjectProf.value.subject = ''
+    selectedSubjectProf.value.prof = ''
+  }
+});
+
+watch(() => globalState.value.userData, (newVal, oldVal) => {
+  state.value.isLogged = newVal != null
+});
+
+
 
 function selectProfessor(subject, prof) {
   selectedSubjectProf.value.subject = subject

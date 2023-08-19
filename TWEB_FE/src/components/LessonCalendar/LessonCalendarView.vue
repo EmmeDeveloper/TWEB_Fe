@@ -28,8 +28,6 @@ const displayMonth = computed(() => {
 
 const daysOfWeek = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
 
-const _time = 15;
-
 function prevMonth() {
   currentDate.value = new Date(currentDate.value.setMonth(currentDate.value.getMonth() - 1));
 }
@@ -38,7 +36,7 @@ function nextMonth() {
   currentDate.value = new Date(currentDate.value.setMonth(currentDate.value.getMonth() + 1));
 }
 
-function selectFreeItem(date, time = _time) {
+function selectFreeItem(date, time) {
   emits('selectItem', {
     date: date,
     time: parseInt(time),
@@ -51,6 +49,14 @@ function selectRepetition(repetition) {
     repetition: repetition,
     showFuture: new Date(repetition.date).setHours(repetition.time) >= new Date(),
     showPast: new Date(repetition.date).setHours(repetition.time) < new Date(),
+  });
+}
+
+function selectRepetitions(repetitions, date, time) {
+  emits('selectItem', {
+    repetitions: repetitions,
+    date: date,
+    time: parseInt(time),
   });
 }
 
@@ -162,7 +168,7 @@ const weeks = computed(() => {
               </button>
             </div>
             <div class="col-3">
-              <h3 class="mw-100">{{ displayMonth }}</h3>
+              <h3 class="mw-100 text-capitalize">{{ displayMonth }}</h3>
             </div>
             <div class="col-1">
               <button class="btn btn-primary" @click="nextMonth">&gt;</button>
@@ -186,6 +192,7 @@ const weeks = computed(() => {
                       <div v-for="lesson in day.lessons" :key="lesson.time" class="lesson">
                         <TimeCardView :time="lesson.time" :adminView="props.adminView" :repetition="lesson.repetition"
                           :showFreeItems="day.showFreeItems" :repetitions="lesson.repetitions"
+                          @selectMultipleRepetitions="selectRepetitions(lesson.repetitions, day.date, lesson.time)"
                           @selectFreeItem="selectFreeItem(day.date, lesson.time)"
                           @selectRepetition="selectRepetition(lesson.repetition)">
                         </TimeCardView>

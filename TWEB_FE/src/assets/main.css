@@ -1,4 +1,5 @@
 @import './flex.css';
+@import './custom_bs.css';
 
 * {
   box-sizing: inherit;
@@ -8,11 +9,16 @@
 
 :root {
   --DISABLED-OPACITY: 0.5;
+  
   --PRIMARY-COLOR: rgba(4, 107, 153, 1);
+  --PRIMARY-COLOR-RGB: 4, 107, 153;
+  
+  
   --WHITE-COLOR: rgba(255, 255, 255, 1);
   --DELETE-COLOR: rgb(255, 49, 49, 1);
   --TEXT-COLOR: rgb(17 24 39);
-  --TEXT-COLOR-DISABLED: rgb(17 24 39 / var(--DISABLED-OPACITY));
+  --TEXT-COLOR-RGB: 17, 24, 39;
+  --TEXT-COLOR-DISABLED: rgb(var(--TEXT-COLOR-RGB) / var(--DISABLED-OPACITY));
 
   --REP-STATUS-DEL: #ff9999;
   --REP-STATUS-DONE: #99ff99;
@@ -42,12 +48,25 @@
 }
 
 .bg-primary-12 {
-  background-color: rgba(4, 107, 153, 0.12);
+  background-color: rgba(var(--PRIMARY-COLOR-RGB), 0.12);
 }
+
 
 a {
   color: var(--PRIMARY-COLOR);
   cursor: pointer;
+}
+
+.fs-6 {
+  font-size: 1.2rem;
+}
+
+.fs-7 {
+  font-size: 1.1rem;
+}
+
+.fs-8 {
+  font-size: 1rem;
 }
 
 body {

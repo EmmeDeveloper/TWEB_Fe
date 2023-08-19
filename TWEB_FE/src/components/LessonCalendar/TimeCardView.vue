@@ -20,45 +20,18 @@ const freeItems = computed(() => {
     return null;
   };
 
-  const freeItems = state.value.filteredTeachings;
+  const items = JSON.parse(JSON.stringify(state.value.filteredTeachings));
   for (const repetition of props.repetitions || []) {
-    if (freeItems[repetition.course?.id]) {
-      freeItems[repetition.course?.id] = freeItems[repetition.course?.id].filter((item) => {
+    if (items[repetition.course?.id]) {
+      items[repetition.course?.id] = items[repetition.course?.id].filter((item) => {
         return item.id != repetition.professor?.id;
       });
-      if (freeItems[repetition.course?.id].length == 0) {
-        delete freeItems[repetition.course?.id];
+      if (items[repetition.course?.id].length == 0) {
+        delete items[repetition.course?.id];
       }
     }
   }
-  return freeItems;
-});
-
-const freeSubjects = computed(() => {
-  if (props.adminView) {
-    return null;
-  };
-
-
-  const courseMap = state.value.filteredCourses.reduce((acc, course) => {
-    acc[course.id] = course.title;
-    return acc;
-  }, {});
-  return Object.keys(freeItems.value).map((courseId) => {
-    return courseMap[courseId];
-  }).join(', ');
-});
-
-const freeProfessors = computed(() => {
-  if (props.adminView) {
-    return null;
-  };
-
-  return Object
-    .values(freeItems.value)
-    .flat()
-    .map(prof => prof.name + ' ' + prof.surname)
-    .join(', ');
+  return items;
 });
 
 const freeCoursesCount = computed(() => {
@@ -87,29 +60,28 @@ function selectMultipleRepetitions() {
 <template>
   <div>
     <template v-if="props.adminView">
-
-      ADDDDDDMIIIIIN
-      DA FARE
-
+      <div v-if="props.repetitions && props.repetitions.length > 0" class="item default" @click="selectMultipleRepetitions()">
+        <span>{{ props.repetitions.length }} Prenotazion{{ props.repetitions.length > 1 ? 'i' : 'e' }}</span>
+      </div>
     </template>
 
     <template v-else>
 
       <template v-if="props.repetition != null">
         <div @click="selectRepetition()" class="item" :class="{
-          'deleted': props.repetition?.status == 'deleted', 
+          'deleted': props.repetition?.status == 'deleted',
           'done': props.repetition?.status == 'done',
           'pending': props.repetition?.status == 'pending',
-          }">
-          <span>{{props.repetition.course.title}}</span>
-          <span>{{props.time}}:00</span>
+        }">
+          <span>{{ props.repetition.course.title }}</span>
+          <span>{{ props.time }}:00</span>
         </div>
       </template>
 
       <template v-else-if="props.showFreeItems">
         <div @click="selectFreeItem()" class="item default">
           <span>Disponibile ({{ freeCoursesCount }}/{{ state.filteredCourses.length }})</span>
-          <span>{{props.time}}:00</span>
+          <span>{{ props.time }}:00</span>
         </div>
       </template>
     </template>
