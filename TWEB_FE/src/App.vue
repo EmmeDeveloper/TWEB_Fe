@@ -28,7 +28,7 @@ logout().then(
   }, 500)
 )
 
-// TODOS: 
+// TODOS:
 // Login automatico, da rimuovere
 // L'admin nel calendario non vede i disponibili, ma vede le lezioni di tutti gli utenti
 // L'admin non può prenotare lezioni
@@ -40,26 +40,13 @@ logout().then(
 
 <template>
   <header>
-    <Navbar
-      :page="state.currentPage"
-      @changePage="updatePage"
-      :userData="state.userData"
-      @updateUser="updateUser"
-    />
+    <Navbar :page="state.currentPage" @changePage="updatePage" :userData="state.userData" @updateUser="updateUser" />
   </header>
   <HomeViewVue v-if="state.currentPage === PAGE_HOME" />
-  <UserProfileView
-    v-else-if="state.currentPage === PAGE_USER_PROFILE"
-    :userData="state.userData"
-    @updateUser="updateUser"
-    @changePage="updatePage"
-  />
-  <AdminProfileView
-    v-else-if="state.currentPage === PAGE_USER_ADMIN"
-    :userData="state.userData"
-    @updateUser="updateUser"
-    @changePage="updatePage"
-  />
+  <UserProfileView v-else-if="state.currentPage === PAGE_USER_PROFILE" :userData="state.userData" @updateUser="updateUser"
+    @changePage="updatePage" />
+  <AdminProfileView v-else-if="state.currentPage === PAGE_USER_ADMIN" :userData="state.userData" @updateUser="updateUser"
+    @changePage="updatePage" />
   <CalendarView v-else-if="state.currentPage === PAGE_CALENDAR" />
   <MyLessonsView v-else-if="state.currentPage === PAGE_MYLESSONS" />
 </template>

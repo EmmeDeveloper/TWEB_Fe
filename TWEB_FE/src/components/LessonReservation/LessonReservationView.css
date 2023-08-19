@@ -1,0 +1,48 @@
+.warning-box {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid #FFA500;
+    border-radius: 4px;
+    background-color: rgba(255, 165, 0, 0.12);
+    align-items: center;
+    display: flex;
+}
+
+.warning-box i {
+  font-size: 1.5rem;
+  color: #FFA500;
+  margin-right: 0.5rem;
+}
+
+.warning-box span {
+  font-size: 1rem;
+}
+
+.error-box {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid #d95868;
+    border-radius: 4px;
+    background-color: rgba(217, 88, 104, 0.12);
+    align-items: center;
+    display: flex;
+}
+
+.error-box i {
+  font-size: 1.5rem;
+  color: #d95868;
+  margin-right: 0.5rem;
+}
+
+.error-box span {
+  font-size: 1rem;
+}
+
+.success-message {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 24px 16px;
+}

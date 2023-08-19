@@ -2,7 +2,7 @@
   <!--{{ props }}-->
 
   <div class="container d-flex flex-column">
-    <h3 v-if="uiData.title" class="mt-4">
+    <h3 v-if="uiData.title">
       {{ uiData.title }}
     </h3>
 

@@ -46,9 +46,12 @@ const myLessonsMap = computed(() => {
 });
 
 function repetitionUpdated() {
-  selectedItem.value = null
   getCoursesRepetitions()
   getUserRepetitions()
+}
+
+function closeSidebar() {
+  selectedItem.value = null
 }
 
 const selectedItem = ref(null)
@@ -59,20 +62,20 @@ function selectItem(item) {
 </script>
 
 <template>
-  <div class="container-fluid">
-    <div class="row">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
       <div :class="[ selectedItem ? 'col-9' : 'col-12']">
         <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
                             @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
 
-      <div :class="{'col-3' : selectedItem}">
+      <div :class="{'col-3 border-start border-1' : selectedItem}">
         <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
                                      :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="prof" @reservedLesson="repetitionUpdated"
-                                     @deletedLesson="repetitionUpdated" />
+                                     @deletedLesson="repetitionUpdated" @close="closeSidebar()" />
 
         <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
-                                   @updatedLesson="repetitionUpdated" />
+                                   @updatedLesson="repetitionUpdated" @close="closeSidebar()" />
       </div>
     </div>
   </div>

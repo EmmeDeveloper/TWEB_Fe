@@ -1,15 +1,15 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import LessonReservationDetails from './LessonReservationDetails.vue'
 import { updateRepetitionStatus } from '../../StateService.js'
 import { REPETITION_STATUS_DONE, REPETITION_STATUS_DELETED } from '../../constants.js'
-import './PastLessonReservationView.css'
+import './LessonReservationView.css'
 
 const props = defineProps({
   repetition: Object
 })
 
-const emits = defineEmits(['updatedLesson'])
+const emits = defineEmits(['updatedLesson', 'close'])
 
 const state = ref({
   isLoading: false,
@@ -17,6 +17,12 @@ const state = ref({
   showIssue: false,
   selectedIssue: null,
 })
+
+watch(() => props.repetition, (newRep, oldRep) => {
+  if (newRep?.id != oldRep?.id) {
+    state.value.updateSuccess = false
+  }
+});
 
 const note = ref('');
 
@@ -37,6 +43,12 @@ const issues = [
   "Altro"
 ]
 
+state.value.selectedIssue = issues[0]
+
+
+function close() {
+  emits('close')
+}
 
 async function updateLesson(status, note) {
   state.value.isLoading = false
@@ -49,6 +61,7 @@ async function updateLesson(status, note) {
 }
 
 function toggleIssue() {
+  if (state.value.updateSuccess) return;
   state.value.showIssue = !state.value.showIssue;
   uiData.value.title = getTitle();
   note.value = '';
@@ -63,12 +76,15 @@ function getTitle() {
 
 <template>
   <div class="container d-flex flex-column">
+    <div class="d-flex flex-row-reverse mt-2">
+      <i class="mdi mdi-close fs-4 px-1 pointer" @click="close()"></i>
+    </div>
     <LessonReservationDetails v-if="!state.showIssue" :title="uiData.title" :time="uiData.time" :date="uiData.date" :course="uiData.course"
           :professor="uiData.professor" :note="props.repetition.note" />
 
     <template v-if="repetition.status == 'pending'">
       <template v-if="!state.showIssue">
-        <textarea type="text" class="form-control mt-4" placeholder="Aggiungi una nota" aria-label="Note" v-model="note" rows="5"></textarea>
+        <textarea type="text" class="form-control mt-4" placeholder="Aggiungi una nota" aria-label="Note" v-model="note" rows="5" :disabled="state.updateSuccess"></textarea>
 
         <div class="warning-box">
           <i class="mdi mdi-alert"></i>
@@ -91,19 +107,17 @@ function getTitle() {
 
       <template v-if="state.showIssue">
 
-        <div>
-          <i class="mdi mdi-chevron-left" style="padding-right: 8px;" @click="toggleIssue()"></i>
-          <span>Cosa è andato storto?</span>
+        <div class="d-flex">
+          <i class="mdi mdi-chevron-left fs-3 px-1 pointer" @click="toggleIssue()"></i>
+          <h3>Cosa è andato storto?</h3>
         </div>
 
-        <div v-for="issue in issues" :key="issue">
-          <label>
-            <input type="radio" :value="issue" v-model="state.selectedIssue" />
-            {{ issue }}
-          </label>
+        <div class="form-check form-check-inline" v-for="issue in issues" :key="issue">
+            <input type="radio" class="form-check-input fs-5" :value="issue" v-model="state.selectedIssue" :id="issue" :disabled="state.updateSuccess" />
+            <label class="form-check-label fs-5" :for="issue">{{ issue }}</label>
         </div>
 
-        <input :disabled="state.selectedIssue != issues[3]" v-model="note">
+        <textarea type="text" class="form-control mt-4" placeholder="Inserisci un commento" aria-label="Note" :disabled="state.selectedIssue != issues[3] || state.updateSuccess" v-model="note" rows="5"></textarea>
 
         <div class="warning-box">
           <i class="mdi mdi-alert"></i>
@@ -112,7 +126,7 @@ function getTitle() {
         </div>
 
         <template v-if="!state.updateSuccess">
-          <button class="button" :disabled="state.isLoading" :loading="state.isLoading"
+          <button type="button" class="btn btn-primary w-100" :disabled="state.isLoading" :loading="state.isLoading"
             @click="updateLesson(REPETITION_STATUS_DELETED, note)">
             Conferma
           </button>

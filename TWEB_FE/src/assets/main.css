@@ -37,18 +37,28 @@
   color: var(--PRIMARY-COLOR);
 }
 
+.bg-primary {
+  background-color: var(--PRIMARY-COLOR);
+}
+
+.bg-primary-12 {
+  background-color: rgba(4, 107, 153, 0.12);
+}
+
 a {
   color: var(--PRIMARY-COLOR);
   cursor: pointer;
 }
 
-/* 
 body {
   margin: 0;
   height: 100svh;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 
 .primary-button {
   background-color: rgba(255, 255, 255, 0.6);
   padding: 0.5rem;
@@ -111,11 +121,3 @@ input:focus-visible {
   border: 1px solid var(--PRIMARY-COLOR);
   outline: none;
 } */
-
-.w100 {
-  width: 100%;
-}
-
-.h100 {
-  height: 100%;
-}
