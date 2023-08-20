@@ -27,6 +27,7 @@ function updateUser(u) {
 onBeforeMount(async () => {
   await getAllProfessors()
   await getAllCourses()
+  state.value.currentPage = PAGE_ADMIN_PROFESSORS
 })
 
 const state = ref(useStore())
