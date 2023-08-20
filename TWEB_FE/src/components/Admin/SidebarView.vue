@@ -16,28 +16,35 @@ function _logout() {
     getCoursesRepetitions()
     emits('changePage', PAGE_HOME)
     emits('updateUser', null)
-  });
+  })
 }
 
 const sections = [
-  { name: "Professori", icon: 'human-male-board', page: 'professors' },
-  { name: "Corsi", icon: 'account-multiple', page: 'courses' },
-  { name: "Insegnamenti", icon: 'account-multiple', page: 'teachings' },
-  { name: "Lezioni", icon: 'format-list-bulleted', page: 'bookings' }
+  { name: 'Professori', icon: 'human-male-board', page: 'professors' },
+  { name: 'Corsi', icon: 'account-multiple', page: 'courses' },
+  { name: 'Insegnamenti', icon: 'account-multiple', page: 'teachings' },
+  { name: 'Lezioni', icon: 'format-list-bulleted', page: 'bookings' }
 ]
 </script>
 "
 <template>
   <div class="d-flex flex-column h-100 px-3">
-    <div v-for="section in sections" :key="section" @click="showAdminPage(section.page)" class="d-flex align-center pointer px-2 py-1 mt-2"
-      :class="{ selected: adminPage == section.page }">
-      <i class="mdi" :class="'mdi-' + section.icon"></i>
+    <div
+      v-for="section in sections"
+      :key="section"
+      @click="showAdminPage(section.page)"
+      class="d-flex align-center pointer px-2 py-1 mt-2 gap-4 fs-5"
+      :class="{
+        'selected-item': adminPage == section.page,
+        'not-selected-item': adminPage != section.page
+      }"
+    >
+      <i class="mdi fs-4" :class="'mdi-' + section.icon"></i>
       <span>{{ section.name }}</span>
     </div>
     <div class="divider"></div>
-    <div class="padding-button" @click="_logout">
+    <div class="logout-button pointer" @click="_logout">
       <div>Logout</div>
     </div>
   </div>
 </template>
- 
