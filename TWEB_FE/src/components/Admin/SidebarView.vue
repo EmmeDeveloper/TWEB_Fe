@@ -1,14 +1,15 @@
 <script setup>
 import { ref } from 'vue'
-import { getCoursesRepetitions, logout } from '../../StateService.js'
+import { getCoursesRepetitions, logout, useStore } from '../../StateService.js'
 import { PAGE_HOME, PAGE_ADMIN_COURSES, PAGE_ADMIN_PROFESSORS, PAGE_ADMIN_TEACHINGS, PAGE_ADMIN_BOOKINGS } from '../../constants'
 
-let adminPage = ref(null)
+const state = ref(useStore())
 
 const emits = defineEmits(['changePage', 'updateUser'])
 
 function showAdminPage(page) {
-  adminPage.value = page
+  emits('changePage', page)
+
 }
 
 function _logout() {
@@ -35,8 +36,8 @@ const sections = [
       @click="showAdminPage(section.page)"
       class="d-flex align-center pointer px-2 py-1 mt-2 gap-4 fs-5"
       :class="{
-        'selected-item': adminPage == section.page,
-        'not-selected-item': adminPage != section.page
+        'selected-item': state.currentPage == section.page,
+        'not-selected-item': state.currentPage != section.page
       }"
     >
       <i class="mdi fs-4" :class="'mdi-' + section.icon"></i>
