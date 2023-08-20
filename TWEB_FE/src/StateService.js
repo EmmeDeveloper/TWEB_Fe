@@ -9,11 +9,11 @@ const state = ref({
   allRepetitions: [],
   userRepetitions: [],
   allProfessors: [],
-  isAdmin : false,
+  isAdmin: false,
   teachings: {},
   filteredTeachings: {},
   filteredProfessors: [],
-  filteredCourses: [],
+  filteredCourses: []
 })
 
 export function initStore() {
@@ -175,14 +175,14 @@ export async function getAllProfessors() {
     }
 
     state.value.allProfessors = (await result.json()).professors
-    if (state.value.filteredProfessors.length == 0) state.value.filteredProfessors = state.value.allProfessors
+    if (state.value.filteredProfessors.length == 0)
+      state.value.filteredProfessors = state.value.allProfessors
   } catch (error) {
     throw new Error(error)
   }
 }
 
 export async function getTeachings(courseIds = []) {
-
   if (courseIds.length == 0) courseIds = state.value.courses.map((c) => c.id)
 
   try {
@@ -193,18 +193,15 @@ export async function getTeachings(courseIds = []) {
 
     var ids = courseIds.map((id) => `ids=${id}`).join('&')
 
-    const result = await fetch(
-      `${BACKEND_LINK}/courses/professors?${ids}`,
-      requestOptions
-    )
+    const result = await fetch(`${BACKEND_LINK}/courses/professors?${ids}`, requestOptions)
 
     if (result.status == 200) {
       const teachings = (await result.json()).professors
       state.value.teachings = teachings
-      if (Object.keys(state.value.filteredTeachings).length == 0) state.value.filteredTeachings = teachings
+      if (Object.keys(state.value.filteredTeachings).length == 0)
+        state.value.filteredTeachings = teachings
     } else console.log('error')
   } catch (error) {
     console.log(error)
   }
-
 }

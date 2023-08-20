@@ -4,7 +4,7 @@ table {
   border-radius: 0.375rem;
 }
 
-.lessons .table td {
+.adminTable .table td {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 0.75rem;
@@ -17,18 +17,15 @@ table {
   margin-bottom: 0.3rem;
 }
 
-.lessons .table 
-th:last-child,
+.adminTable .table th:last-child,
 td:last-child {
   padding-right: 1rem;
 }
 
-.lessons .table 
-th:first-child,
+.adminTable .table th:first-child,
 td:first-child {
   padding-left: 1rem;
 }
-
 
 ::-webkit-scrollbar {
   width: 8px; /* Set the width of the scrollbar */
@@ -43,7 +40,7 @@ td:first-child {
   background-color: #aaa; /* Color of the thumb on hover */
 }
 
-.lessons .table th:nth-child(-n+6),
-.lessons .table td:nth-child(-n+6) {
+.adminTable .table th:nth-child(-n + 6),
+.adminTable .table td:nth-child(-n + 6) {
   width: 15%;
 }
