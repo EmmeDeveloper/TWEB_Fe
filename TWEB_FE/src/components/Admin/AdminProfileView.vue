@@ -23,8 +23,20 @@ const state = useStore()
 </script>
 
 <template>
-  <div class="flex gap-2 profile" style="height: 100%">
-    <Sidebar @updateUser="updateUser" @changePage="updatePage" />
+  
+  <div class="w-100 h-100 d-flex">
+    <div class="ms-0 row w-100">
+      <div class="col-3">
+        <Sidebar @updateUser="updateUser" @changePage="updatePage" />
+      </div>
+ 
+      <div class="col-9 bg-danger">bella</div>
+    </div>
+  </div>
+  
+  
+  <!-- <div class="flex gap-2 profile" style="height: 100%">
+    
     <div>
       <table style="width: 100%">
         <tr>
@@ -51,5 +63,5 @@ const state = useStore()
         </tr>
       </table>
     </div>
-  </div>
+  </div> -->
 </template>
