@@ -1,7 +1,8 @@
 <script setup>
 
 import { computed, ref } from 'vue'
-import { useStore } from '../../StateService.js'
+import { getCoursesRepetitions, getUserRepetitions, useStore, updateRepetitionStatus } from '../../StateService.js'
+import { REPETITION_STATUS_DELETED } from '../../constants.js'
 
 import './LessonsView.css'
 
@@ -9,6 +10,18 @@ const state = ref(useStore())
 
 const repetitions = computed(() => state.value.allRepetitions);
 const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
+
+const actionId = ref(null)
+
+async function deleteLesson(repetition) {
+  await updateRepetitionStatus(repetition.id, REPETITION_STATUS_DELETED, "Confermata come non effettuata dall'admin").then(() => {
+    getCoursesRepetitions()
+    getUserRepetitions()
+  })
+}
+
+
+
 </script>
 
 <template>
@@ -21,7 +34,8 @@ const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
           </tr>
         </thead>
         <tbody>
-          <tr v-for="repetition in repetitions" :key="repetition.id">
+          <tr v-for="repetition in repetitions" :key="repetition.id" @mouseover="actionId = repetition.id" class="align-baseline"
+            @mouseout="actionId = null">
             <td>{{ repetition.date }}</td>
             <td>{{ repetition.time }}:00 - {{ repetition.time + 1 }}:00</td>
             <td>{{ repetition.user.name }} {{ repetition.user.surname }}</td>
@@ -33,7 +47,10 @@ const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
               <span v-else-if="repetition.status === 'done'" class="status done p-1">Effettuata</span>
             </td>
             <td>
-              <i class="mdi mdi-dots-vertical" v-if="repetition.status == 'pending'"></i>
+              <template v-if="repetition.status == 'pending' && new Date(repetition.date).setHours(repetition.time) < new Date()">
+                <button type="button" class="btn btn-danger py-1" v-if="actionId == repetition.id" @click="deleteLesson(repetition)">Non effettuata</button>
+                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
+              </template>
             </td>
           </tr>
         </tbody>
@@ -41,3 +58,6 @@ const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
     </div>
   </div>
 </template>
+
+<style>
+</style>

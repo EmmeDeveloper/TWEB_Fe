@@ -45,5 +45,5 @@ td:first-child {
 
 .lessons .table th:nth-child(-n+6),
 .lessons .table td:nth-child(-n+6) {
-  width: 16%;
+  width: 15%;
 }
