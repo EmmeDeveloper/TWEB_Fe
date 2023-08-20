@@ -1,8 +1,9 @@
 <script setup>
 import './AdminProfile.css'
 import Sidebar from './SidebarView.vue'
+import LessonsView from './LessonsView.vue'
 import { useStore, getAllProfessors, getAllCourses } from '../../StateService'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 const emits = defineEmits(['changePage', 'updateUser'])
 
@@ -19,18 +20,22 @@ onBeforeMount(async () => {
   await getAllCourses()
 })
 
-const state = useStore()
+const state = ref(useStore())
 </script>
 
 <template>
-  
   <div class="w-100 h-100 d-flex">
     <div class="ms-0 row w-100">
       <div class="col-3">
         <Sidebar @updateUser="updateUser" @changePage="updatePage" />
       </div>
  
-      <div class="col-9 bg-danger">bella</div>
+      <div class="col-9 bg-danger">
+
+        <LessonsView v-if="state.currentPage === 'bookings'" />
+
+
+      </div>
     </div>
   </div>
   
