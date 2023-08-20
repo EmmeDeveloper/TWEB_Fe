@@ -1,7 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { getCoursesRepetitions, logout, useStore } from '../../StateService.js'
-import { PAGE_HOME, PAGE_ADMIN_COURSES, PAGE_ADMIN_PROFESSORS, PAGE_ADMIN_TEACHINGS, PAGE_ADMIN_BOOKINGS } from '../../constants'
+import {
+  PAGE_HOME,
+  PAGE_ADMIN_COURSES,
+  PAGE_ADMIN_PROFESSORS,
+  PAGE_ADMIN_TEACHINGS,
+  PAGE_ADMIN_BOOKINGS
+} from '../../constants'
 
 const state = ref(useStore())
 
@@ -9,7 +15,6 @@ const emits = defineEmits(['changePage', 'updateUser'])
 
 function showAdminPage(page) {
   emits('changePage', page)
-
 }
 
 function _logout() {
@@ -22,8 +27,8 @@ function _logout() {
 
 const sections = [
   { name: 'Professori', icon: 'human-male-board', page: PAGE_ADMIN_PROFESSORS },
-  { name: 'Corsi', icon: 'account-multiple', page: PAGE_ADMIN_COURSES },
-  { name: 'Insegnamenti', icon: 'account-multiple', page: PAGE_ADMIN_TEACHINGS },
+  { name: 'Corsi', icon: 'text-long', page: PAGE_ADMIN_COURSES },
+  { name: 'Insegnamenti', icon: 'alpha-i-circle', page: PAGE_ADMIN_TEACHINGS },
   { name: 'Lezioni', icon: 'format-list-bulleted', page: PAGE_ADMIN_BOOKINGS }
 ]
 </script>
