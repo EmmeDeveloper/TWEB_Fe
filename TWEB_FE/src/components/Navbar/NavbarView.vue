@@ -16,11 +16,11 @@ function loginClicked() {
   emits('loginClicked')
 }
 
-const pages = [
+const pages = computed(() => [
   { icon: 'home', name: 'Home', page: PAGE_HOME, condition: true },
   { icon: 'format-list-bulleted', name: 'Le mie lezioni', page: PAGE_MYLESSONS, condition: user.value != null && user.value.role != 'Admin' },
   { icon: 'calendar-blank', name: 'Calendario', page: PAGE_CALENDAR, condition: true },
-]
+]);
 </script>
 
 <template>
@@ -36,7 +36,7 @@ const pages = [
 
     </div>
     <div class="d-flex align-center">
-      <div v-if="user == null" class="align-center border-primary border border-2 d-flex px-1 py-1 rounded-pill cursor"
+      <div v-if="user == null" class="align-center border-primary border border-2 d-flex px-1 py-1 rounded-pill pointer"
         @click="loginClicked">
         <div class="d-flex justify-content-center align-items-center bg-primary rounded-circle"
           style="width: 2rem; height: 2rem;">

@@ -9,9 +9,9 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <div class="flex flex-column gap-1" style="margin-bottom: 15px">
+  <div class="flex flex-column gap-1 mb-2">
     <label :for="id">{{ name }}</label>
-    <input
+    <input class="form-control"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :type="type"

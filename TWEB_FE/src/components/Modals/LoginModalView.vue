@@ -29,7 +29,7 @@ function _login(accountValue, passwordValue) {
         <div class="modal-header flex flex-row justify-center">
           <slot name="header">
             <p class="title-modal">Accedi</p>
-            <img class="cursor-pointer image-position" style="width: 25px" src="../../assets/x-circle.svg"
+            <img class="pointer image-position" style="width: 25px" src="../../assets/x-circle.svg"
               @click="$emit('close')" alt="chiudi modale" />
           </slot>
         </div>
@@ -38,7 +38,7 @@ function _login(accountValue, passwordValue) {
           <InputTextView type="password" name="Password" id="password" v-model="passwordValue" />
         </div>
         <div class="modal-footer flex justify-center">
-          <button class="secondary-button cursor-pointer" type="submit">Login</button>
+          <button class="btn btn-primary pointer" type="submit">Login</button>
         </div>
       </form>
     </div>
