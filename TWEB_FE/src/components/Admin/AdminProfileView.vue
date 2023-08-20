@@ -26,13 +26,13 @@ const state = ref(useStore())
 </script>
 
 <template>
-  <div class="w-100 h-100 d-flex">
-    <div class="ms-0 row w-100">
+  <div class="w-100 h-100 d-flex overflow-auto">
+    <div class="ms-0 row w-100 h-100">
       <div class="col-3">
         <Sidebar @updateUser="updateUser" @changePage="updatePage" />
       </div>
  
-      <div class="col-9 bg-danger">
+      <div class="col-9 h-100">
 
         <LessonsView v-if="state.currentPage === PAGE_ADMIN_BOOKINGS" />
 
