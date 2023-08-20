@@ -43,8 +43,7 @@ const sections = [
       <span>{{ section.name }}</span>
     </div>
     <div class="divider"></div>
-    <div class="logout-button pointer" @click="_logout">
-      <div>Logout</div>
-    </div>
+
+    <button class="logout-button" @click="_logout">Logout</button>
   </div>
 </template>

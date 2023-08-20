@@ -43,8 +43,7 @@ th {
   margin-top: 1rem;
   background-color: var(--PRIMARY-COLOR);
   border-radius: 5px;
-}
-
-.logout-button > div {
   color: white;
+  border: none;
+  padding: 0.3rem 0;
 }
