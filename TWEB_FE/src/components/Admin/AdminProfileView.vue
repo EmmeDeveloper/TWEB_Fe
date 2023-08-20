@@ -4,6 +4,8 @@ import Sidebar from './SidebarView.vue'
 import LessonsView from './LessonsView.vue'
 import { useStore, getAllProfessors, getAllCourses } from '../../StateService'
 import { onBeforeMount, ref } from 'vue'
+import { PAGE_ADMIN_COURSES, PAGE_ADMIN_PROFESSORS, PAGE_ADMIN_TEACHINGS, PAGE_ADMIN_BOOKINGS } from '../../constants'
+
 
 const emits = defineEmits(['changePage', 'updateUser'])
 
@@ -32,7 +34,7 @@ const state = ref(useStore())
  
       <div class="col-9 bg-danger">
 
-        <LessonsView v-if="state.currentPage === 'bookings'" />
+        <LessonsView v-if="state.currentPage === PAGE_ADMIN_BOOKINGS" />
 
 
       </div>

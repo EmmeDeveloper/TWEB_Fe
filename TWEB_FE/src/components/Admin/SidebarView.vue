@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getCoursesRepetitions, logout } from '../../StateService.js'
-import { PAGE_HOME } from '../../constants'
+import { PAGE_HOME, PAGE_ADMIN_COURSES, PAGE_ADMIN_PROFESSORS, PAGE_ADMIN_TEACHINGS, PAGE_ADMIN_BOOKINGS } from '../../constants'
 
 let adminPage = ref(null)
 
@@ -20,13 +20,13 @@ function _logout() {
 }
 
 const sections = [
-  { name: 'Professori', icon: 'human-male-board', page: 'professors' },
-  { name: 'Corsi', icon: 'account-multiple', page: 'courses' },
-  { name: 'Insegnamenti', icon: 'account-multiple', page: 'teachings' },
-  { name: 'Lezioni', icon: 'format-list-bulleted', page: 'bookings' }
+  { name: 'Professori', icon: 'human-male-board', page: PAGE_ADMIN_PROFESSORS },
+  { name: 'Corsi', icon: 'account-multiple', page: PAGE_ADMIN_COURSES },
+  { name: 'Insegnamenti', icon: 'account-multiple', page: PAGE_ADMIN_TEACHINGS },
+  { name: 'Lezioni', icon: 'format-list-bulleted', page: PAGE_ADMIN_BOOKINGS }
 ]
 </script>
-"
+
 <template>
   <div class="d-flex flex-column h-100 px-3">
     <div

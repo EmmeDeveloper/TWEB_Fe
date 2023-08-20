@@ -1,5 +1,5 @@
 <script setup></script>
 
 <template>
-  <div></div>
+  <div> ciao laura come stai</div>
 </template>
