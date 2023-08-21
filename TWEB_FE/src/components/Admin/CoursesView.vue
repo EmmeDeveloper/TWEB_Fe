@@ -1,14 +1,9 @@
 <script setup>
-import { useStore, deleteCourse } from '../../StateService'
-import {
-  COURSE_DELETED,
-  COURSE_NOT_DELETED,
-  DELETE_COURSE_TEXT,
-  MODAL_TITLE
-} from '../../constants'
+import { useStore, deleteCourse } from '@/StateService'
+import { COURSE_DELETED, COURSE_NOT_DELETED, DELETE_COURSE_TEXT, MODAL_TITLE } from '@/constants'
 import { ref } from 'vue'
-import ToastView from '../Toast/ToastView.vue'
-import ConfirmModalView from '../Modals/ConfirmModalView.vue'
+import ToastView from '@/components/Toast/ToastView.vue'
+import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
 
 const state = ref(useStore())
 const actionId = ref(null)
@@ -67,8 +62,7 @@ function _ok() {
               <div>
                 <button
                   type="button"
-                  class="btn btn-danger py-1"
-                  v-if="actionId == course.id"
+                  class="btn py-1"
                   @click="
                     () => {
                       showModal = true
@@ -78,7 +72,6 @@ function _ok() {
                 >
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
-                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
               </div>
             </td>
           </tr>

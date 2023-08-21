@@ -1,9 +1,15 @@
 <script setup>
-import { useStore, deleteTeachings } from '../../StateService'
+import { useStore, deleteTeachings } from '@/StateService'
 import { onBeforeMount, ref } from 'vue'
 import './LessonsView.css'
-import { TEACHING_DELETED, TEACHING_NOT_DELETED } from '../../constants'
-import ToastView from '../Toast/ToastView.vue'
+import {
+  TEACHING_DELETED,
+  TEACHING_NOT_DELETED,
+  MODAL_TITLE,
+  DELETE_TEACHING_TEXT
+} from '@/constants'
+import ToastView from '@/components/Toast/ToastView.vue'
+import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
 
 const state = ref(useStore())
 
@@ -11,10 +17,14 @@ const titles = ['Corso', 'Professore', '']
 
 const allTeachings = ref([])
 
+const teachingToDelete = ref(null)
 const actionId = ref(null)
 
 const showToast = ref(false)
 const objectToast = ref({ text: null, color: null })
+
+const showModal = ref(false)
+const objectConfirmModal = ref({ text: DELETE_TEACHING_TEXT, title: MODAL_TITLE })
 
 onBeforeMount(() => {
   for (let course of state.value.courses) {
@@ -29,17 +39,28 @@ onBeforeMount(() => {
   }
 })
 
-async function _deleteTeachings(teaching) {
-  const status = await deleteTeachings(teaching)
+async function _deleteTeachings() {
+  const status = await deleteTeachings(teachingToDelete.value)
   if (status === 200) {
     objectToast.value.text = TEACHING_DELETED
     objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
-    allTeachings.value = allTeachings.value.filter((t) => t.professor.id != teaching.professor.id)
+    allTeachings.value = allTeachings.value.filter(
+      (t) => t.professor.id != teachingToDelete.value.professor.id
+    )
   } else {
     objectToast.value.text = TEACHING_NOT_DELETED
     objectToast.value.color = 'var(--ERROR-COLOR-TOAST)'
   }
   showToast.value = true
+}
+
+function closeToast() {
+  showToast.value = false
+}
+
+function _ok() {
+  showModal.value = false
+  _deleteTeachings()
 }
 </script>
 
@@ -66,13 +87,16 @@ async function _deleteTeachings(teaching) {
               <div>
                 <button
                   type="button"
-                  class="btn btn-danger py-1"
-                  v-if="actionId == index"
-                  @click="_deleteTeachings(teaching)"
+                  class="btn py-1"
+                  @click="
+                    () => {
+                      showModal = true
+                      teachingToDelete = teaching
+                    }
+                  "
                 >
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
-                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
               </div>
             </td>
           </tr>
@@ -82,5 +106,12 @@ async function _deleteTeachings(teaching) {
   </div>
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
+  </div>
+  <div v-if="showModal">
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
   </div>
 </template>

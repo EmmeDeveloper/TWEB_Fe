@@ -1,18 +1,18 @@
 <script setup>
 import './AdminProfile.css'
-import Sidebar from './SidebarView.vue'
-import LessonsView from './LessonsView.vue'
-import TeachingsView from './TeachingsView.vue'
-import CoursesView from './CoursesView.vue'
-import ProfView from './ProfView.vue'
-import { useStore, getAllProfessors, getAllCourses } from '../../StateService'
+import Sidebar from '@/components/Admin/SidebarView.vue'
+import LessonsView from '@/components/Admin/LessonsView.vue'
+import TeachingsView from '@/components/Admin/TeachingsView.vue'
+import CoursesView from '@/components/Admin/CoursesView.vue'
+import ProfView from '@/components/Admin/ProfView.vue'
+import { useStore, getAllProfessors, getAllCourses } from '@/StateService'
 import { onBeforeMount, ref } from 'vue'
 import {
   PAGE_ADMIN_COURSES,
   PAGE_ADMIN_PROFESSORS,
   PAGE_ADMIN_TEACHINGS,
   PAGE_ADMIN_BOOKINGS
-} from '../../constants'
+} from '@/constants'
 
 const emits = defineEmits(['changePage', 'updateUser'])
 
@@ -35,12 +35,12 @@ const state = ref(useStore())
 
 <template>
   <div class="w-100 h-100 d-flex overflow-auto">
-    <div class="d-flex flex-column ms-0 w-100 h-100 lg:flex-row">
-      <div class="col-12 col-lg-3">
+    <div class="d-flex flex-column ms-0 w-100 h-100 flex-lg-row">
+      <div class="col-12 col-lg-2">
         <Sidebar @updateUser="updateUser" @changePage="updatePage" />
       </div>
 
-      <div class="col-12 col-lg-9 h-100">
+      <div class="col-12 h-100 col-lg-10">
         <ProfView v-if="state.currentPage === PAGE_ADMIN_PROFESSORS" />
         <LessonsView v-if="state.currentPage === PAGE_ADMIN_BOOKINGS" />
         <TeachingsView v-if="state.currentPage === PAGE_ADMIN_TEACHINGS" />

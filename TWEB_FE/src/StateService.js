@@ -247,17 +247,17 @@ export async function deleteTeachings(teaching) {
   }
 }
 
-export async function deleteProf(prof) {
+export async function deleteProf(profId) {
   try {
     var requestOptions = {
       method: 'DELETE',
       redirect: 'follow'
     }
 
-    const result = await fetch(`${BACKEND_LINK}/professors?id=${prof.id}`, requestOptions)
+    const result = await fetch(`${BACKEND_LINK}/professors?id=${profId}`, requestOptions)
     if (result.status == 200) {
       state.value.allProfessors = state.value.allProfessors.filter(
-        (professor) => professor.id != prof.id
+        (professor) => professor.id != profId
       )
     } else console.log('error')
     return result.status

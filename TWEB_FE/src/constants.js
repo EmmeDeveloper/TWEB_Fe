@@ -24,4 +24,13 @@ export const COURSE_NOT_DELETED = 'Corso non eliminato'
 /* modal constants */
 export const MODAL_TITLE = 'Sei sicuro?'
 export const DELETE_COURSE_TEXT =
-  "Sei sicuro di voler eliminare il corso? L'eliminazione è irreversibile"
+  "Sei sicuro di voler eliminare il corso? L'operazione è irreversibile"
+
+export const DELETE_PROF_TEXT =
+  "Sei sicuro di voler eliminare il professore? L'operazione è irreversibile"
+
+export const DELETE_TEACHING_TEXT =
+  "Sei sicuro di voler eliminare l'insegnamento? L'operazione è irreversibile"
+
+export const DELETE_LESSON_TEXT =
+  "Sei sicuro di voler modificare lo stato della lezione in 'non effettuata'? L'operazione è irreversibile"
