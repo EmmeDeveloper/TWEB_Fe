@@ -9,16 +9,18 @@
 
 :root {
   --DISABLED-OPACITY: 0.5;
-  
+
   --PRIMARY-COLOR: rgba(4, 107, 153, 1);
   --PRIMARY-COLOR-RGB: 4, 107, 153;
-  
-  
+
   --WHITE-COLOR: rgba(255, 255, 255, 1);
-  --DELETE-COLOR: rgb(255, 49, 49, 1);
+  --DELETE-COLOR: rgba(255, 49, 49, 1);
   --TEXT-COLOR: rgb(17 24 39);
   --TEXT-COLOR-RGB: 17, 24, 39;
   --TEXT-COLOR-DISABLED: rgb(var(--TEXT-COLOR-RGB), var(--DISABLED-OPACITY));
+
+  --ERROR-COLOR-TOAST: rgba(255, 122, 122, 1);
+  --DONE-COLOR-TOAST: rgb(47, 159, 47);
 
   --REP-STATUS-DEL: #ff9999;
   --REP-STATUS-DONE: #99ff99;
@@ -50,7 +52,6 @@
 .bg-primary-12 {
   background-color: rgba(var(--PRIMARY-COLOR-RGB), 0.12);
 }
-
 
 a {
   color: var(--PRIMARY-COLOR);

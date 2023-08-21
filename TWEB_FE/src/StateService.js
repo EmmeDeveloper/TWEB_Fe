@@ -218,6 +218,7 @@ export async function deleteCourse(courseId) {
     if (result.status == 200) {
       state.value.courses = state.value.courses.filter((c) => c.id != courseId)
     } else console.log('error')
+    return result.status
   } catch (error) {
     console.log(error)
   }
