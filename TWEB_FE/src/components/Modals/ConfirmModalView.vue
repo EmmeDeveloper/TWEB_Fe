@@ -10,17 +10,11 @@ const emits = defineEmits(['close', 'ok'])
 </script>
 
 <template>
-  <div class="modal" style="display: block">
+  <div class="modal" style="display: block; background-color: rgba(0, 0, 0, 0.4)">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ props.objectConfirmModal.title }}</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
         </div>
         <div class="modal-body">
           <p>{{ props.objectConfirmModal.text }}</p>

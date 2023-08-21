@@ -1,20 +1,30 @@
 <script setup>
-import { useStore, deleteProf } from '../../StateService'
-import { PROFESSOR_DELETED, PROFESSOR_NOT_DELETED } from '../../constants'
+import { useStore, deleteProf } from '@/StateService'
+import {
+  PROFESSOR_DELETED,
+  PROFESSOR_NOT_DELETED,
+  DELETE_PROF_TEXT,
+  MODAL_TITLE
+} from '@/constants'
 import { ref } from 'vue'
-import ToastView from '../Toast/ToastView.vue'
-import './LessonsView.css'
+import ToastView from '@/components/Toast/ToastView.vue'
+import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
 
 const state = ref(useStore())
 
 const titles = ['Nome', 'Cognome', '']
 
 const actionId = ref(null)
+const profToDelete = ref(null)
+
 const showToast = ref(false)
 const objectToast = ref({ text: null, color: null })
 
-async function _deleteProf(prof) {
-  const status = await deleteProf(prof)
+const showModal = ref(false)
+const objectConfirmModal = ref({ text: DELETE_PROF_TEXT, title: MODAL_TITLE })
+
+async function _deleteProf() {
+  const status = await deleteProf(profToDelete.value)
   if (status === 200) {
     objectToast.value.text = PROFESSOR_DELETED
     objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
@@ -28,6 +38,11 @@ async function _deleteProf(prof) {
 
 function closeToast() {
   showToast.value = false
+}
+
+function _ok() {
+  showModal.value = false
+  _deleteProf()
 }
 </script>
 
@@ -56,11 +71,18 @@ function closeToast() {
                   type="button"
                   class="btn btn-danger py-1"
                   v-if="actionId == prof.id"
-                  @click="_deleteProf(prof)"
+                  @click="
+                    () => {
+                      profToDelete = prof.id
+                      showModal = true
+                    }
+                  "
                 >
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
-                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
+                <button class="btn py-1" v-else>
+                  <i class="mdi mdi-dots-vertical pointer px-5"></i>
+                </button>
               </div>
             </td>
           </tr>
@@ -70,5 +92,12 @@ function closeToast() {
   </div>
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
+  </div>
+  <div v-if="showModal">
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
   </div>
 </template>
