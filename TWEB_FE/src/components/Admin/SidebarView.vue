@@ -53,7 +53,7 @@ const sections = [
         <span>{{ section.name }}</span>
       </div>
     </div>
-    <div class="flex align-items-center justify-content-center gap-2" @click="_logout">
+    <div class="align-items-center justify-content-center gap-2 d-none d-md-flex" @click="_logout">
       <i class="mdi mdi-logout-variant fs-4 pointer" style="color: rgba(255, 255, 255, 0.8)"></i>
       <button class="logout-button">Logout</button>
     </div>
