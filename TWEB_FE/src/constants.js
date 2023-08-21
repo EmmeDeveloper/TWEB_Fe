@@ -13,7 +13,10 @@ export const REPETITION_STATUS_DELETED = 'deleted'
 export const REPETITION_STATUS_DONE = 'done'
 
 export const PROFESSOR_DELETED = 'Professore eliminato'
+export const PROFESSOR_NOT_DELETED = 'Professore non eliminato'
 export const TEACHING_DELETED = 'Insegnamento eliminato'
-export const LESSON_DELETED = 'Ripetizione eliminata'
+export const TEACHING_NOT_DELETED = 'Insegnamento non eliminato'
+export const LESSON_DELETED = 'Ripetizione non effettuata'
+export const LESSON_NOT_DELETED = "C'è stato un errore"
 export const COURSE_DELETED = 'Corso eliminato'
-export const COURSE_NOT_DELETED = 'Corso eliminato'
+export const COURSE_NOT_DELETED = 'Corso non eliminato'

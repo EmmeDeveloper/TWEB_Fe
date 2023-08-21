@@ -154,6 +154,7 @@ export async function updateRepetitionStatus(id, status, note) {
       console.log('error', result)
       throw new Error('error')
     }
+    return result.status
   } catch (error) {
     console.log(error)
     throw new Error(error)
@@ -259,6 +260,7 @@ export async function deleteProf(prof) {
         (professor) => professor.id != prof.id
       )
     } else console.log('error')
+    return result.status
   } catch (error) {
     console.log(error)
   }

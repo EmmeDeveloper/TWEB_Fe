@@ -1,6 +1,6 @@
 <script setup>
 import { useStore, deleteProf } from '../../StateService'
-import { PROFESSOR_DELETED } from '../../constants'
+import { PROFESSOR_DELETED, PROFESSOR_NOT_DELETED } from '../../constants'
 import { ref } from 'vue'
 import ToastView from '../Toast/ToastView.vue'
 import './LessonsView.css'
@@ -11,9 +11,18 @@ const titles = ['Nome', 'Cognome', '']
 
 const actionId = ref(null)
 const showToast = ref(false)
+const objectToast = ref({ text: null, color: null })
 
 async function _deleteProf(prof) {
-  await deleteProf(prof)
+  const status = await deleteProf(prof)
+  if (status === 200) {
+    objectToast.value.text = PROFESSOR_DELETED
+    objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
+  } else {
+    objectToast.value.text = PROFESSOR_NOT_DELETED
+    objectToast.value.color = 'var(--ERROR-COLOR-TOAST)'
+  }
+
   showToast.value = true
 }
 
@@ -60,6 +69,6 @@ function closeToast() {
     </div>
   </div>
   <div v-if="showToast">
-    <ToastView :showToast="showToast" @close="closeToast()" :text="PROFESSOR_DELETED"></ToastView>
+    <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
 </template>

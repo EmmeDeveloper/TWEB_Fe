@@ -6,8 +6,9 @@ import {
   useStore,
   updateRepetitionStatus
 } from '../../StateService.js'
-import { REPETITION_STATUS_DELETED } from '../../constants.js'
+import { REPETITION_STATUS_DELETED, LESSON_DELETED, LESSON_NOT_DELETED } from '../../constants.js'
 import './LessonsView.css'
+import ToastView from '../Toast/ToastView.vue'
 
 const state = ref(useStore())
 
@@ -15,9 +16,11 @@ const repetitions = computed(() => state.value.allRepetitions)
 const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
 
 const actionId = ref(null)
+const showToast = ref(false)
+const objectToast = ref({ text: null, color: null })
 
 async function deleteLesson(repetition) {
-  await updateRepetitionStatus(
+  const status = await updateRepetitionStatus(
     repetition.id,
     REPETITION_STATUS_DELETED,
     "Confermata come non effettuata dall'admin"
@@ -25,6 +28,16 @@ async function deleteLesson(repetition) {
     getCoursesRepetitions()
     getUserRepetitions()
   })
+
+  if (status === 200) {
+    objectToast.value.text = LESSON_DELETED
+    objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
+  } else {
+    objectToast.value.text = LESSON_NOT_DELETED
+    objectToast.value.color = 'var(--ERROR-COLOR-TOAST)'
+  }
+
+  showToast.value = true
 }
 </script>
 
@@ -83,6 +96,9 @@ async function deleteLesson(repetition) {
         </tbody>
       </table>
     </div>
+  </div>
+  <div v-if="showToast">
+    <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
 </template>
 

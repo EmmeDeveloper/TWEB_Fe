@@ -2,6 +2,8 @@
 import { useStore, deleteTeachings } from '../../StateService'
 import { onBeforeMount, ref } from 'vue'
 import './LessonsView.css'
+import { TEACHING_DELETED, TEACHING_NOT_DELETED } from '../../constants'
+import ToastView from '../Toast/ToastView.vue'
 
 const state = ref(useStore())
 
@@ -10,6 +12,9 @@ const titles = ['Corso', 'Professore', '']
 const allTeachings = ref([])
 
 const actionId = ref(null)
+
+const showToast = ref(false)
+const objectToast = ref({ text: null, color: null })
 
 onBeforeMount(() => {
   for (let course of state.value.courses) {
@@ -25,10 +30,16 @@ onBeforeMount(() => {
 })
 
 async function _deleteTeachings(teaching) {
-  const result = await deleteTeachings(teaching)
-  if (result != 200) return
-
-  allTeachings.value = allTeachings.value.filter((t) => t.professor.id != teaching.professor.id)
+  const status = await deleteTeachings(teaching)
+  if (status === 200) {
+    objectToast.value.text = TEACHING_DELETED
+    objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
+    allTeachings.value = allTeachings.value.filter((t) => t.professor.id != teaching.professor.id)
+  } else {
+    objectToast.value.text = TEACHING_NOT_DELETED
+    objectToast.value.color = 'var(--ERROR-COLOR-TOAST)'
+  }
+  showToast.value = true
 }
 </script>
 
@@ -68,5 +79,8 @@ async function _deleteTeachings(teaching) {
         </tbody>
       </table>
     </div>
+  </div>
+  <div v-if="showToast">
+    <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
 </template>
