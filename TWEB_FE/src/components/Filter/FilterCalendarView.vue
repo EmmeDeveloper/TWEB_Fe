@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import {
-  useStore,
+  useStore, updateFilter, getCoursesRepetitions
 } from '../../StateService.js'
 import FilterChip from '../UI/FilterChipView.vue'
 
@@ -15,7 +15,7 @@ const teachings = computed(() => {
   const result = {};
   Object.keys(teach).forEach(courseId => {
     const title = courses.find(c => c.id === courseId)?.title;
-    if (selected[courseId].length > 0) {
+    if (selected[courseId]?.length > 0) {
       result[title] = selected[courseId].length + "/" + teach[courseId].length;
     }
   });
@@ -27,7 +27,7 @@ const filterCollapsed = ref(true);
 const tempSelected = ref({});
 updateSelected(state.value.teachings);
 
-watch(() => state.value.teachings, (newVal, oldVal) => {
+watch(() => state.value.teachings, (newVal, _) => {
   updateSelected(newVal)
 });
 
@@ -58,6 +58,12 @@ function toggleTeaching(courseId, profId) {
   }
 }
 
+function removeRapid(course) {
+  var courseId = state.value.courses.find(c => c.title === course)?.id;
+  tempSelected.value[courseId] = [];
+  applyFilter();
+}
+
 function removeTeaching(courseId, profId) {
   if (profId == null) {
     tempSelected.value[courseId] = [];
@@ -67,12 +73,13 @@ function removeTeaching(courseId, profId) {
 }
 
 function applyFilter() {
-  
+  updateFilter(tempSelected.value);
+  getCoursesRepetitions();
   filterCollapsed.value = true;
 }
 
 function addTeaching(courseId, profId) {
-  if (tempSelected.value[courseId] == []) {
+  if (tempSelected.value[courseId].length == 0 && profId == null) {
     tempSelected.value[courseId] = state.value.teachings[courseId].map(p => p.id);
     return;
   }
@@ -92,7 +99,7 @@ function addTeaching(courseId, profId) {
           <span class="ms-1">{{ prof }}</span>
           <span class="mx-2 fw-bold">{{ course }}</span>
           <i class="align-center bg-primary fs-5 justify-center mdi mdi-close rounded-circle text-center text-white pointer"
-            style="width: 2rem; height: 2rem; line-height: 1.7;"></i>
+            style="width: 2rem; height: 2rem; line-height: 1.7;" @click="removeRapid(course)"></i>
         </div>
       </div>
       <div class="d-flex col-1 justify-center align-center">

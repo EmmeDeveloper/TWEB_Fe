@@ -34,6 +34,25 @@ export function updateUser(p) {
   state.value.isAdmin = p?.role?.toLowerCase() == 'admin'
 }
 
+export function updateFilter(selectedMap) {
+  const newTeachings = {}
+  const newProfessors = []
+  const newCourses = []
+  Object.keys(selectedMap).forEach((courseID) => {
+    if (selectedMap[courseID].length > 0)  {
+      newTeachings[courseID] = state.value.teachings[courseID].filter((t) => selectedMap[courseID].includes(t.id))
+      selectedMap[courseID].forEach((professorID) => {
+        newProfessors.push(state.value.allProfessors.find((p) => p.id == professorID))
+      });
+      newCourses.push(state.value.courses.find((c) => c.id == courseID))
+    }
+  });
+
+  state.value.filteredTeachings = newTeachings
+  state.value.filteredProfessors = newProfessors
+  state.value.filteredCourses = newCourses
+}
+
 // ****** API CALLS ******
 
 export async function login(accountValue, passwordValue) {
@@ -111,7 +130,7 @@ export async function getUserRepetitions(userID) {
 }
 
 export async function getCoursesRepetitions(courseIds = []) {
-  if (courseIds.length == 0) courseIds = state.value.courses.map((c) => c.id)
+  if (courseIds.length == 0) courseIds = state.value.filteredCourses.map((c) => c.id)
 
   try {
     var requestOptions = {

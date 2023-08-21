@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { getCoursesRepetitions, getUserRepetitions, useStore } from '../../StateService.js'
 import LessonCalendarView from '@/components/LessonCalendar/LessonCalendarView.vue'
 import FutureLessonReservationView from '@/components/LessonReservation/FutureLessonReservationView.vue'
@@ -11,8 +11,20 @@ const state = ref(useStore())
 
 const emits = defineEmits(['loginClicked'])
 
+const lessonsMap = ref({});
+const myLessonsMap = ref({});
 
-const lessonsMap = computed(() => {
+updateLessonsMap();
+updateMyLessonsMap();
+
+watch([() => state.value.allRepetitions, () => state.value.userRepetitions, () => state.value.filteredProfessors], ([newRep, newURep, newProf], [oldRep, oldURep, oldProf]) => {
+  if (newRep != oldRep || newURep != oldURep || newProf != oldProf) {
+    updateLessonsMap();
+    updateMyLessonsMap();
+  }
+});
+
+function updateLessonsMap() {
   const map = {}
   state.value.allRepetitions.forEach((repetition) => {
     const date = new Date(repetition.date)
@@ -20,12 +32,14 @@ const lessonsMap = computed(() => {
     if (!map[key]) {
       map[key] = []
     }
-    map[key].push(repetition)
+    if (repetition.professor && state.value.filteredProfessors.find(p => p.id == repetition.professor.id) != null) {
+      map[key].push(repetition)
+    }
   })
-  return map
-});
+  lessonsMap.value = map
+}
 
-const myLessonsMap = computed(() => {
+function updateMyLessonsMap() {
   const mymap = {}
   state.value.userRepetitions.forEach((repetition) => {
     const date = new Date(repetition.date)
@@ -33,10 +47,12 @@ const myLessonsMap = computed(() => {
     if (!mymap[key]) {
       mymap[key] = []
     }
-    mymap[key].push(repetition)
+    if (repetition.professor && state.value.filteredProfessors.find(p => p.id == repetition.professor.id) != null) {
+      mymap[key].push(repetition)
+    }
   })
-  return mymap
-});
+  myLessonsMap.value = mymap
+}
 
 function repetitionUpdated() {
   getCoursesRepetitions()
@@ -54,7 +70,7 @@ function selectItem(item) {
 }
 
 function getAvailableProf(time, date) {
-  const profs = { ...state.value.teachings };
+  const profs = { ...state.value.filteredTeachings };
   if (!time || !date || !lessonsMap.value[date.toISOString().slice(0, 10)]) {
     return profs;
   }
@@ -73,7 +89,7 @@ function getAvailableProf(time, date) {
 }
 
 function loginClicked() {
-  emits('loginClicked') 
+  emits('loginClicked')
 }
 
 </script>
@@ -89,16 +105,17 @@ function loginClicked() {
 
       <div :class="{ 'col-3 border-start border-1': selectedItem }">
         <template v-if="selectedItem?.repetitions">
-          <AdminLessonView :repetitions="selectedItem.repetitions" :time="selectedItem.time" :date="selectedItem.date" @close="closeSidebar()" />
+          <AdminLessonView :repetitions="selectedItem.repetitions" :time="selectedItem.time" :date="selectedItem.date"
+            @close="closeSidebar()" />
         </template>
         <template v-else>
-        <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
-          :time="selectedItem.time" :date="selectedItem.date"
-          :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)" @reservedLesson="repetitionUpdated"
-          @deletedLesson="repetitionUpdated" @close="closeSidebar()" @loginClicked="loginClicked()" />
+          <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
+            :time="selectedItem.time" :date="selectedItem.date"
+            :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)" @reservedLesson="repetitionUpdated"
+            @deletedLesson="repetitionUpdated" @close="closeSidebar()" @loginClicked="loginClicked()" />
 
-        <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
-          @updatedLesson="repetitionUpdated" @close="closeSidebar()" />
+          <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
+            @updatedLesson="repetitionUpdated" @close="closeSidebar()" />
         </template>
       </div>
     </div>
