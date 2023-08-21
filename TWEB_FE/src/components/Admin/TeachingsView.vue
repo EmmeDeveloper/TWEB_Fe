@@ -74,27 +74,16 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(teaching, index) in allTeachings"
-            :key="index"
-            class="align-baseline"
-            @mouseover="actionId = index"
-            @mouseout="actionId = null"
-          >
+          <tr v-for="(teaching, index) in allTeachings" :key="index" class="align-baseline" @mouseover="actionId = index"
+            @mouseout="actionId = null">
             <td>{{ teaching.course.title }}</td>
             <td>{{ teaching.professor?.name }} {{ teaching.professor.surname }}</td>
             <td>
               <div>
-                <button
-                  type="button"
-                  class="btn py-1"
-                  @click="
-                    () => {
-                      showModal = true
-                      teachingToDelete = teaching
-                    }
-                  "
-                >
+                <button type="button" class="btn py-1" @click="() => {
+                    showModal = true
+                    teachingToDelete = teaching
+                  }">
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
               </div>
@@ -108,10 +97,6 @@ function _ok() {
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView
-      :objectConfirmModal="objectConfirmModal"
-      @close="showModal = false"
-      @ok="_ok()"
-    ></ConfirmModalView>
+    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
   </div>
 </template>

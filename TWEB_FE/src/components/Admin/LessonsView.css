@@ -42,5 +42,5 @@ td:first-child {
 
 .adminTable .table th:nth-child(-n + 6),
 .adminTable .table td:nth-child(-n + 6) {
-  width: 15%;
+  width: 16%;
 }
