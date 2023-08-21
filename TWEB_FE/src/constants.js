@@ -31,3 +31,6 @@ export const DELETE_PROF_TEXT =
 
 export const DELETE_TEACHING_TEXT =
   "Sei sicuro di voler eliminare l'insegnamento? L'operazione è irreversibile"
+
+export const DELETE_LESSON_TEXT =
+  "Sei sicuro di voler modificare lo stato della lezione in 'non effettuata'? L'operazione è irreversibile"

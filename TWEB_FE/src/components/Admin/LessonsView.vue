@@ -5,10 +5,17 @@ import {
   getUserRepetitions,
   useStore,
   updateRepetitionStatus
-} from '../../StateService.js'
-import { REPETITION_STATUS_DELETED, LESSON_DELETED, LESSON_NOT_DELETED } from '../../constants.js'
+} from '@/StateService.js'
+import {
+  REPETITION_STATUS_DELETED,
+  LESSON_DELETED,
+  LESSON_NOT_DELETED,
+  MODAL_TITLE,
+  DELETE_LESSON_TEXT
+} from '@/constants.js'
 import './LessonsView.css'
-import ToastView from '../Toast/ToastView.vue'
+import ToastView from '@/components/Toast/ToastView.vue'
+import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
 
 const state = ref(useStore())
 
@@ -16,12 +23,18 @@ const repetitions = computed(() => state.value.allRepetitions)
 const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
 
 const actionId = ref(null)
+
+const lessonToDelete = ref(null)
+
 const showToast = ref(false)
 const objectToast = ref({ text: null, color: null })
 
-async function deleteLesson(repetition) {
+const showModal = ref(false)
+const objectConfirmModal = ref({ text: DELETE_LESSON_TEXT, title: MODAL_TITLE })
+
+async function deleteLesson() {
   const status = await updateRepetitionStatus(
-    repetition.id,
+    lessonToDelete.value.id,
     REPETITION_STATUS_DELETED,
     "Confermata come non effettuata dall'admin"
   ).then(() => {
@@ -38,6 +51,15 @@ async function deleteLesson(repetition) {
   }
 
   showToast.value = true
+}
+
+function closeToast() {
+  showToast.value = false
+}
+
+function _ok() {
+  showModal.value = false
+  deleteLesson()
 }
 </script>
 
@@ -75,22 +97,18 @@ async function deleteLesson(repetition) {
               >
             </td>
             <td>
-              <template
-                v-if="
-                  repetition.status == 'pending' &&
-                  new Date(repetition.date).setHours(repetition.time) < new Date()
+              <button
+                type="button"
+                class="btn py-1"
+                @click="
+                  () => {
+                    lessonToDelete = repetition
+                    showModal = true
+                  }
                 "
               >
-                <button
-                  type="button"
-                  class="btn btn-danger py-1"
-                  v-if="actionId == repetition.id"
-                  @click="deleteLesson(repetition)"
-                >
-                  Non effettuata
-                </button>
-                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
-              </template>
+                <i class="mdi mdi-list-status"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -100,6 +118,11 @@ async function deleteLesson(repetition) {
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
+  <div v-if="showModal">
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
+  </div>
 </template>
-
-<style></style>

@@ -69,8 +69,7 @@ function _ok() {
               <div>
                 <button
                   type="button"
-                  class="btn btn-danger py-1"
-                  v-if="actionId == prof.id"
+                  class="btn py-1"
                   @click="
                     () => {
                       profToDelete = prof.id
@@ -79,9 +78,6 @@ function _ok() {
                   "
                 >
                   <i class="mdi mdi-trash-can-outline"></i>
-                </button>
-                <button class="btn py-1" v-else>
-                  <i class="mdi mdi-dots-vertical pointer px-5"></i>
                 </button>
               </div>
             </td>
