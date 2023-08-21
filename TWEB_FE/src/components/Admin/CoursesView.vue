@@ -1,19 +1,29 @@
 <script setup>
 import { useStore, deleteCourse } from '../../StateService'
-import { COURSE_DELETED, COURSE_NOT_DELETED } from '../../constants'
+import {
+  COURSE_DELETED,
+  COURSE_NOT_DELETED,
+  DELETE_COURSE_TEXT,
+  MODAL_TITLE
+} from '../../constants'
 import { ref } from 'vue'
 import ToastView from '../Toast/ToastView.vue'
+import ConfirmModalView from '../Modals/ConfirmModalView.vue'
 
 const state = ref(useStore())
 const actionId = ref(null)
+const courseToDelete = ref(null)
 
 const titles = ['Titolo', '']
 
 const showToast = ref(false)
 const objectToast = ref({ text: null, color: null })
 
-async function _deleteCourse(course) {
-  const status = await deleteCourse(course.id)
+const showModal = ref(false)
+const objectConfirmModal = ref({ text: DELETE_COURSE_TEXT, title: MODAL_TITLE })
+
+async function _deleteCourse() {
+  const status = await deleteCourse(courseToDelete.value)
   if (status === 200) {
     objectToast.value.text = COURSE_DELETED
     objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
@@ -27,6 +37,11 @@ async function _deleteCourse(course) {
 
 function closeToast() {
   showToast.value = false
+}
+
+function _ok() {
+  showModal.value = false
+  _deleteCourse()
 }
 </script>
 
@@ -54,7 +69,12 @@ function closeToast() {
                   type="button"
                   class="btn btn-danger py-1"
                   v-if="actionId == course.id"
-                  @click="_deleteCourse(course)"
+                  @click="
+                    () => {
+                      showModal = true
+                      courseToDelete = course.id
+                    }
+                  "
                 >
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
@@ -68,5 +88,12 @@ function closeToast() {
   </div>
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
+  </div>
+  <div v-if="showModal">
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
   </div>
 </template>
