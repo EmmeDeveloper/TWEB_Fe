@@ -34,7 +34,7 @@ const sections = [
 </script>
 
 <template>
-  <div class="d-flex flex-row h-100 px-3 overflow-x-auto lg:flex-column">
+  <div class="d-flex flex-row h-100 px-3 overflow-x-auto flex-lg-column">
     <div
       v-for="section in sections"
       :key="section"
