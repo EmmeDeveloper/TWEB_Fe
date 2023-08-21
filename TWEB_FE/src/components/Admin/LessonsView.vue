@@ -7,7 +7,6 @@ import {
   updateRepetitionStatus
 } from '../../StateService.js'
 import { REPETITION_STATUS_DELETED } from '../../constants.js'
-
 import './LessonsView.css'
 
 const state = ref(useStore())

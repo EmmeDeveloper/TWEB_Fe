@@ -1,14 +1,22 @@
 <script setup>
 import { useStore, deleteCourse } from '../../StateService'
+import { COURSE_DELETED } from '../../constants'
 import { ref } from 'vue'
+import ToastView from '../Toast/ToastView.vue'
 
 const state = ref(useStore())
 const actionId = ref(null)
 
 const titles = ['Titolo', '']
+const showToast = ref(false)
 
 async function _deleteCourse(course) {
   await deleteCourse(course.id)
+  showToast.value = true
+}
+
+function closeToast() {
+  showToast.value = false
 }
 </script>
 
@@ -47,5 +55,8 @@ async function _deleteCourse(course) {
         </tbody>
       </table>
     </div>
+  </div>
+  <div v-if="showToast">
+    <ToastView :showToast="showToast" @close="closeToast()" :text="COURSE_DELETED"></ToastView>
   </div>
 </template>
