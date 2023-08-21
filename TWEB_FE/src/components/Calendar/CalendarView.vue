@@ -60,7 +60,7 @@ function getAvailableProf(time, date) {
   }
   const busy = lessonsMap.value[date.toISOString().slice(0, 10)]
     .filter((repetition) => repetition.time === time)
-    .map((repetition) => repetition.professor.id);
+    .map((repetition) => repetition.professor?.id);
 
   Object.keys(profs).forEach((courseId) => {
     profs[courseId] = profs[courseId].filter((prof) => !busy.includes(prof.id));

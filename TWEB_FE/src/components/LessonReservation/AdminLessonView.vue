@@ -14,11 +14,11 @@ const emits = defineEmits(['close'])
 const uiData = computed(() => {
   const lessons = {}
   props.repetitions.forEach((repetition) => {
-    if (!lessons[repetition.course.title]) {
-      lessons[repetition.course.title] = []
+    if (!lessons[repetition.course?.title]) {
+      lessons[repetition.course?.title] = []
     }
     lessons[repetition.course.title].push({
-      prof: repetition.professor.name + ' ' + repetition.professor.surname,
+      prof: (repetition.professor?.name || "Professore eliminato") + ' ' + (repetition.professor?.surname || ''),
       user: repetition.user.name + ' ' + repetition.user.surname
     })
   })

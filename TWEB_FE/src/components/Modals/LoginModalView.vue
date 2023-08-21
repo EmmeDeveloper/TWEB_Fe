@@ -1,6 +1,6 @@
 <script setup>
 import './LoginModal.css'
-import InputTextView from '@/components/InputText/InputTextView.vue'
+import InputTextView from '@/components/UI/InputTextView.vue'
 import { ref } from 'vue'
 import { login, getCoursesRepetitions, getUserRepetitions } from '../../StateService.js'
 

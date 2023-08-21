@@ -61,8 +61,8 @@ async function deleteLesson(repetition) {
             <td>{{ repetition.date }}</td>
             <td>{{ repetition.time }}:00 - {{ repetition.time + 1 }}:00</td>
             <td>{{ repetition.user.name }} {{ repetition.user.surname }}</td>
-            <td>{{ repetition.professor.name }} {{ repetition.professor.surname }}</td>
-            <td>{{ repetition.course.title }}</td>
+            <td>{{ repetition.professor?.name || "Professore eliminato" }} {{ repetition.professor?.surname || '' }}</td>
+            <td>{{ repetition.course?.title }}</td>
             <td>
               <span v-if="repetition.status === 'deleted'" class="status deleted p-1">
                 Non effettuata</span

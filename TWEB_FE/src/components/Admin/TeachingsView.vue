@@ -61,7 +61,7 @@ async function _deleteTeachings(teaching) {
             @mouseout="actionId = null"
           >
             <td>{{ teaching.course.title }}</td>
-            <td>{{ teaching.professor.name }} {{ teaching.professor.surname }}</td>
+            <td>{{ teaching.professor?.name }} {{ teaching.professor.surname }}</td>
             <td>
               <div>
                 <button

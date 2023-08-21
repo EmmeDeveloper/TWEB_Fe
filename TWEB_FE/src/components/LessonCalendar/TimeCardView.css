@@ -4,7 +4,7 @@
   white-space: nowrap;
 }
 
-.item span:last-child {
+.item span:nth-child(2) {
   color: var(--TEXT-COLOR-DISABLED) !important;
   padding-left: 0.16rem;
 }
@@ -32,4 +32,13 @@
 
 .default {
   background-color: var(--REP-STATUS-DEF);
+}
+
+.unavailable {
+  background-color: #9999ff21;
+  cursor: default !important;
+}
+
+.unavailable span {
+  color: var(--TEXT-COLOR-DISABLED) !important;
 }

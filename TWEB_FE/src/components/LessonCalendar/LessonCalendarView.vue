@@ -2,6 +2,7 @@
 import './LessonCalendarView.css'
 import { ref, computed } from 'vue'
 import TimeCardView from '@/components/LessonCalendar/TimeCardView.vue'
+import FilterCalendarView from '@/components/Filter/FilterCalendarView.vue'
 
 const props = defineProps({
   lessonsMap: Object, // All lessons from all users
@@ -168,6 +169,7 @@ const weeks = computed(() => {
     <div class="row justify-center h-100">
       <div class="col-12 h-100">
         <div class="container text-center mt-5">
+          <FilterCalendarView/>
           <div class="flex justify-content-center align-items-center mb-3">
             <button
               class="btn btn-primary"

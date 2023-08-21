@@ -32,7 +32,7 @@ function dateToString(date) {
     </div>
     <span>Ora: {{ props.repetition.time }}:00 - {{ props.repetition.time + 1 }}:00</span>
     <span v-if="props.repetition.professor">
-      Prof. {{ props.repetition.professor.name }} {{ props.repetition.professor.surname }}
+      Prof. {{ props.repetition.professor?.name || "Professore eliminato" }} {{ props.repetition.professor.surname }}
     </span>
   </div>
 </template>
