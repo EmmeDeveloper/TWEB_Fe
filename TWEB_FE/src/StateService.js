@@ -244,3 +244,21 @@ export async function deleteTeachings(teaching) {
     console.log(error)
   }
 }
+
+export async function deleteProf(prof) {
+  try {
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/professors?id=${prof.id}`, requestOptions)
+    if (result.status == 200) {
+      state.value.allProfessors = state.value.allProfessors.filter(
+        (professor) => professor.id != prof.id
+      )
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}

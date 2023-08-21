@@ -28,7 +28,6 @@ async function _deleteTeachings(teaching) {
   const result = await deleteTeachings(teaching)
   if (result != 200) return
 
-  console.log(allTeachings)
   allTeachings.value = allTeachings.value.filter((t) => t.professor.id != teaching.professor.id)
 }
 </script>
