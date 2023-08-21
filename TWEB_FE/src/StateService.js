@@ -205,3 +205,20 @@ export async function getTeachings(courseIds = []) {
     console.log(error)
   }
 }
+
+export async function deleteCourse(courseId) {
+  try {
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(`${BACKEND_LINK}/courses?id=${courseId}`, requestOptions)
+
+    if (result.status == 200) {
+      state.value.courses = state.value.courses.filter((c) => c.id != courseId)
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}

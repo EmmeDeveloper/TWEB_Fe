@@ -1,10 +1,15 @@
 <script setup>
-import { useStore } from '../../StateService'
+import { useStore, deleteCourse } from '../../StateService'
 import { ref } from 'vue'
 
 const state = ref(useStore())
+const actionId = ref(null)
 
-const titles = ['Titolo']
+const titles = ['Titolo', '']
+
+async function _deleteCourse(course) {
+  await deleteCourse(course.id)
+}
 </script>
 
 <template>
@@ -17,8 +22,27 @@ const titles = ['Titolo']
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in state.courses" :key="course.id">
+          <tr
+            v-for="course in state.courses"
+            :key="course.id"
+            @mouseover="actionId = course.id"
+            class="align-baseline"
+            @mouseout="actionId = null"
+          >
             <td>{{ course.title }}</td>
+            <td>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-danger py-1"
+                  v-if="actionId == course.id"
+                  @click="_deleteCourse(course)"
+                >
+                  <i class="mdi mdi-trash-can-outline"></i>
+                </button>
+                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
