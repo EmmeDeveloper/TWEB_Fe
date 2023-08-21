@@ -35,15 +35,15 @@ const sections = [
 
 <template>
   <div
-    class="d-flex flex-row px-3 overflow-x-auto flex-lg-column justify-content-evenly"
+    class="d-flex flex-row px-3 overflow-x-auto flex-lg-column justify-content-lg-evenly align-items-center"
     style="background-color: var(--PRIMARY-COLOR); margin: 0.5rem; border-radius: 15px; height: 98%"
   >
-    <div>
+    <div class="d-flex flex-row flex-lg-column">
       <div
         v-for="section in sections"
         :key="section"
         @click="showAdminPage(section.page)"
-        class="d-flex align-center pointer px-2 py-1 mt-2 gap-4 fs-7"
+        class="d-flex align-center pointer px-2 py-1 mt-2 gap-lg-4 gap-2 fs-7"
         :class="{
           'selected-item': state.currentPage == section.page,
           'not-selected-item': state.currentPage != section.page
@@ -54,7 +54,7 @@ const sections = [
       </div>
     </div>
     <div class="flex align-items-center justify-content-center gap-2" @click="_logout">
-      <i class="mdi mdi-logout-variant fs-4 pointer" style="color: white"></i>
+      <i class="mdi mdi-logout-variant fs-4 pointer" style="color: rgba(255, 255, 255, 0.8)"></i>
       <button class="logout-button">Logout</button>
     </div>
   </div>

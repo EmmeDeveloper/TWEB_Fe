@@ -37,7 +37,7 @@ th {
   justify-content: center;
   background-color: var(--PRIMARY-COLOR);
   border-radius: 5px;
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   border: none;
   padding: 0.3rem 0;
 }
