@@ -1,16 +1,20 @@
 <script setup>
-import { useStore } from '../../StateService'
-import { onBeforeMount, ref, computed } from 'vue'
+import { useStore, deleteTeachings } from '../../StateService'
+import { onBeforeMount, ref } from 'vue'
 import './LessonsView.css'
 
 const state = ref(useStore())
 
-const titles = ['Corso', 'Professore']
+const titles = ['Corso', 'Professore', '']
 
-const allTeachings = computed(() => [])
+const allTeachings = ref([])
+
+const actionId = ref(null)
 
 onBeforeMount(() => {
   for (let course of state.value.courses) {
+    if (state.value.teachings[course.id] == undefined) continue
+
     for (let prof of state.value.teachings[course.id]) {
       allTeachings.value.push({
         course: course,
@@ -19,6 +23,14 @@ onBeforeMount(() => {
     }
   }
 })
+
+async function _deleteTeachings(teaching) {
+  const result = await deleteTeachings(teaching)
+  if (result != 200) return
+
+  console.log(allTeachings)
+  allTeachings.value = allTeachings.value.filter((t) => t.professor.id != teaching.professor.id)
+}
 </script>
 
 <template>
@@ -31,9 +43,28 @@ onBeforeMount(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(teaching, index) in allTeachings" :key="index" class="align-baseline">
+          <tr
+            v-for="(teaching, index) in allTeachings"
+            :key="index"
+            class="align-baseline"
+            @mouseover="actionId = index"
+            @mouseout="actionId = null"
+          >
             <td>{{ teaching.course.title }}</td>
             <td>{{ teaching.professor.name }} {{ teaching.professor.surname }}</td>
+            <td>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-danger py-1"
+                  v-if="actionId == index"
+                  @click="_deleteTeachings(teaching)"
+                >
+                  <i class="mdi mdi-trash-can-outline"></i>
+                </button>
+                <i class="mdi mdi-dots-vertical pointer px-5" v-else></i>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

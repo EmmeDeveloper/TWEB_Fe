@@ -222,3 +222,25 @@ export async function deleteCourse(courseId) {
     console.log(error)
   }
 }
+
+export async function deleteTeachings(teaching) {
+  try {
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    }
+
+    const result = await fetch(
+      `${BACKEND_LINK}/professors/course?professorId=${teaching.professor.id}&courseId=${teaching.course.id}`,
+      requestOptions
+    )
+    if (result.status == 200) {
+      state.value.teachings[teaching.course.id] = state.value.teachings[teaching.course.id].filter(
+        (t) => t.id != teaching.professor.id
+      )
+      return result.status
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}
