@@ -80,11 +80,11 @@ function _ok() {
             <td>{{ teaching.professor?.name }} {{ teaching.professor.surname }}</td>
             <td>
               <div>
-                <button type="button" class="btn py-1" @click="() => {
+                <button type="button" class="btn py-0" @click="() => {
                     showModal = true
                     teachingToDelete = teaching
                   }">
-                  <i class="mdi mdi-trash-can-outline"></i>
+                  <i class="mdi mdi-trash-can-outline fs-4 py-0 pointer"></i>
                 </button>
               </div>
             </td>
