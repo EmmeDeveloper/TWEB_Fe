@@ -16,6 +16,8 @@ const state = ref({
   filteredCourses: []
 })
 
+const filterInit = ref(false)
+
 export function initStore() {
   provide('state', state)
   return state
@@ -32,6 +34,11 @@ export function updatePage(p) {
 export function updateUser(p) {
   state.value.userData = p
   state.value.isAdmin = p?.role?.toLowerCase() == 'admin'
+
+  // Reset filter
+  state.value.filteredTeachings = state.value.teachings
+  state.value.filteredProfessors = state.value.allProfessors
+  state.value.filteredCourses = state.value.courses
 }
 
 export function updateFilter(selectedMap) {
@@ -101,7 +108,7 @@ export async function getAllCourses() {
     }
     const data = await response.json()
     state.value.courses = data.courses
-    if (state.value.filteredCourses.length == 0) state.value.filteredCourses = data.courses
+    if (state.value.filteredCourses.length == 0 && !filterInit.value) state.value.filteredCourses = data.courses
   } catch (error) {
     console.log(error)
   }
@@ -131,6 +138,10 @@ export async function getUserRepetitions(userID) {
 
 export async function getCoursesRepetitions(courseIds = []) {
   if (courseIds.length == 0) courseIds = state.value.filteredCourses.map((c) => c.id)
+  if (courseIds.length == 0) {
+    state.value.allRepetitions = []
+    return;
+  }
 
   try {
     var requestOptions = {
@@ -195,7 +206,7 @@ export async function getAllProfessors() {
     }
 
     state.value.allProfessors = (await result.json()).professors
-    if (state.value.filteredProfessors.length == 0)
+    if (state.value.filteredProfessors.length == 0 && !filterInit.value)
       state.value.filteredProfessors = state.value.allProfessors
   } catch (error) {
     throw new Error(error)
@@ -218,8 +229,10 @@ export async function getTeachings(courseIds = []) {
     if (result.status == 200) {
       const teachings = (await result.json()).professors
       state.value.teachings = teachings
-      if (Object.keys(state.value.filteredTeachings).length == 0)
+      if (Object.keys(state.value.filteredTeachings).length == 0 && !filterInit.value) {
         state.value.filteredTeachings = teachings
+        filterInit.value = true
+      }
     } else console.log('error')
   } catch (error) {
     console.log(error)

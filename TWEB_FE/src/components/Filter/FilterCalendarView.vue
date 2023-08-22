@@ -25,14 +25,17 @@ const teachings = computed(() => {
 const filterCollapsed = ref(true);
 
 const tempSelected = ref({});
-updateSelected(state.value.teachings);
+// First initialization
+Object.keys(state.value.teachings).forEach(courseId => {
+  tempSelected.value[courseId] = [];
+});
+updateSelected(state.value.filteredTeachings);
 
 watch(() => state.value.teachings, (newVal, _) => {
   updateSelected(newVal)
 });
 
 function updateSelected(val) {
-  tempSelected.value = {};
   Object.keys(val).forEach(courseId => {
     tempSelected.value[courseId] = val[courseId].map(p => p.id);
   });
