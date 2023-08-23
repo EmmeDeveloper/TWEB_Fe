@@ -4,6 +4,7 @@ import { COURSE_DELETED, COURSE_NOT_DELETED, DELETE_COURSE_TEXT, MODAL_TITLE } f
 import { ref } from 'vue'
 import ToastView from '@/components/Toast/ToastView.vue'
 import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
+import NewCourseModalView from '@/components/Modals/NewCourseModalView.vue'
 
 const state = ref(useStore())
 const actionId = ref(null)
@@ -16,6 +17,8 @@ const objectToast = ref({ text: null, color: null })
 
 const showModal = ref(false)
 const objectConfirmModal = ref({ text: DELETE_COURSE_TEXT, title: MODAL_TITLE })
+
+const showCourseModal = ref(false)
 
 async function _deleteCourse() {
   const status = await deleteCourse(courseToDelete.value)
@@ -50,16 +53,26 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in state.courses" :key="course.id" @mouseover="actionId = course.id" class="align-baseline"
-            @mouseout="actionId = null">
+          <tr
+            v-for="course in state.courses"
+            :key="course.id"
+            @mouseover="actionId = course.id"
+            class="align-baseline"
+            @mouseout="actionId = null"
+          >
             <td>{{ course.title }}</td>
             <td>
               <div>
-                <button type="button" class="btn fs-4 py-0 pointer" @click="() => {
-                    showModal = true
-                    courseToDelete = course.id
-                  }
-                  ">
+                <button
+                  type="button"
+                  class="btn fs-4 py-0 pointer"
+                  @click="
+                    () => {
+                      showModal = true
+                      courseToDelete = course.id
+                    }
+                  "
+                >
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
               </div>
@@ -68,11 +81,21 @@ function _ok() {
         </tbody>
       </table>
     </div>
+    <div style="position: fixed; right: 2rem; bottom: 2rem">
+      <button class="button-add" @click="showCourseModal = true">
+        <i class="mdi mdi-plus fs-4"></i>aggiungi corso
+      </button>
+    </div>
   </div>
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
   </div>
+  <NewCourseModalView @closeCourseModal="showCourseModal = false" v-if="showCourseModal" />
 </template>

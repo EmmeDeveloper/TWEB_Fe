@@ -320,3 +320,22 @@ export async function addNewProf(name, surname) {
     console.log(error)
   }
 }
+
+export async function addNewCourse(title) {
+  var raw = JSON.stringify({
+    name: title
+  })
+
+  var requestOptions = {
+    method: 'POST',
+    body: raw,
+    redirect: 'follow'
+  }
+
+  try {
+    const result = (await fetch(`${BACKEND_LINK}/courses`, requestOptions)).json()
+    state.value.courses.push((await result).course)
+  } catch (error) {
+    console.log(error)
+  }
+}
