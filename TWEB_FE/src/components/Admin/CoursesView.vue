@@ -50,26 +50,16 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="course in state.courses"
-            :key="course.id"
-            @mouseover="actionId = course.id"
-            class="align-baseline"
-            @mouseout="actionId = null"
-          >
+          <tr v-for="course in state.courses" :key="course.id" @mouseover="actionId = course.id" class="align-baseline"
+            @mouseout="actionId = null">
             <td>{{ course.title }}</td>
             <td>
               <div>
-                <button
-                  type="button"
-                  class="btn py-1"
-                  @click="
-                    () => {
-                      showModal = true
-                      courseToDelete = course.id
-                    }
-                  "
-                >
+                <button type="button" class="btn fs-4 py-0 pointer" @click="() => {
+                    showModal = true
+                    courseToDelete = course.id
+                  }
+                  ">
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
               </div>
@@ -83,10 +73,6 @@ function _ok() {
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView
-      :objectConfirmModal="objectConfirmModal"
-      @close="showModal = false"
-      @ok="_ok()"
-    ></ConfirmModalView>
+    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
   </div>
 </template>

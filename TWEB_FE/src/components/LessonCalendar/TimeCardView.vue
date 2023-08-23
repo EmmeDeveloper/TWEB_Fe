@@ -9,6 +9,7 @@ const props = defineProps({
   repetition: Object,
   repetitions: Array,
   showFreeItems: Boolean,
+  fromMyLessons: Boolean,
 })
 
 const emits = defineEmits(['selectRepetition', 'selectFreeItem', 'selectMultipleRepetitions']);
@@ -42,6 +43,10 @@ const freeCoursesCount = computed(() => {
   return Object.keys(freeItems.value).length;
 });
 
+const showMyLessons = computed(() => {
+  return props.fromMyLessons || state.value.filteredTeachings[props.repetition?.course?.id]?.find(prof => prof.id == props.repetition?.professor?.id) != null;
+});
+
 function selectFreeItem() {
   if (freeCoursesCount.value == 0) {
     return;
@@ -50,6 +55,9 @@ function selectFreeItem() {
 }
 
 function selectRepetition() {
+  if (!showMyLessons.value) {
+    return;
+  }
   emits('selectRepetition');
 }
 
@@ -63,18 +71,20 @@ function selectMultipleRepetitions() {
 <template>
   <div>
     <template v-if="props.adminView">
-      <div v-if="props.repetitions && props.repetitions.length > 0" class="item default" @click="selectMultipleRepetitions()">
+      <div v-if="props.repetitions && props.repetitions.length > 0" class="item default"
+        @click="selectMultipleRepetitions()">
         <span>{{ props.repetitions.length }} Prenotazion{{ props.repetitions.length > 1 ? 'i' : 'e' }}</span>
+        <span>{{ props.time }}:00</span>
       </div>
     </template>
 
     <template v-else>
-
       <template v-if="props.repetition != null">
         <div @click="selectRepetition()" class="item" :class="{
-          'deleted': props.repetition?.status == 'deleted',
-          'done': props.repetition?.status == 'done',
-          'pending': props.repetition?.status == 'pending',
+          'deleted': props.repetition?.status == 'deleted' && showMyLessons,
+          'done': props.repetition?.status == 'done' && showMyLessons,
+          'pending': props.repetition?.status == 'pending' && showMyLessons,
+          'unavailable': !showMyLessons,
         }">
           <span>{{ props.repetition.course?.title || 'Corso eliminato' }}</span>
           <span>{{ props.time }}:00</span>

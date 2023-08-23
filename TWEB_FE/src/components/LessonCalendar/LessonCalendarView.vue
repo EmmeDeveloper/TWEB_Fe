@@ -162,6 +162,10 @@ const weeks = computed(() => {
   }
   return weeks
 })
+
+const isMyLessonPage = computed(() => {
+  return props.selectableDates != null
+})
 </script>
 
 <template>
@@ -169,7 +173,7 @@ const weeks = computed(() => {
     <div class="row justify-center h-100">
       <div class="col-12 h-100">
         <div class="container text-center mt-5">
-          <FilterCalendarView/>
+          <FilterCalendarView v-if="!isMyLessonPage"/>
           <div class="flex justify-content-center align-items-center mb-3">
             <button
               class="btn btn-primary"
@@ -210,6 +214,7 @@ const weeks = computed(() => {
                           :repetition="lesson.repetition"
                           :showFreeItems="day.showFreeItems"
                           :repetitions="lesson.repetitions"
+                          :fromMyLessons="isMyLessonPage"
                           @selectMultipleRepetitions="
                             selectRepetitions(lesson.repetitions, day.date, lesson.time)
                           "

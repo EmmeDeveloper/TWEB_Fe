@@ -25,14 +25,17 @@ const teachings = computed(() => {
 const filterCollapsed = ref(true);
 
 const tempSelected = ref({});
-updateSelected(state.value.teachings);
+// First initialization
+Object.keys(state.value.teachings).forEach(courseId => {
+  tempSelected.value[courseId] = [];
+});
+updateSelected(state.value.filteredTeachings);
 
 watch(() => state.value.teachings, (newVal, _) => {
   updateSelected(newVal)
 });
 
 function updateSelected(val) {
-  tempSelected.value = {};
   Object.keys(val).forEach(courseId => {
     tempSelected.value[courseId] = val[courseId].map(p => p.id);
   });
@@ -110,6 +113,9 @@ function addTeaching(courseId, profId) {
       <div class="d-flex flex-column">
         <div class="d-flex flex-row-reverse">
           <i class="mdi mdi-close fs-2 pointer" @click="toggleFilter()"></i>
+          <div class="d-flex align-center w-100">
+            <span class="fs-5 w-100 ps-5">Filtri di ricerca</span>
+          </div>
         </div>
         <div class="d-flex flex-wrap gap-2">
           <template v-for="(profs, subject) in state.teachings" :key="subject">

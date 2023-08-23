@@ -59,28 +59,18 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="prof in state.allProfessors"
-            :key="prof.id"
-            class="align-baseline"
-            @mouseover="actionId = prof.id"
-            @mouseout="actionId = null"
-          >
+          <tr v-for="prof in state.allProfessors" :key="prof.id" class="align-baseline" @mouseover="actionId = prof.id"
+            @mouseout="actionId = null">
             <td>{{ prof.name }}</td>
             <td>{{ prof.surname }}</td>
             <td>
               <div>
-                <button
-                  type="button"
-                  class="btn py-1"
-                  @click="
-                    () => {
-                      profToDelete = prof.id
-                      showModal = true
-                    }
-                  "
-                >
-                  <i class="mdi mdi-trash-can-outline"></i>
+                <button type="button" class="btn py-0" @click="() => {
+                    profToDelete = prof.id
+                    showModal = true
+                  }
+                  ">
+                  <i class="mdi mdi-trash-can-outline fs-4 py-0 pointer"></i>
                 </button>
               </div>
             </td>
@@ -98,11 +88,7 @@ function _ok() {
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView
-      :objectConfirmModal="objectConfirmModal"
-      @close="showModal = false"
-      @ok="_ok()"
-    ></ConfirmModalView>
+    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
   </div>
   <NewProfModalView @closeProfModal="showProfModal = false" v-if="showProfModal" />
 </template>
