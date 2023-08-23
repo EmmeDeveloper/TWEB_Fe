@@ -316,9 +316,7 @@ export async function addNewProf(name, surname) {
   try {
     const result = (await fetch(`${BACKEND_LINK}/professors`, requestOptions)).json()
     state.value.allProfessors.push(await result)
-    return 200
   } catch (error) {
     console.log(error)
-    return 500
   }
 }
