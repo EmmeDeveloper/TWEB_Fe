@@ -46,14 +46,16 @@ export function updateFilter(selectedMap) {
   const newProfessors = []
   const newCourses = []
   Object.keys(selectedMap).forEach((courseID) => {
-    if (selectedMap[courseID].length > 0)  {
-      newTeachings[courseID] = state.value.teachings[courseID].filter((t) => selectedMap[courseID].includes(t.id))
+    if (selectedMap[courseID].length > 0) {
+      newTeachings[courseID] = state.value.teachings[courseID].filter((t) =>
+        selectedMap[courseID].includes(t.id)
+      )
       selectedMap[courseID].forEach((professorID) => {
         newProfessors.push(state.value.allProfessors.find((p) => p.id == professorID))
-      });
+      })
       newCourses.push(state.value.courses.find((c) => c.id == courseID))
     }
-  });
+  })
 
   state.value.filteredTeachings = newTeachings
   state.value.filteredProfessors = newProfessors
@@ -108,7 +110,8 @@ export async function getAllCourses() {
     }
     const data = await response.json()
     state.value.courses = data.courses
-    if (state.value.filteredCourses.length == 0 && !filterInit.value) state.value.filteredCourses = data.courses
+    if (state.value.filteredCourses.length == 0 && !filterInit.value)
+      state.value.filteredCourses = data.courses
   } catch (error) {
     console.log(error)
   }
@@ -140,7 +143,7 @@ export async function getCoursesRepetitions(courseIds = []) {
   if (courseIds.length == 0) courseIds = state.value.filteredCourses.map((c) => c.id)
   if (courseIds.length == 0) {
     state.value.allRepetitions = []
-    return;
+    return
   }
 
   try {
@@ -295,5 +298,27 @@ export async function deleteProf(profId) {
     return result.status
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function addNewProf(name, surname) {
+  var raw = JSON.stringify({
+    name: name,
+    surname: surname
+  })
+
+  var requestOptions = {
+    method: 'POST',
+    body: raw,
+    redirect: 'follow'
+  }
+
+  try {
+    const result = (await fetch(`${BACKEND_LINK}/professors`, requestOptions)).json()
+    state.value.allProfessors.push(await result)
+    return 200
+  } catch (error) {
+    console.log(error)
+    return 500
   }
 }
