@@ -27,10 +27,6 @@ td:first-child {
   padding-left: 1rem;
 }
 
-::-webkit-scrollbar {
-  width: 8px; /* Set the width of the scrollbar */
-}
-
 ::-webkit-scrollbar-thumb {
   background-color: #ccc; /* Color of the thumb */
   border-radius: 4px; /* Border radius of the thumb */
@@ -43,4 +39,15 @@ td:first-child {
 .adminTable .table th:nth-child(-n + 6),
 .adminTable .table td:nth-child(-n + 6) {
   width: 16%;
+}
+
+.button-add {
+  border: none;
+  padding: 0.5rem;
+  border-radius: 10px;
+  background: var(--PRIMARY-COLOR);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

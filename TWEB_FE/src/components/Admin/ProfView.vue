@@ -9,6 +9,7 @@ import {
 import { ref } from 'vue'
 import ToastView from '@/components/Toast/ToastView.vue'
 import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
+import NewProfModalView from '../Modals/NewProfModalView.vue'
 
 const state = ref(useStore())
 
@@ -22,6 +23,8 @@ const objectToast = ref({ text: null, color: null })
 
 const showModal = ref(false)
 const objectConfirmModal = ref({ text: DELETE_PROF_TEXT, title: MODAL_TITLE })
+
+const showProfModal = ref(false)
 
 async function _deleteProf() {
   const status = await deleteProf(profToDelete.value)
@@ -85,6 +88,11 @@ function _ok() {
         </tbody>
       </table>
     </div>
+    <div style="position: fixed; right: 2rem; bottom: 2rem">
+      <button class="button-add" @click="showProfModal = true">
+        <i class="mdi mdi-plus fs-4"></i>aggiungi professore
+      </button>
+    </div>
   </div>
   <div v-if="showToast">
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
@@ -96,4 +104,5 @@ function _ok() {
       @ok="_ok()"
     ></ConfirmModalView>
   </div>
+  <NewProfModalView @closeProfModal="showProfModal = false" v-if="showProfModal" />
 </template>
