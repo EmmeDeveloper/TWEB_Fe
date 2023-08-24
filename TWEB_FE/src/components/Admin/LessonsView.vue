@@ -22,8 +22,6 @@ const state = ref(useStore())
 const repetitions = computed(() => state.value.allRepetitions)
 const titles = ['Data', 'Orario', 'Utente', 'Professore', 'Corso', 'Stato', '']
 
-const actionId = ref(null)
-
 const lessonToDelete = ref(null)
 
 const showToast = ref(false)
@@ -61,33 +59,63 @@ function _ok() {
 
 <template>
   <div class="d-flex adminTable h-100 p-2">
-    <div class="table-responsive pe-1 mt-4">
-      <table class="table align-top overflow-auto border">
-        <thead>
+    <div class="pe-1 mt-4">
+      <table class="table table-responsive align-top overflow-auto border">
+        <thead class="table-header-display">
           <tr>
             <th v-for="title in titles" :key="title">{{ title }}</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="repetition in repetitions" :key="repetition.id" @mouseover="actionId = repetition.id"
-            class="align-baseline" @mouseout="actionId = null">
-            <td>{{ repetition.date }}</td>
-            <td>{{ repetition.time }}:00 - {{ repetition.time + 1 }}:00</td>
-            <td>{{ repetition.user.name }} {{ repetition.user.surname }}</td>
-            <td>{{ repetition.professor?.name || "Professore eliminato" }} {{ repetition.professor?.surname || '' }}</td>
-            <td>{{ repetition.course?.title }}</td>
+        <tbody className="table-body-display">
+          <tr
+            v-for="repetition in repetitions"
+            :key="repetition.id"
+            class="align-baseline tr-table"
+          >
             <td>
+              <span class="d-xl-none">Data: </span>
+              {{ repetition.date }}
+            </td>
+            <td>
+              <span class="d-xl-none">Ora: </span>{{ repetition.time }}:00 -
+              {{ repetition.time + 1 }}:00
+            </td>
+            <td>
+              <span class="d-xl-none">Utente: </span>{{ repetition.user.name }}
+              {{ repetition.user.surname }}
+            </td>
+            <td>
+              <span class="d-xl-none">Professore: </span>
+              {{ repetition.professor?.name || 'Professore eliminato' }}
+              {{ repetition.professor?.surname || '' }}
+            </td>
+            <td><span>Corso: </span>{{ repetition.course?.title }}</td>
+            <td>
+              <span class="d-xl-none">Stato: </span>
               <span v-if="repetition.status === 'deleted'" class="status deleted p-1">
-                Non effettuata</span>
-              <span v-else-if="repetition.status === 'pending'" class="status pending p-1">Da confermare</span>
-              <span v-else-if="repetition.status === 'done'" class="status done p-1">Effettuata</span>
+                Non effettuata</span
+              >
+              <span v-else-if="repetition.status === 'pending'" class="status pending p-1"
+                >Da confermare</span
+              >
+              <span v-else-if="repetition.status === 'done'" class="status done p-1"
+                >Effettuata</span
+              >
             </td>
             <td class="py-0">
-              <i v-if="repetition.status == 'pending' && new Date(repetition.date).setHours(repetition.time) < new Date()"
-                class="mdi mdi-list-status fs-4 py-0 pointer" @click="() => {
-                  lessonToDelete = repetition
-                  showModal = true
-                }"></i>
+              <i
+                v-if="
+                  repetition.status == 'pending' &&
+                  new Date(repetition.date).setHours(repetition.time) < new Date()
+                "
+                class="mdi mdi-list-status fs-4 py-0 pointer"
+                @click="
+                  () => {
+                    lessonToDelete = repetition
+                    showModal = true
+                  }
+                "
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -98,6 +126,10 @@ function _ok() {
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
+    <ConfirmModalView
+      :objectConfirmModal="objectConfirmModal"
+      @close="showModal = false"
+      @ok="_ok()"
+    ></ConfirmModalView>
   </div>
 </template>

@@ -51,3 +51,33 @@ td:first-child {
   align-items: center;
   gap: 0.5rem;
 }
+
+.table-header-display {
+  display: none;
+}
+.table-body-display {
+  flex-direction: row;
+}
+
+@media (max-width: 1200px) {
+  .table-body-display {
+    display: flex;
+    flex-direction: column;
+  }
+  .table-body-display > tr > td {
+    width: 100% !important;
+    border-bottom: 0;
+  }
+  .tr-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-bottom: 1px solid #000;
+  }
+}
+
+@media (min-width: 1200px) {
+  .table-header-display {
+    display: table-header-group;
+  }
+}
