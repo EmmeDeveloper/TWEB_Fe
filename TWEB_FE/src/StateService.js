@@ -353,14 +353,7 @@ export async function addNewTeaching(prof, course) {
     )
 
     if (result.status == 200) {
-      let teaching = state.value.teachings[course.id]
-
-      if (teaching == null) {
-        teaching = []
-        teaching.push(prof)
-      } else teaching.push(prof)
-
-      state.value.teachings[course.id] = teaching
+      await getTeachings()
     } else console.log('error')
   } catch (error) {
     console.log(error)

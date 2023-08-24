@@ -35,12 +35,12 @@ const state = ref(useStore())
 
 <template>
   <div class="w-100 h-100 d-flex overflow-auto">
-    <div class="d-flex flex-column ms-0 w-100 h-100 flex-lg-row">
-      <div class="col-12 col-lg-2">
+    <div class="d-flex flex-column ms-0 w-100 h-100 flex-xl-row">
+      <div class="col-12 col-xl-2">
         <Sidebar @updateUser="updateUser" @changePage="updatePage" />
       </div>
 
-      <div class="col-12 h-100 col-lg-10">
+      <div class="col-12 h-100 col-xl-10">
         <ProfView v-if="state.currentPage === PAGE_ADMIN_PROFESSORS" />
         <LessonsView v-if="state.currentPage === PAGE_ADMIN_BOOKINGS" />
         <TeachingsView v-if="state.currentPage === PAGE_ADMIN_TEACHINGS" />
