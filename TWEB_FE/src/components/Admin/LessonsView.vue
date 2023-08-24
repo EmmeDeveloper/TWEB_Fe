@@ -33,23 +33,19 @@ const showModal = ref(false)
 const objectConfirmModal = ref({ text: DELETE_LESSON_TEXT, title: MODAL_TITLE })
 
 async function deleteLesson() {
-  const status = await updateRepetitionStatus(
+  await updateRepetitionStatus(
     lessonToDelete.value.id,
     REPETITION_STATUS_DELETED,
     "Confermata come non effettuata dall'admin"
   ).then(() => {
     getCoursesRepetitions()
     getUserRepetitions()
-  })
-
-  if (status === 200) {
     objectToast.value.text = LESSON_DELETED
     objectToast.value.color = 'var(--DONE-COLOR-TOAST)'
-  } else {
+  }).catch(() => {
     objectToast.value.text = LESSON_NOT_DELETED
     objectToast.value.color = 'var(--ERROR-COLOR-TOAST)'
-  }
-
+  })
   showToast.value = true
 }
 
