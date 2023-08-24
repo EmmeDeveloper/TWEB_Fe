@@ -173,7 +173,7 @@ const isMyLessonPage = computed(() => {
     <div class="row justify-center h-100">
       <div class="col-12 h-100">
         <div class="container text-center mt-5">
-          <FilterCalendarView v-if="!isMyLessonPage"/>
+          <FilterCalendarView v-if="!isMyLessonPage" />
           <div class="flex justify-content-center align-items-center mb-3">
             <button
               class="btn btn-primary"

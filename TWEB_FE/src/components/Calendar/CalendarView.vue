@@ -11,18 +11,25 @@ const state = ref(useStore())
 
 const emits = defineEmits(['loginClicked'])
 
-const lessonsMap = ref({});
-const myLessonsMap = ref({});
+const lessonsMap = ref({})
+const myLessonsMap = ref({})
 
-updateLessonsMap();
-updateMyLessonsMap();
+updateLessonsMap()
+updateMyLessonsMap()
 
-watch([() => state.value.allRepetitions, () => state.value.userRepetitions, () => state.value.filteredProfessors], ([newRep, newURep, newProf], [oldRep, oldURep, oldProf]) => {
-  if (newRep != oldRep || newURep != oldURep || newProf != oldProf) {
-    updateLessonsMap();
-    updateMyLessonsMap();
+watch(
+  [
+    () => state.value.allRepetitions,
+    () => state.value.userRepetitions,
+    () => state.value.filteredProfessors
+  ],
+  ([newRep, newURep, newProf], [oldRep, oldURep, oldProf]) => {
+    if (newRep != oldRep || newURep != oldURep || newProf != oldProf) {
+      updateLessonsMap()
+      updateMyLessonsMap()
+    }
   }
-});
+)
 
 function updateLessonsMap() {
   const map = {}
@@ -32,7 +39,10 @@ function updateLessonsMap() {
     if (!map[key]) {
       map[key] = []
     }
-    if (repetition.professor && state.value.filteredProfessors.find(p => p.id == repetition.professor.id) != null) {
+    if (
+      repetition.professor &&
+      state.value.filteredProfessors.find((p) => p.id == repetition.professor.id) != null
+    ) {
       map[key].push(repetition)
     }
   })
@@ -47,7 +57,10 @@ function updateMyLessonsMap() {
     if (!mymap[key]) {
       mymap[key] = []
     }
-    if (repetition.professor && state.value.allProfessors.find(p => p.id == repetition.professor.id) != null) {
+    if (
+      repetition.professor &&
+      state.value.allProfessors.find((p) => p.id == repetition.professor.id) != null
+    ) {
       mymap[key].push(repetition)
     }
   })
@@ -70,52 +83,72 @@ function selectItem(item) {
 }
 
 function getAvailableProf(time, date) {
-  const profs = { ...state.value.filteredTeachings };
+  const profs = { ...state.value.filteredTeachings }
   if (!time || !date || !lessonsMap.value[date.toISOString().slice(0, 10)]) {
-    return profs;
+    return profs
   }
   const busy = lessonsMap.value[date.toISOString().slice(0, 10)]
     .filter((repetition) => repetition.time === time)
-    .map((repetition) => repetition.professor?.id);
+    .map((repetition) => repetition.professor?.id)
 
   Object.keys(profs).forEach((courseId) => {
-    profs[courseId] = profs[courseId].filter((prof) => !busy.includes(prof.id));
+    profs[courseId] = profs[courseId].filter((prof) => !busy.includes(prof.id))
     if (profs[courseId].length === 0) {
-      delete profs[courseId];
+      delete profs[courseId]
     }
-  });
+  })
 
-  return profs;
+  return profs
 }
 
 function loginClicked() {
   emits('loginClicked')
 }
-
 </script>
 
 <template>
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <div :class="[selectedItem ? 'col-9' : 'col-12']">
-        <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
-          @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
-
+      <div :class="[selectedItem ? 'col-12 col-lg-8 col-xl-9' : 'col-12']">
+        <LessonCalendarView
+          :lessonsMap="lessonsMap"
+          :myLessonsMap="myLessonsMap"
+          :adminView="state.isAdmin"
+          @repetitionUpdated="repetitionUpdated"
+          @selectItem="selectItem"
+        />
       </div>
 
-      <div :class="{ 'col-3 border-start border-1': selectedItem }">
+      <div
+        :class="{ 'col-12 col-lg-4 col-xl-3 detail-lesson border-start border-1': selectedItem }"
+      >
         <template v-if="selectedItem?.repetitions">
-          <AdminLessonView :repetitions="selectedItem.repetitions" :time="selectedItem.time" :date="selectedItem.date"
-            @close="closeSidebar()" />
+          <AdminLessonView
+            :repetitions="selectedItem.repetitions"
+            :time="selectedItem.time"
+            :date="selectedItem.date"
+            @close="closeSidebar()"
+          />
         </template>
         <template v-else>
-          <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
-            :time="selectedItem.time" :date="selectedItem.date"
-            :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)" @reservedLesson="repetitionUpdated"
-            @deletedLesson="repetitionUpdated" @close="closeSidebar()" @loginClicked="loginClicked()" />
+          <FutureLessonReservationView
+            v-if="selectedItem?.showFuture"
+            :repetition="selectedItem.repetition"
+            :time="selectedItem.time"
+            :date="selectedItem.date"
+            :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)"
+            @reservedLesson="repetitionUpdated"
+            @deletedLesson="repetitionUpdated"
+            @close="closeSidebar()"
+            @loginClicked="loginClicked()"
+          />
 
-          <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
-            @updatedLesson="repetitionUpdated" @close="closeSidebar()" />
+          <PastLessonReservationView
+            v-else-if="selectedItem?.showPast"
+            :repetition="selectedItem.repetition"
+            @updatedLesson="repetitionUpdated"
+            @close="closeSidebar()"
+          />
         </template>
       </div>
     </div>
