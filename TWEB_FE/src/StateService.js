@@ -339,3 +339,30 @@ export async function addNewCourse(title) {
     console.log(error)
   }
 }
+
+export async function addNewTeaching(prof, course) {
+  var requestOptions = {
+    method: 'POST',
+    redirect: 'follow'
+  }
+
+  try {
+    const result = await fetch(
+      `${BACKEND_LINK}/professors/course?professorId=${prof.id}&courseId=${course.id}`,
+      requestOptions
+    )
+
+    if (result.status == 200) {
+      let teaching = state.value.teachings[course.id]
+
+      if (teaching == null) {
+        teaching = []
+        teaching.push(prof)
+      } else teaching.push(prof)
+
+      state.value.teachings[course.id] = teaching
+    } else console.log('error')
+  } catch (error) {
+    console.log(error)
+  }
+}
