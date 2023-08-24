@@ -13,24 +13,35 @@
   color: #6b7280;
 }
 
-
 .calendar .table .current-month {
   background-color: #fff;
   color: var(--TEXT-COLOR);
-
 }
 
 .calendar .table .current-month span {
   color: #111827;
 }
 
-
 .calendar table {
   table-layout: fixed;
   width: 100%;
 }
 
-.calendar .table th:nth-child(-n+5),
-.calendar .table td:nth-child(-n+5) {
+.calendar .table th:nth-child(-n + 5),
+.calendar .table td:nth-child(-n + 5) {
   width: 16%;
+}
+
+@media (max-width: 992px) {
+  .th-day {
+    visibility: hidden;
+  }
+
+  .th-day:first-letter {
+    visibility: visible;
+  }
+
+  .tr-calendar > td {
+    width: 63px !important;
+  }
 }

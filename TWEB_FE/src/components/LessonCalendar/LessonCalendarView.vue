@@ -194,11 +194,11 @@ const isMyLessonPage = computed(() => {
           <table class="table align-top table-bordered">
             <thead>
               <tr>
-                <th v-for="day in daysOfWeek" :key="day">{{ day }}</th>
+                <th v-for="day in daysOfWeek" :key="day" class="th-day">{{ day }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="week in weeks" :key="week">
+              <tr v-for="week in weeks" :key="week" class="tr-calendar">
                 <td
                   v-for="day in week"
                   :key="day.date"

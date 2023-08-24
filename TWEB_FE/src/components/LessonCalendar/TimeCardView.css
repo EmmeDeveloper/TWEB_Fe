@@ -13,7 +13,7 @@
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  padding: 0.2rem 0.5rem; 
+  padding: 0.2rem 0.5rem;
   border-radius: 0.5rem;
   margin-bottom: 0.3rem;
 }
@@ -41,4 +41,18 @@
 
 .unavailable span {
   color: var(--TEXT-COLOR-DISABLED) !important;
+}
+
+.lesson-time > i {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .lesson-time > span {
+    display: none;
+  }
+
+  .lesson-time > i {
+    display: block;
+  }
 }

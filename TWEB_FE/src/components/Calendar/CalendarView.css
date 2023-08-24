@@ -6,9 +6,11 @@
   .detail-lesson {
     box-shadow: 0 0 1px #000;
     border-radius: 15px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     background-color: #fff;
     height: 40%;
+    overflow-y: auto;
+    padding: 1rem;
   }
 }
