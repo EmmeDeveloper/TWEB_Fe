@@ -55,4 +55,8 @@
   .lesson-time > i {
     display: block;
   }
+
+  .item {
+    width: fit-content;
+  }
 }

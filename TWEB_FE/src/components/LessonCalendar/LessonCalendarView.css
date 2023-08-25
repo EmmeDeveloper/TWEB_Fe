@@ -29,7 +29,7 @@
 
 .calendar .table th:nth-child(-n + 5),
 .calendar .table td:nth-child(-n + 5) {
-  width: 16%;
+  width: 14%;
 }
 
 @media (max-width: 992px) {
@@ -41,7 +41,8 @@
     visibility: visible;
   }
 
-  .tr-calendar > td {
-    width: 63px !important;
+  .adminTable .table th:nth-child(-n + 6),
+  .adminTable .table td:nth-child(-n + 6) {
+    width: 63px;
   }
 }

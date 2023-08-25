@@ -38,7 +38,7 @@ td:first-child {
 
 .adminTable .table th:nth-child(-n + 6),
 .adminTable .table td:nth-child(-n + 6) {
-  width: 16%;
+  width: 14%;
 }
 
 .button-add {
@@ -73,6 +73,11 @@ td:first-child {
     flex-direction: column;
     width: 100%;
     border-bottom: 1px solid #000;
+  }
+
+  .adminTable .table th:nth-child(-n + 6),
+  .adminTable .table td:nth-child(-n + 6) {
+    width: 63px;
   }
 }
 

@@ -93,7 +93,7 @@ function selectMultipleRepetitions() {
       <template v-if="props.repetition != null">
         <div
           @click="selectRepetition()"
-          class="item"
+          class="item lesson-time"
           :class="{
             deleted: props.repetition?.status == 'deleted' && showMyLessons,
             done: props.repetition?.status == 'done' && showMyLessons,
@@ -103,13 +103,14 @@ function selectMultipleRepetitions() {
         >
           <span>{{ props.repetition.course?.title || 'Corso eliminato' }}</span>
           <span>{{ props.time }}:00</span>
+          <i class="mdi mdi-information-outline fs-4"></i>
         </div>
       </template>
 
       <template v-else-if="props.showFreeItems">
         <div
           @click="selectFreeItem()"
-          class="item"
+          class="item lesson-time"
           :class="[freeCoursesCount == 0 ? 'unavailable' : 'default']"
         >
           <span v-if="freeCoursesCount > 0"
@@ -117,6 +118,7 @@ function selectMultipleRepetitions() {
           >
           <span v-if="freeCoursesCount == 0">Non disponibile</span>
           <span>{{ props.time }}:00</span>
+          <i class="mdi mdi-information-outline fs-4"></i>
         </div>
       </template>
     </template>
