@@ -94,7 +94,7 @@ function addTeaching(courseId, profId) {
 <template>
   <div class="d-flex w-100 row mx-0 my-3">
     <template v-if="filterCollapsed">
-      <div class="d-flex col-11 gap-2 py-1 align-center">
+      <div class="d-flex col-11 gap-2 py-1 align-center flex-wrap">
         <span class="fs-5" v-if="Object.keys(teachings).length == 0">Nessuna materia selezionata</span>
         <div class="d-flex px-2 py-1 border rounded-pill align-center bg-primary-12" v-for="(prof, course) in teachings"
           :key="prof">

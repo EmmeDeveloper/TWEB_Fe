@@ -34,7 +34,7 @@ const state = initStore()
 
 logout().then(
   setTimeout(() => {
-    login('emme', 'pass').then((u) => {
+    login('giovanni', 'pass').then((u) => {
       updateUser(u)
       getCoursesRepetitions()
       getUserRepetitions()

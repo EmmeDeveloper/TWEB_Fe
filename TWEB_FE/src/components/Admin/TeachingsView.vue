@@ -72,8 +72,8 @@ function _ok() {
 </script>
 
 <template>
-  <div class="d-flex adminTable h-100 p-2">
-    <div class="table-responsive pe-1 mt-4">
+  <div class="d-flex admin-table p-2">
+    <div class="table-responsive pe-1 my-3">
       <table class="table align-top overflow-auto border">
         <thead>
           <tr>

@@ -107,48 +107,26 @@ function loginClicked() {
 </script>
 
 <template>
-  <div class="container-fluid h-100">
+  <div class="container-fluid h-100 overflow-y-auto overflow-x-hidden">
     <div class="row h-100">
       <div :class="[selectedItem ? 'col-12 col-lg-8 col-xl-9' : 'col-12']">
-        <LessonCalendarView
-          :lessonsMap="lessonsMap"
-          :myLessonsMap="myLessonsMap"
-          :adminView="state.isAdmin"
-          @repetitionUpdated="repetitionUpdated"
-          @selectItem="selectItem"
-        />
+        <LessonCalendarView :lessonsMap="lessonsMap" :myLessonsMap="myLessonsMap" :adminView="state.isAdmin"
+          @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
 
-      <div
-        :class="{ 'col-12 col-lg-4 col-xl-3 detail-lesson border-start border-1': selectedItem }"
-      >
+      <div :class="{ 'col-12 col-lg-4 col-xl-3 detail-lesson border-start border-1 h-auto': selectedItem }">
         <template v-if="selectedItem?.repetitions">
-          <AdminLessonView
-            :repetitions="selectedItem.repetitions"
-            :time="selectedItem.time"
-            :date="selectedItem.date"
-            @close="closeSidebar()"
-          />
+          <AdminLessonView :repetitions="selectedItem.repetitions" :time="selectedItem.time" :date="selectedItem.date"
+            @close="closeSidebar()" />
         </template>
         <template v-else>
-          <FutureLessonReservationView
-            v-if="selectedItem?.showFuture"
-            :repetition="selectedItem.repetition"
-            :time="selectedItem.time"
-            :date="selectedItem.date"
-            :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)"
-            @reservedLesson="repetitionUpdated"
-            @deletedLesson="repetitionUpdated"
-            @close="closeSidebar()"
-            @loginClicked="loginClicked()"
-          />
+          <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
+            :time="selectedItem.time" :date="selectedItem.date"
+            :courseProfMap="getAvailableProf(selectedItem?.time, selectedItem?.date)" @reservedLesson="repetitionUpdated"
+            @deletedLesson="repetitionUpdated" @close="closeSidebar()" @loginClicked="loginClicked()" />
 
-          <PastLessonReservationView
-            v-else-if="selectedItem?.showPast"
-            :repetition="selectedItem.repetition"
-            @updatedLesson="repetitionUpdated"
-            @close="closeSidebar()"
-          />
+          <PastLessonReservationView v-else-if="selectedItem?.showPast" :repetition="selectedItem.repetition"
+            @updatedLesson="repetitionUpdated" @close="closeSidebar()" />
         </template>
       </div>
     </div>

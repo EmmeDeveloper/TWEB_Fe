@@ -68,7 +68,7 @@ const pages = computed(() => [
           class="d-flex gap-2 pointer align-center px-2"
           @click="changePage(user.role == 'Admin' ? PAGE_USER_ADMIN : PAGE_USER_PROFILE)"
         >
-          <span class="fs-7">Ciao, {{ user.name }}</span>
+          <span class="fs-7 d-none d-md-block">Ciao, {{ user.name }}</span>
           <img
             src="@/assets/person-circle.svg"
             alt="profilo utente"

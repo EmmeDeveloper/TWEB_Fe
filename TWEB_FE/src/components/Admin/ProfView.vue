@@ -50,7 +50,7 @@ function _ok() {
 </script>
 
 <template>
-  <div class="d-flex adminTable h-100 p-2">
+  <div class="d-flex admin-table h-100 p-2">
     <div class="table-responsive pe-1 mt-4">
       <table class="table align-top overflow-auto border">
         <thead>

@@ -3,7 +3,7 @@
   border-radius: 15px;
 }
 
-.selected-item > i {
+.selected-item>i {
   color: var(--PRIMARY-COLOR);
 }
 
@@ -11,7 +11,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-.not-selected-item > i {
+.not-selected-item>i {
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -40,4 +40,8 @@ th {
   color: rgba(255, 255, 255, 0.8);
   border: none;
   padding: 0.3rem 0;
+}
+
+.admin-table .table th:last-child {
+  width: 64px;
 }

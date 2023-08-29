@@ -44,8 +44,8 @@ function _ok() {
 </script>
 
 <template>
-  <div class="d-flex adminTable h-100 p-2">
-    <div class="table-responsive pe-1 mt-4">
+  <div class="d-flex admin-table p-2">
+    <div class="table-responsive pe-1 my-3">
       <table class="table align-top overflow-auto border">
         <thead>
           <tr>
@@ -53,26 +53,16 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="course in state.courses"
-            :key="course.id"
-            @mouseover="actionId = course.id"
-            class="align-baseline"
-            @mouseout="actionId = null"
-          >
-            <td>{{ course.title }}</td>
+          <tr v-for="course in state.courses" :key="course.id" @mouseover="actionId = course.id" class="align-baseline"
+            @mouseout="actionId = null">
+            <td><span>{{ course.title }}</span></td>
             <td>
               <div>
-                <button
-                  type="button"
-                  class="btn fs-4 py-0 pointer"
-                  @click="
-                    () => {
-                      showModal = true
-                      courseToDelete = course.id
-                    }
-                  "
-                >
+                <button type="button" class="btn fs-4 py-0 pointer" @click="() => {
+                    showModal = true
+                    courseToDelete = course.id
+                  }
+                  ">
                   <i class="mdi mdi-trash-can-outline"></i>
                 </button>
               </div>
@@ -91,11 +81,7 @@ function _ok() {
     <ToastView :showToast="showToast" @close="closeToast()" :objectToast="objectToast"></ToastView>
   </div>
   <div v-if="showModal">
-    <ConfirmModalView
-      :objectConfirmModal="objectConfirmModal"
-      @close="showModal = false"
-      @ok="_ok()"
-    ></ConfirmModalView>
+    <ConfirmModalView :objectConfirmModal="objectConfirmModal" @close="showModal = false" @ok="_ok()"></ConfirmModalView>
   </div>
   <NewCourseModalView @closeCourseModal="showCourseModal = false" v-if="showCourseModal" />
 </template>

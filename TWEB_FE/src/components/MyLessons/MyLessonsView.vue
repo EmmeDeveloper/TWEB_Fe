@@ -44,13 +44,13 @@ function closeSidebar() {
 </script>
 
 <template>
-  <div class="container-fluid h-100">
+  <div class="container-fluid h-100 overflow-y-auto overflow-x-hidden">
     <div class="row h-100">
-      <div :class="[selectedItem ? 'col-9' : 'col-12']">
+      <div :class="[selectedItem ? 'col-12 col-lg-8 col-xl-9' : 'col-12']">
         <LessonCalendarView :myLessonsMap="lessonsMap" :lessonsMap="{}" :selectableDates="selectableDates"
           @repetitionUpdated="repetitionUpdated" @selectItem="selectItem" />
       </div>
-      <div :class="{'col-3 border-start border-1' : selectedItem}">
+      <div :class="{'col-12 col-lg-4 col-xl-3 detail-lesson border-start border-1 h-auto' : selectedItem}">
         <FutureLessonReservationView v-if="selectedItem?.showFuture" :repetition="selectedItem.repetition"
                                      :time="selectedItem.time" :date="selectedItem.date" :courseProfMap="{}" @reservedLesson="repetitionUpdated"
                                      @deletedLesson="repetitionUpdated" @close="closeSidebar()" />

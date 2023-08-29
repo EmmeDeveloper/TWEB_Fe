@@ -58,9 +58,9 @@ function _ok() {
 </script>
 
 <template>
-  <div class="d-flex adminTable h-100 p-2">
-    <div class="pe-1 mt-4">
-      <table class="table table-responsive align-top overflow-auto border">
+  <div class="d-flex admin-table p-2">
+    <div class="pe-1 my-3">
+      <table class="table admin table-responsive align-top overflow-auto border">
         <thead class="table-header-display">
           <tr>
             <th v-for="title in titles" :key="title">{{ title }}</th>

@@ -78,6 +78,24 @@ body {
   flex-direction: column;
 }
 
+
+/* Styling the entire scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+/* Styling the thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the thumb */
+  border-radius: 4px; /* Border radius of the thumb */
+}
+
+/* Styling the thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa; /* Color of the thumb on hover */
+}
+
+
 /* 
 .primary-button {
   background-color: rgba(255, 255, 255, 0.6);

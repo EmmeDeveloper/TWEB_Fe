@@ -172,7 +172,7 @@ const isMyLessonPage = computed(() => {
   <div class="container h-100">
     <div class="row justify-center h-100">
       <div class="col-12 h-100">
-        <div class="container text-center mt-5">
+        <div class="container text-center mt-3">
           <FilterCalendarView v-if="!isMyLessonPage" />
           <div class="flex justify-content-center align-items-center mb-3">
             <button
@@ -198,7 +198,7 @@ const isMyLessonPage = computed(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="week in weeks" :key="week" class="tr-calendar">
+              <tr v-for="week in weeks" :key="week">
                 <td
                   v-for="day in week"
                   :key="day.date"

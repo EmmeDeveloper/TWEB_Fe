@@ -1,43 +1,23 @@
 <script setup>
-import { BACKEND_LINK } from '../../environment'
-import { ref, onBeforeMount } from 'vue'
+import { ref, computed } from 'vue'
 import LessonCardView from '@/components/LessonCard/LessonCardView.vue'
 import './UserProfile.css'
 import { PAGE_HOME } from '../../constants'
-import { logout, getCoursesRepetitions } from '../../StateService.js'
+import { logout, getCoursesRepetitions, useStore } from '../../StateService.js'
 
 const props = defineProps({ userData: Object })
 const emits = defineEmits(['changePage', 'updateUser'])
-const allRepetitions = ref([])
-const nextRepetitions = ref([])
-const pastRepetitions = ref([])
 
-onBeforeMount(async () => {
-  try {
-    var requestOptions = {
-      method: 'GET',
-      redirect: 'follow'
-    }
+const userData = computed(() => props.userData)
+const state = ref(useStore())
+const repetitions = computed(() => state.value.userRepetitions)
+const nextRepetition = computed(() => repetitions.value.filter(
+  (repetition) => new Date(repetition.date).setHours(repetition.time) >= new Date()
+)).value[0] || null
+const pastRepetition = computed(() => repetitions.value.filter(
+  (repetition) => new Date(repetition.date).setHours(repetition.time) < new Date()
+)).value[0] || null
 
-    const result = await fetch(
-      `${BACKEND_LINK}/users/repetitions?userID=${props.userData.id}&startDate=2020-01-01&endDate=2023-12-31`,
-      requestOptions
-    )
-
-    if (result.status == 200) {
-      // let allRepetitions = (await result.json()).repetitions
-      //togliere allRepetitions.value e scommentare la parte di sopra, togliere const allRepetitions da su
-      nextRepetitions.value = allRepetitions.value.filter(
-        (repetition) => new Date(repetition.date).setHours(repetition.time) >= new Date()
-      )
-      pastRepetitions.value = allRepetitions.value.filter(
-        (repetition) => new Date(repetition.date).setHours(repetition.time) < new Date()
-      )
-    } else console.log('error')
-  } catch (error) {
-    console.log(error)
-  }
-})
 
 function _logout() {
   logout().then(() => {
@@ -49,63 +29,64 @@ function _logout() {
 </script>
 
 <template>
-  <div class="user-info">
-    <div class="user-info-card">
-      <div class="user-info-section">
-        <div class="user-info-data">
-          <div class="title">Nome:</div>
-          <div class="dato">{{ userData.name }}</div>
+  <div class="d-flex flex-column">
+    <div>
+      <div class="d-flex flex-row-reverse">
+        <div class="align-items-center justify-content-center d-flex p-2 my-2 me-2 bg-primary rounded-4 pointer" @click="_logout">
+          <i class="mdi mdi-logout-variant fs-4 pointer text-white" style="color: rgba(255, 255, 255, 0.8)"></i>
+          <span class="px-2 text-white">Logout</span>
         </div>
-        <div class="user-info-data">
-          <div class="title">Cognome:</div>
-          <div class="dato">{{ userData.surname }}</div>
-        </div>
-        <div class="user-info-data" v-if="userData.birthDate">
-          <div class="title">Data di nascita:</div>
-          <div class="dato">{{ userData.birthDate }}</div>
-        </div>
-      </div>
-      <div class="user-info-section">
-        <div class="user-info-data" v-if="userData.email">
-          <div class="title">Email:</div>
-          <div class="dato">{{ userData.email }}</div>
-        </div>
-        <div class="user-info-data" v-if="userData.phone">
-          <div class="title">Numero di telefono:</div>
-          <div class="dato">{{ userData.phone }}</div>
-        </div>
-        <div class="user-info-data" v-if="userData.address">
-          <div class="title">Indirizzo:</div>
-          <div class="dato">{{ userData.address }}</div>
-        </div>
-        <div class="user-info-data" v-if="userData.memberSince">
-          <div class="title">Iscritto dal:</div>
-          <div class="dato">{{ userData.memberSince }}</div>
-        </div>
-      </div>
-      <div class="flex align-center">
-        <span class="cursor-pointer logout-text" @click="_logout()">Logout</span>
       </div>
     </div>
-  </div>
-  <div class="flex flex-row justify-space-evenly">
-    <div class="flex flex-column align-center">
-      <span class="section">Prossima lezione</span>
-      <div class="flex gap-2 padding-1" v-if="nextRepetitions.length > 0">
-        <LessonCardView
-          v-for="repetition in nextRepetitions"
-          :repetition="repetition"
-          :key="repetition.id"
-        ></LessonCardView>
+    <div class="d-flex flex-sm-row flex-column gap-2 justify-center">
+      <div class="border d-flex flex-column p-3 rounded-4 mx-3 bg-primary-12">
+        <div class="d-flex flex-row gap-4">
+          <img src="@/assets/person-circle.svg" alt="profilo utente" class="rounded-circle"
+            style="width: 7rem; height: 7rem" />
+          <div class="d-flex flex-column">
+            <span class="fs-5 fw-bold">{{ userData.name }} {{ userData.surname }}</span>
+            <span class="c-primary fw-bolder">{{ userData.role }}</span>
+            <span class="text-secondary">{{ userData.address || 'Italia, Piemonte, Torino' }}</span>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-2 mt-3">
+          <span class="text-center">Informazioni personali</span>
+          <div class="d-flex flex-row justify-content-between">
+            <span>Account</span>
+            <span>{{ userData.account }}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <span>Email</span>
+            <span>{{ userData.email }}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <span>Data di nascita</span>
+            <span>{{ userData.birthDate || '21 nov, 1996' }}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <span>Telefono</span>
+            <span>{{ userData.phone || '3387828981' }}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <span>Membro dal</span>
+            <span>{{ userData.memberSince || '07/02/2023' }}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-column align-center">
-      <span class="section">Lezione precedente</span>
-      <div class="flex gap-2 padding-1" v-if="pastRepetitions.length > 0">
-        <LessonCardView
-          :repetition="pastRepetitions[0]"
-          :key="pastRepetitions[0].id"
-        ></LessonCardView>
+
+      <div class="flex flex-column">
+        <div class="flex flex-column px-3">
+          <span class="section fs-4">Prossima lezione</span>
+          <div class="flex gap-2 padding-1" v-if="nextRepetition">
+            <LessonCardView  :repetition="nextRepetition" :key="nextRepetition?.id" />
+          </div>
+        </div>
+        <div class="flex flex-column px-3">
+          <span class="section fs-4">Lezione precedente</span>
+          <div class="flex gap-2 padding-1" v-if="pastRepetition">
+            <LessonCardView :repetition="pastRepetition" :key="pastRepetition?.id"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -29,10 +29,11 @@
 
 .calendar .table th:nth-child(-n + 5),
 .calendar .table td:nth-child(-n + 5) {
-  width: 14%;
+  width: 15%;
 }
 
 @media (max-width: 992px) {
+
   .th-day {
     visibility: hidden;
   }
@@ -41,8 +42,29 @@
     visibility: visible;
   }
 
-  .adminTable .table th:nth-child(-n + 6),
-  .adminTable .table td:nth-child(-n + 6) {
-    width: 63px;
+  /* .admin-table .table td:last-child {
+    width: 64px;
+    background-color: rebeccapurple;
+  } */
+
+  .calendar .table td {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+
+  .lesson {
+    display: flex;
+    justify-content: center;
+  }
+
+  .day span {
+    margin-left: 0.75rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .calendar .table th:nth-child(-n + 5),
+  .calendar .table td:nth-child(-n + 5) {
+    width: 14%;
   }
 }

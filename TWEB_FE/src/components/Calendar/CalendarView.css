@@ -10,7 +10,7 @@
     bottom: 0;
     background-color: #fff;
     height: 40%;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     padding: 1rem;
   }
 }
