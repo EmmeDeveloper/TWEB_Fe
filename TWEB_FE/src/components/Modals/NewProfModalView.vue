@@ -8,8 +8,9 @@ let name = ref('')
 let surname = ref('')
 
 async function _addNewProf() {
-  addNewProf(name.value, surname.value)
-  emits('closeProfModal', false)
+  addNewProf(name.value, surname.value).then(() => {
+    emits('closeProfModal', false)
+  })
 }
 </script>
 

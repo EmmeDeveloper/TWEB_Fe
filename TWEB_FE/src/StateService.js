@@ -314,8 +314,12 @@ export async function addNewProf(name, surname) {
   }
 
   try {
-    const result = (await fetch(`${BACKEND_LINK}/professors`, requestOptions)).json()
-    state.value.allProfessors.push(await result)
+    const result = (await fetch(`${BACKEND_LINK}/professors`, requestOptions))
+    if (result.status == 200) {
+      const professor = await result.json()
+      state.value.allProfessors = [...state.value.allProfessors, professor]
+    }
+    else throw new Error('error')
   } catch (error) {
     console.log(error)
   }
@@ -333,8 +337,12 @@ export async function addNewCourse(title) {
   }
 
   try {
-    const result = (await fetch(`${BACKEND_LINK}/courses`, requestOptions)).json()
-    state.value.courses.push((await result).course)
+    const result = (await fetch(`${BACKEND_LINK}/courses`, requestOptions))
+    if (result.status == 200) {
+      const course = (await result.json()).course
+      state.value.courses = [...state.value.courses, course]
+    }
+    else throw new Error('error')
   } catch (error) {
     console.log(error)
   }
@@ -354,7 +362,7 @@ export async function addNewTeaching(prof, course) {
 
     if (result.status == 200) {
       await getTeachings()
-    } else console.log('error')
+    } else throw new Error('error')
   } catch (error) {
     console.log(error)
   }

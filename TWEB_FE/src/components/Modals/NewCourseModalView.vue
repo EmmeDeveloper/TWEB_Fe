@@ -7,8 +7,9 @@ const emits = defineEmits(['closeCourseModal'])
 let title = ref('')
 
 async function _addNewCourse() {
-  addNewCourse(title.value)
-  emits('closeCourseModal', false)
+  addNewCourse(title.value).then(() => {
+    emits('closeCourseModal', false)
+  })
 }
 </script>
 

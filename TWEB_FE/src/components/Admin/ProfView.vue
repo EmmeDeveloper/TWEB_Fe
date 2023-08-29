@@ -6,12 +6,18 @@ import {
   DELETE_PROF_TEXT,
   MODAL_TITLE
 } from '@/constants'
-import { ref } from 'vue'
+import { watch, ref } from 'vue'
 import ToastView from '@/components/Toast/ToastView.vue'
 import ConfirmModalView from '@/components/Modals/ConfirmModalView.vue'
 import NewProfModalView from '../Modals/NewProfModalView.vue'
 
 const state = ref(useStore())
+var allProfessors = ref(state.value.allProfessors)
+
+watch(() => state.value.allProfessors, (newVal, _) => {
+  allProfessors.value = newVal
+});
+
 
 const titles = ['Nome', 'Cognome', '']
 
@@ -59,16 +65,16 @@ function _ok() {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="prof in state.allProfessors" :key="prof.id" class="align-baseline" @mouseover="actionId = prof.id"
+          <tr v-for="prof in allProfessors" :key="prof.id" class="align-baseline" @mouseover="actionId = prof.id"
             @mouseout="actionId = null">
             <td>{{ prof.name }}</td>
             <td>{{ prof.surname }}</td>
             <td>
               <div>
                 <button type="button" class="btn py-0" @click="() => {
-                    profToDelete = prof.id
-                    showModal = true
-                  }
+                  profToDelete = prof.id
+                  showModal = true
+                }
                   ">
                   <i class="mdi mdi-trash-can-outline fs-4 py-0 pointer"></i>
                 </button>

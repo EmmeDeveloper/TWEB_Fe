@@ -9,8 +9,9 @@ let profId = ref('-1')
 let courseId = ref('-1')
 
 async function _addNewTeaching() {
-  await addNewTeaching(profId.value, courseId.value)
-  emits('closeTeachingModal')
+  await addNewTeaching(profId.value, courseId.value).then(() => {
+    emits('closeTeachingModal')
+  })
 }
 </script>
 
