@@ -4,9 +4,9 @@
   white-space: nowrap;
 }
 
-.item span:nth-child(2) {
+.time {
   color: var(--TEXT-COLOR-DISABLED) !important;
-  padding-left: 0.16rem;
+  padding-left: 0.24rem;
 }
 
 .item {

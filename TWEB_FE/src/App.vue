@@ -25,28 +25,15 @@ import {
   updateUser,
   logout,
   getCoursesRepetitions,
-  getUserRepetitions
+  getUserRepetitions,
+  getCookie,
 } from '@/StateService.js'
 
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 
 const state = initStore()
 
-logout().then(
-  setTimeout(() => {
-    login('giovanni', 'pass').then((u) => {
-      updateUser(u)
-      getCoursesRepetitions()
-      getUserRepetitions()
-    })
-  }, 500)
-)
-
 const showModalLogin = ref(false)
-
-// TODOS:
-// Login automatico, da rimuovere
-// Fare filtro materie
 
 function isAdminPage() {
   return (
@@ -57,6 +44,22 @@ function isAdminPage() {
     state.value.currentPage === PAGE_ADMIN_BOOKINGS
   )
 }
+
+onBeforeMount(() => {
+  logout().then(async () => {
+    if (getCookie('account') != null && getCookie('password') != null) {
+      login(getCookie('account'), getCookie('password')).then((u) => {
+        updateUser(u)
+        getCoursesRepetitions()
+        getUserRepetitions()
+      })
+    }
+    if (sessionStorage.getItem('page') != null) {
+      updatePage(sessionStorage.getItem('page'))
+    }
+  })
+})
+
 </script>
 
 <template>

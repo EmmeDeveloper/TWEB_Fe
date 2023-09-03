@@ -29,16 +29,46 @@ export function useStore() {
 
 export function updatePage(p) {
   state.value.currentPage = p
+  sessionStorage.setItem('page', p)
 }
 
 export function updateUser(p) {
   state.value.userData = p
   state.value.isAdmin = p?.role?.toLowerCase() == 'admin'
 
-  // Reset filter
-  state.value.filteredTeachings = state.value.teachings
-  state.value.filteredProfessors = state.value.allProfessors
-  state.value.filteredCourses = state.value.courses
+  // User is null when logging out from manual logout
+  if (p == null) {
+    deleteCookie('account')
+    deleteCookie('password')
+
+    // Reset filter
+    state.value.filteredTeachings = state.value.teachings
+    state.value.filteredProfessors = state.value.allProfessors
+    state.value.filteredCourses = state.value.courses
+  }
+}
+
+export function setCookie(key, value) {
+  const now = new Date();
+  const expirationDate = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+  const expires = "expires=" + expirationDate.toUTCString();
+  document.cookie = `${key}=${value}; ${expires}; path=/`;
+}
+
+export function getCookie(key) {
+  const cookies = document.cookie.split("; ");
+  for (const cookie of cookies) {
+    const [cookieKey, cookieValue] = cookie.split("=");
+    if (cookieKey === key) {
+      return cookieValue;
+    }
+  }
+  return null;
+}
+
+function deleteCookie(key) {
+  const pastDate = new Date(0); // Create a date in the past
+  document.cookie = `${key}=; expires=${pastDate.toUTCString()}; path=/`;
 }
 
 export function updateFilter(selectedMap) {
@@ -51,7 +81,8 @@ export function updateFilter(selectedMap) {
         selectedMap[courseID].includes(t.id)
       )
       selectedMap[courseID].forEach((professorID) => {
-        newProfessors.push(state.value.allProfessors.find((p) => p.id == professorID))
+        var prof = state.value.allProfessors.find((p) => p.id == professorID)
+        if (prof) newProfessors.push(prof)
       })
       newCourses.push(state.value.courses.find((c) => c.id == courseID))
     }
@@ -79,6 +110,8 @@ export async function login(accountValue, passwordValue) {
 
     const result = await fetch(`${BACKEND_LINK}/login`, requestOptions)
     const data = await result.json()
+    setCookie('account', accountValue)
+    setCookie('password', passwordValue)
     return data.user
   } catch (error) {
     console.log(error)

@@ -39,7 +39,7 @@ const uiData = computed(() => {
 const issues = [
   "Il professore era assente",
   "Ho avuto un contrattempo",
-  "La lezione è stata annullata",
+  'La lezione e\' stata annullata',
   "Altro"
 ]
 
@@ -127,7 +127,7 @@ function getTitle() {
 
         <template v-if="!state.updateSuccess">
           <button type="button" class="btn btn-primary w-100" :disabled="state.isLoading" :loading="state.isLoading"
-            @click="updateLesson(REPETITION_STATUS_DELETED, note)">
+            @click="updateLesson(REPETITION_STATUS_DELETED, state.selectedIssue != issues[3] ? state.selectedIssue : note)">
             Conferma
           </button>
         </template>

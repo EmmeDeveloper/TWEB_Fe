@@ -30,7 +30,7 @@ const pages = computed(() => [
     page: PAGE_MYLESSONS,
     condition: user.value != null && user.value.role != 'Admin'
   },
-  { icon: 'calendar-blank', name: 'Calendario', page: PAGE_CALENDAR, condition: true }
+  { icon: 'calendar-blank', name: 'Lezioni ' + (user.value?.role != 'Admin' ? "disponibili" : "prenotate"), page: PAGE_CALENDAR, condition: true }
 ])
 </script>
 

@@ -25,15 +25,15 @@ async function _addNewTeaching() {
         <div class="p-2">
           <select class="form-select mb-2" v-model="courseId">
             <option selected value="-1">Scegli il corso</option>
-            <option v-for="course in state.courses" :key="course.id" :value="course">
+            <option v-for="course in state.courses.sort(c => c.title)" :key="course.id" :value="course">
               {{ course.title }}
             </option>
           </select>
 
           <select class="form-select" v-model="profId">
             <option selected value="-1">Scegli il professore</option>
-            <option v-for="prof in state.allProfessors" :key="prof.id" :value="prof">
-              {{ prof.name }} {{ prof.surname }}
+            <option v-for="prof in state.allProfessors.sort(p => p.surname)" :key="prof.id" :value="prof">
+              {{ prof.surname }} {{ prof.name }}
             </option>
           </select>
         </div>

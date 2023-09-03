@@ -41,7 +41,7 @@ function updateLessonsMap() {
     }
     if (
       repetition.professor &&
-      state.value.filteredProfessors.find((p) => p.id == repetition.professor.id) != null
+      state.value.filteredProfessors.find((p) => p?.id == repetition?.professor?.id) != null
     ) {
       map[key].push(repetition)
     }
@@ -59,7 +59,7 @@ function updateMyLessonsMap() {
     }
     if (
       repetition.professor &&
-      state.value.allProfessors.find((p) => p.id == repetition.professor.id) != null
+      state.value.allProfessors.find((p) => p?.id == repetition.professor?.id) != null
     ) {
       mymap[key].push(repetition)
     }

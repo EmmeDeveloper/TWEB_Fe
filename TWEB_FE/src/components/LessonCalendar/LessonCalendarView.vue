@@ -181,7 +181,7 @@ const isMyLessonPage = computed(() => {
               :disabled="
                 props.selectableDates == null &&
                 currentDate.getMonth() <= today.getMonth() &&
-                currentDate.getFullYear() <= today.getFullYear()
+                currentDate.getFullYear() <= today.getFullYear() && !props.adminView
               "
             >
               &lt;
@@ -194,7 +194,11 @@ const isMyLessonPage = computed(() => {
           <table class="table align-top table-bordered">
             <thead>
               <tr>
-                <th v-for="day in daysOfWeek" :key="day" class="th-day">{{ day }}</th>
+                <th v-for="day in daysOfWeek" :key="day" class="th-day">
+                  <span class="first-letter">{{ day.charAt(0) }}</span>
+                  <span class="next-two">{{ day.substr(1, 2) }}</span>
+                  <span class="rest">{{ day.substr(3) }}</span>
+                </th>
               </tr>
             </thead>
             <tbody>

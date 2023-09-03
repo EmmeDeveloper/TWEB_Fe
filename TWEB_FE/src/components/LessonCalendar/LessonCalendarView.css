@@ -8,8 +8,6 @@
 }
 
 .calendar .table td span {
-  /* font-size: 1.2rem;
-  font-weight: 600; */
   color: #6b7280;
 }
 
@@ -27,25 +25,29 @@
   width: 100%;
 }
 
-.calendar .table th:nth-child(-n + 5),
-.calendar .table td:nth-child(-n + 5) {
-  width: 15%;
+.calendar table thead tr th:nth-child(-n + 5) {
+  width: 17%;
+}
+
+@media (max-width: 1400px) {
+  .th-day .rest {
+    visibility: hidden;
+  }
+
+  .th-day .next-two {
+    visibility: visible;
+  }
 }
 
 @media (max-width: 992px) {
 
-  .th-day {
+  .th-day .rest {
     visibility: hidden;
   }
 
-  .th-day:first-letter {
-    visibility: visible;
+  .th-day .next-two {
+    visibility: hidden;
   }
-
-  /* .admin-table .table td:last-child {
-    width: 64px;
-    background-color: rebeccapurple;
-  } */
 
   .calendar .table td {
     padding-left: 0rem;
@@ -60,11 +62,8 @@
   .day span {
     margin-left: 0.75rem;
   }
-}
 
-@media (max-width: 460px) {
-  .calendar .table th:nth-child(-n + 5),
-  .calendar .table td:nth-child(-n + 5) {
-    width: 14%;
+  .calendar table thead tr th:nth-child(-n + 5) {
+    width: 15% !important;
   }
 }

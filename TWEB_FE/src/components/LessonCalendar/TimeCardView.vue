@@ -102,7 +102,7 @@ function selectMultipleRepetitions() {
           }"
         >
           <span>{{ props.repetition.course?.title || 'Corso eliminato' }}</span>
-          <span>{{ props.time }}:00</span>
+          <span class="time">{{ props.time }}:00</span>
           <i class="mdi mdi-information-outline fs-4"></i>
         </div>
       </template>
@@ -113,11 +113,10 @@ function selectMultipleRepetitions() {
           class="item lesson-time"
           :class="[freeCoursesCount == 0 ? 'unavailable' : 'default']"
         >
-          <span v-if="freeCoursesCount > 0"
-            >Disponibile ({{ freeCoursesCount }}/{{ state.filteredCourses.length }})</span
-          >
+          <span v-if="freeCoursesCount > 0">Disponibile</span>
+          <span v-if="freeCoursesCount > 0">({{ freeCoursesCount }}/{{ state.filteredCourses.length }})</span>
           <span v-if="freeCoursesCount == 0">Non disponibile</span>
-          <span>{{ props.time }}:00</span>
+          <span class="time">{{ props.time }}:00</span>
           <i class="mdi mdi-information-outline fs-4"></i>
         </div>
       </template>
