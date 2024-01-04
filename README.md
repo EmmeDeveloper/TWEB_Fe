@@ -3,7 +3,8 @@
 Sviluppo effettuato con vue3, javascript, css, bootstrap
 
 <h3>Screenshot</h3>
-![photo1704405683](https://github.com/EmmeDeveloper/TWEB_Fe/assets/22244326/7f1cdedb-e101-4a1f-8cac-9a02260ef07d)
+
+![photo1704405683](https://github.com/EmmeDeveloper/TWEB_Fe/assets/22244326/7f1cdedb-e101-4a1f-8cac-9a02260ef07d?raw=true)
 
 
 <h1>Consegna</h1>
